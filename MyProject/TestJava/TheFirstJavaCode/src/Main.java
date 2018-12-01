@@ -6,8 +6,9 @@ public class Main {
 
     public static void main(String[] args) {
         //System.out.println("Hello World!");
-        Main main = new Main();
-        main.testMapView();
+        //Main main = new Main();
+        //main.testMapView();
+        BitSetTest.testBitSet();
     }
 
     HashMap<String,String> staffMap;
