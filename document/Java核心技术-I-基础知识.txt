@@ -1,0 +1,12 @@
+14.4.2 守护线程
+使用 t.setDaemon(true) 调用线程对象的 setDaemon(true)方法
+作用：为其他线程提供服务，当只有守护线程时，虚拟机就退出了
+标识为守护线程的调用，必须在线程启动之前调用
+
+14.4.3 未捕获异常
+线程的 run方法不能抛出受查异常，非受查异常会让线程终止，线程死亡，在线程死亡之前，异常被传递到一个用户未捕获异常的处理器。
+处理器实现 Thread.UncaugheExceptionHandler接口类，这个类只有 void uncaugheExeption(Thread t,Throuable e) 方法。
+使用 setUncaughtExceptionHandler 为线程安装一个处理器，setDefaultUncaughtExceptionHandler 安装默认的处理器
+在处理其中可使用日志 API等方式发送未捕获的异常，默认的线程处理器为空。
+
+14.5 同步
