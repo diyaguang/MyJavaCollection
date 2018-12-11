@@ -8,7 +8,9 @@ public class Main {
         //System.out.println("Hello World!");
         //Main main = new Main();
         //main.testMapView();
-        BitSetTest.testBitSet();
+        //BitSetTest.testBitSet();
+
+        UnsynchBankTest.test();
     }
 
     HashMap<String,String> staffMap;
