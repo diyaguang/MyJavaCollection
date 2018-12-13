@@ -1,0 +1,85 @@
+14.5.11 死锁
+deadlock 每一个线程都进行等待，从而都被阻塞，这样的状态称为死锁. java 语言中没有任何东西可以避免或打破死锁现象。
+
+14.5.12 线程局部变量
+在线程间共享变量是有风险的，应当尽可能避免共享变量，使用 ThreadLocal辅助类为各个线程提供各自的实例。
+public static final ThreadLocal<SimpleDateFormat> dateFormat=ThreadLocal.withInitial(()->new SimpleDateFormat("yyyy-MM-dd"));
+使用时 String dateStamp=dateFormat.get().format(new Date()); 在一个给定的线程中首次使用 get时，会调用 initialValue方法，在此之后调用，get会返回属于当前线程的那个实例。就是说，使用 ThreadLocal包装了，使用get返回当前线程的指定的变量，从而变成线程安全的了。
+另外，例如 java.util.Random 是线程安全的，如果多个线程需要等待一个共享的随机数生成器，则效率很低。可以使用 ThreadLocal辅助类为各个线程提供一个单独的生成器。但是这样的效率很低，JavaSE7 提供了一个 ThreadLocalRandom.current() 调用会返回特定于当前线程的 Random类实例。
+
+14.5.13 锁测试与超时
+锁测试，使用 tryLock来探试锁对象是否被使用，当 tryLock返回 true时，已经获得了锁。返回false后，线程可以离开去做其他的事情。
+if(myLock.tryLock()){
+	try{...}
+	finally{
+		myLock.unlock();
+	}
+}
+else
+	//do something else
+
+可以调用 tryLock时，使用超时参数。 if(myLock.tryLock(100,TimeUnit.MILLISECONDS)) ... 
+
+Lock方法不能被中断，如果一个线程在等待获得一个锁时被中断，中断线程在获得锁之前一直处于阻塞状态。如果出现死锁，那么 lock方法就无法终止。
+如果调用带有参数的 tryLock，那么如果线程在等待期间被中断，将抛出InterruptedException异常。
+可以调用 lockInterruptibly方法，相当于一个超时设置为无限的 tryLock方法。
+
+在等待一个条件时，也可以提供一个超时 myCondition.await(100,TimeUnit.MILLISECONDS)
+
+如果一个线程被另一个线程通过嗲用 signalAll或signal激活，或者超时时限已经达到，或者线程被中断，那么 await方法将返回。
+
+如果等待的线程被中断，await方法将抛出一个 InterruptedException异常，如果希望在出现这种情况时线程继续等待，可使用 awaitUninterruptibly方法来代替 await
+
+14.5.14 读/写锁
+使用 ReentrantReadWriteLock类，使用这个对象后，读访问时可共享的，对写操作是互斥的。增加使用效率。适用于多线程从一个数据结构读取数据很多，修改其中数据很少是很有用的。
+private ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
+private Lock readLock = rwl.readLick();
+private Lock writeLock = rwl.writeLock();
+public double getTRotalBalance(){
+	readLock.lock();
+	try{...}
+	finally{readLock.unlock();}
+}
+public void transfer(...){
+	writeLock.lock();
+	try{...}
+	finally{readLock.unlock();}
+}
+
+14.5.15 为什么弃用 stop和suspend方法
+stop方法用来终止一个线程，suspend方法用来阻塞一个线程直至另一个线程调用 resume，这些方法都试图控制一个给定线程的行为。
+stop、suspend、resume方法已经弃用，suspend方法经常会导致死锁。
+
+stop方法：该方法终止所有未结束的方法，包括run方法。线程被终止，立即释放被他锁住的所有对象的锁，这会导致对象处于不一致的状态。应该要使用“中断”，而不是终止。
+
+suspend方法：不会破坏对象，用suspend挂起一个持有锁的线程，那么该锁在恢复之前是不可用的。如果调用suspend方法的线程试图获取同一个锁，那么程序死锁；被挂起的线程等着被回复，而将其挂起的线程等待获得锁。
+
+
+14.6 阻塞队列
+使用队列来解决线程调用的安全问题。生产者向队列插入数据，消费线程取出他们，使用队列，可以安全的从一个线程向另一个线程传递数据。
+当试图向队列添加元素而队列已满，或者想从队列移出元素而队列为空时，阻塞队列导致线程阻塞。在协调多个线程之间的合作时，阻塞队列是一个有用的工具。
+
+add      添加一个元素            队列满，抛出 IllegalStateException 异常
+offer    添加一个元素返回 true   队列满，返回 false
+put      添加一个元素            队列满，则阻塞
+
+element  返回队列的头元素        队列空，抛出 NoSuchElementException 异常
+peek     返回队列的头元素        队列空，返回 null
+
+poll     移出并返回队列头元素     队列空，返回 null
+remove   移出并返回队列头元素     队列空，抛出 NoSuchElementException 异常
+take     移出并返回队列头元素     队列空，则阻塞
+相关方法的分类：
+1.将队列作为线程管理工具来使用，用到 put和take
+2.试图向满的队列添加或从空的队列中移出原宿时，add，remove，element操作抛出异常
+3.在一个多线程程序中，队列在任何时候空或满，一定要使用 offer，poll和peek方法作为替代，不会抛出异常。
+4.还有带有超时的 offer 方法和 poll 方法的变体  boolean success=q.ffer(x,100,TimeUnit.MILLISECONDS)
+
+阻塞队列的变种：
+1.LinkedBlockingQueue 的容量是没有上边界的，可以指定最大容量。
+2.LinkedBlockingDeque 双端的版本
+3.ArrayBlockingQueue  在构造时指定容量，有参数确定是否需要公平性，设置了，则等待最长时间的线程会优先得到处理。性能降低。
+4.PriorityBlockingQueue 优先级队列，不是先进先出。没有容量上线，队列为空，则取元素操作会阻塞。
+5.DelayQueue 包含 Delayed接口的对象，返回残留延迟，负值表示延迟已经结束。元素只有在延迟用完的情况下才能从 DelayQueue移除，会通过 compareTo对元素进行排序。
+6.TransferQueue接口，允许生产者线程等待，知道消费者准备就绪可以接收一个元素。如果生产者调用 q.transfer(item)，这个会调用阻塞，知道另一个线程将元素 item 删除。
+7.LinkedTransferQueue 类实现了这个接口
