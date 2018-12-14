@@ -71,7 +71,7 @@ remove   移出并返回队列头元素     队列空，抛出 NoSuchElementExce
 take     移出并返回队列头元素     队列空，则阻塞
 相关方法的分类：
 1.将队列作为线程管理工具来使用，用到 put和take
-2.试图向满的队列添加或从空的队列中移出原宿时，add，remove，element操作抛出异常
+
 3.在一个多线程程序中，队列在任何时候空或满，一定要使用 offer，poll和peek方法作为替代，不会抛出异常。
 4.还有带有超时的 offer 方法和 poll 方法的变体  boolean success=q.ffer(x,100,TimeUnit.MILLISECONDS)
 
