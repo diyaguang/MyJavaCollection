@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class TreeSetTest {
+
     public static void main(String[] args) {
         SortedSet<Item> parts = new TreeSet<>();
         parts.add(new Item("Toaster", 1234));
