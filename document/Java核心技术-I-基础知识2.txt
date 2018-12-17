@@ -1,0 +1,73 @@
+14.9 执行器
+执行器 >> 线程池   线程池能够减少并发数目，降低虚拟机崩溃。执行器中有许多静态工厂方法来构建线程池。
+
+newCachedThreadPool  必要时创建新线程
+newFixedThreadPool  创建包含固定数量的线程
+newSingleThreadExecutor  只有一个线程的“池”，顺序执行每个任务
+以上方法实现了 ExecutorService接口的 ThreadPoolExecutor类的对象
+
+newScheduledThreadPool  预定执行构建的固定线程池
+newSingleThreadScheduledExecutor  预定执行构建的单线程“池”
+
+14.9.1 线程池
+在 ExecutorService中，可以将 Runnable或 Callable对象统计使用，
+Future<?> submit(Runnable task)   对返回的对象可使用 isDone，cancel，isCancelled ,如果使用 get 将返回 null
+Future<T> submit(Runnable task, T result)  get方法将在完成时返回指定的 result 对象
+Future<T> submit(Callable<T task)  Future对象将在计算结果转备好的时候得到它
+
+当使用完一个线程池后，调用 shutdown，启动该池的关闭序列。被关闭后不接受任何新任务。 shutdownNow 取消尚未开始的所有任务并试图中断正在正在运行的线程
+
+通常线程池的使用：
+1.调用 Executors 类中的静态方法 newCachedThreadPool 或 newFixedThreadPool
+2.调用 submit 提交 Runnable 或 Callable 对象
+3.取消任务或提交 Callable对象，就需要保存好返回的 Future对象
+4.不再提交任何任务时，调用 shutdown
+
+
+14.9.2 预定执行
+定时或计划任务，使用 ScheduledExecutorService接口，newScheduledThreadPool和newSingleThreadScheduledExecutor 方法将返回实现了 ScheduledExecutorService接口的对象
+可以预定 Runnable 或 Callable 在初始之后只运行一次货预定周期性的运行。
+
+14.9.3 控制任务组
+将线程放入到组中执行，可以控制一组相关任务。
+
+invokeAny 方法提交所有对象到一个 Callable对象的集合中，并返回某个已经完成了的任务的结果。
+invokeAll 方法提交所有对象到一个 Callable对象的集合中，并返回一个 Future对象的列表，代表所有任务的解决方案。
+List<Callable<T>> tasks = ...
+List<Future<T>> results = executor.invokeAll(tasks);
+for(Future<T> result : results){
+	processFurther(result.get())
+}
+这个防范的缺点是如果第一个任务花去了很长时间，则可能不得不进行等待。将结果按照可获得的顺序保存起来更有实际意义。
+该服务管理 Future对象的阻塞队列其中包含已经提交的任务的执行结果。
+ExecutorCompletionService<T> service = new ExecutorCompletionService<>(executor);
+for(Callable<T> task:tasks) service.submit(task);
+for(int i=0;i<tasks.size();i++){
+	processFurther(service.task().get());
+}
+
+14.9.4 Fork-Join 框架
+对每个处理器内核使用一个线程，每个处理器内核使用一个线程，完成计算密集的任务。JavaSE7中引入了 fork-join框架用来支持。
+采用这种框架，需要提供一个扩展 RecursiveTask<T> 的类，或提供一个扩展 RecursiveAction的类。在覆盖 compute方法来生成并调用子任务，然后合并其结果。
+class Counter extends RecursiveTask<Integer>{
+	...
+	protected Integer compute(){
+		if(to-from < THRESHOLD){
+			solve problem directly
+		}else{
+			int mid=(from+to)/2;
+			Counter first = new Counter(values,from,mid,filter);
+			Counter second = new Counter(values,mid,to,filter);
+			invokeAll(first,second);
+			return first.join()+second,join();
+		}
+	}
+}
+
+14.9.5 可完成 Future（略）
+
+
+14.10 同步器
+
+
+
