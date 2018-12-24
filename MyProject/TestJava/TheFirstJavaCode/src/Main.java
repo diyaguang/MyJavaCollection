@@ -10,7 +10,9 @@ public class Main {
         //main.testMapView();
         //BitSetTest.testBitSet();
 
-        UnsynchBankTest.test();
+        //UnsynchBankTest.test();
+
+        ThreadMain.test();
     }
 
     HashMap<String,String> staffMap;
