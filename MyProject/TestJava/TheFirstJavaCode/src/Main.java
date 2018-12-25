@@ -12,7 +12,10 @@ public class Main {
 
         //UnsynchBankTest.test();
 
-        ThreadMain.test();
+        //ThreadMain.test();
+        //TeceptionHandlerMain.test();
+        //SynchronizedMain.test();
+        ReentrantLockDemo.test();
     }
 
     HashMap<String,String> staffMap;

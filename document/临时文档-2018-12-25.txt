@@ -1,0 +1,80 @@
+2.6 线程组
+线程组的出现是为了方便管理线程出现的，可以统一设定线程组的一些属性，或通过线程组方便的获得信息。
+每一个 ThreadGroup都可以包含一组的子线程和一组子线程组，进程中的线程是以树的形式存在的。
+默认情况下，第一级应用自己的线程组是通过 main线程组创建的，也就是说 system线程组是所有线程最顶级的父线程组。
+Java允许对一个线程组中的所有线程同时进行操作，还可以用来区分有不同安全特定的线程。
+
+Thread.currentThread().getThreadGroup() 可以糊的当前线程的线程组。
+
+ThreadGroup类提供了大量的方法方便我们队线程组树种的每一个线程组以及线程组中的每一个线程进行操作。
+
+2.7 当前线程副本：ThreadLocal
+维护本地变量使用，本地临时变量（局部变量）
+
+1.当时用 ThreadLocal维护变量时，为每个使用该变量的线程提供独立的变量副本，目标变量就像是线程的本地变量。
+
+2.ThreadLocal<T> 类接口很简单
+void set(T value) 设置当前线程局部变量的值
+public T get() 返回值
+public void remove() 当前局部变量的值删除，线程结束后自动被垃圾回收
+protected T initialValue() 返回线程局部变量的初始值，这是一个延迟调用方法，线程第1次调用get或set时才执行，并且仅仅执行一次
+
+3.使用范例
+public class ThreadMain{
+	private static ThreadLocal<Integer> seqNum = new ThreadLocal<Integer>(){
+		public Integer initialValue(){
+			return 0;
+		}
+	};
+	public ThreadLocal<Integer> getThreadLocal(){
+        return seqNum;
+    }
+    ... ...
+}
+通常我们通过匿名内部类的方式来定义 ThreadLocal的子类，提供初始的变量值。
+通过 ThreadLocal为每一个线程提供了单独的副本
+
+4.ThreadLocal的原理
+public void set(T paramT){
+	ThreadlocalThread= Thread.currentThread();
+	ThreadLocalMap localThreadLocalMap = getMap(localThread);
+	if(localThreadLocalMap!=null)
+		localThreadLocalMap.set(this,paramT);
+	else
+		createMap(localThread,paramT)
+}
+在 set的内部获取当前线程的 localThreadMap对象，来维护当前对象的指定的对象，从而实现不同的线程有不同的数据操作。
+获取和当前线程绑定的值是，ThreadLocalMap对象是以 this指向的 ThreadLocal对象为键进行查找的，同样字典维护的 Key也是使用this的。
+
+对于多个线程局部变量，需要创建多个 ThreadLocal对象来使用
+
+5.ThreadLocal在处理线程的局部变量的时候比 synchronized 同步机制解决线程安全问题更简单，方便，拥有更高的并发性
+
+6.ThreadLocal在使用是，一般都是声明在静态变量中，如果只创建，没有 remove方法，将会导致内存泄漏。
+
+2.8 线程异常的处理
+checked 异常使用 try...catch 来处理。unchecked 异常使用异常处理程序注册来使用。不能直接在一个线程里去抛出异常
+
+在run中，不允许 throw exception，异常必须在 run方法内进行处理。线程不想允许抛出未捕获的 checked exception，如果抛出 unchecked exception，线程就会终结，主线程不会受到影响。
+
+线程是独立执行的代码片段，线程的问题应该有线程自己解决，不要委托到外部
+
+在Java中，线程方法的异常都因该在线程代码边界内(run方法内)进行 try...catch 并处理掉
+
+使用 Thread中的 setUncaughtExctptionHandler(setUncaughtExctptionHandler) 这个方法来处理未检异常，相当于一个事件注册入口。
+public static abstract interface UncaughtExceptionHandler{
+	public abstract void uncaughtException(Thread paramThread,Throwable paramThrowable);
+}
+其中 setUncaughtExctptionHandler是一个接口，异常发生的时候，接口下的 uncaughtExctption方法会被调用。
+
+具体实现步骤
+1.定义一个类实现 UncaughtExctptionHandler接口，实现方法包含对异常处理的逻辑和步骤
+2.定义线程执行结构和逻辑，与普通线程定义一样，在调用 start前进行注册
+3.在创建和执行子线程的方法中，在 thread.start 语句前增加 thread.setUncaughtExctptionHandler语句来实现处理逻辑的注册。
+
+
+第三章 Thread安全
+
+3.1 初识Java内存模型与多线程
+
+
