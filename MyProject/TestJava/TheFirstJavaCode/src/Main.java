@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Main {
 
@@ -15,7 +16,8 @@ public class Main {
         //ThreadMain.test();
         //TeceptionHandlerMain.test();
         //SynchronizedMain.test();
-        ReentrantLockDemo.test();
+        //ReentrantLockDemo.test();
+        ReentrantReadWriteLockDemo.test();
     }
 
     HashMap<String,String> staffMap;
