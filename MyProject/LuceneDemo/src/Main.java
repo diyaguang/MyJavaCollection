@@ -1,14 +1,19 @@
-import com.dygstudio.lucenedemo.analyzer.IkVSSmartcn;
-import com.dygstudio.lucenedemo.analyzer.StdAnalyzer;
-import com.dygstudio.lucenedemo.index.CreateIndex;
+
+import com.dygstudio.lucenedemo.tika.TikaParsePdf;
 
 public class Main {
 
     public static void main(String[] args) {
-        //System.out.println("Hello World!");
-        //StdAnalyzer.test();
-        //StdAnalyzer.test2();
-        //IkVSSmartcn.test();
-        CreateIndex.test();
+        try {
+            //System.out.println("Hello World!");
+            //StdAnalyzer.test();
+            //StdAnalyzer.test2();
+            //IkVSSmartcn.test();
+            //CreateIndex.test();
+            TikaParsePdf.test();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }
