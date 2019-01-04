@@ -55,6 +55,7 @@ public class CreateIndex {
                 System.out.println("Document directory '"+indexPath.toAbsolutePath()+"' does not exist or is not readable, please check the path");
                 System.exit(1);
             }
+            System.out.println("Document directory '"+indexPath.toAbsolutePath()+"' ");
             dir = FSDirectory.open(indexPath);
             inWriter = new IndexWriter(dir,icw);
 

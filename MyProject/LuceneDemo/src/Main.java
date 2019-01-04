@@ -1,5 +1,6 @@
 import com.dygstudio.lucenedemo.analyzer.IkVSSmartcn;
 import com.dygstudio.lucenedemo.analyzer.StdAnalyzer;
+import com.dygstudio.lucenedemo.index.CreateIndex;
 
 public class Main {
 
@@ -7,6 +8,7 @@ public class Main {
         //System.out.println("Hello World!");
         //StdAnalyzer.test();
         //StdAnalyzer.test2();
-        IkVSSmartcn.test();
+        //IkVSSmartcn.test();
+        CreateIndex.test();
     }
 }

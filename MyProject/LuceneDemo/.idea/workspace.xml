@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="75ffbee7-5fbc-427f-a941-c4e9ed95ced1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/bin.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/analyzer/IkVSSmartcn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/analyzer/StdAnalyzer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/ik/IKAnalyzer6x.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/ik/IKTokenizer6x.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/CreateIndex.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/News.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../xmind/从 Lucene 到 Elasticsearch.xmind" beforeDir="false" afterPath="$PROJECT_DIR$/../../xmind/从 Lucene 到 Elasticsearch.xmind" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/CreateIndex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/CreateIndex.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -23,8 +17,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+            <state relative-caret-position="198">
+              <caret line="11" column="27" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -47,8 +41,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/CreateIndex.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="293">
-              <caret line="83" column="74" lean-forward="true" selection-start-line="83" selection-start-column="74" selection-end-line="83" selection-end-column="74" />
+            <state relative-caret-position="149">
+              <caret line="48" lean-forward="true" selection-start-line="48" selection-end-line="48" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -113,13 +107,13 @@
         <option value="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/ik/IKTokenizer6x.java" />
         <option value="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/ik/IKAnalyzer6x.java" />
         <option value="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/analyzer/IkVSSmartcn.java" />
-        <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/News.java" />
+        <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/CreateIndex.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
@@ -195,7 +189,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546509381615" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546565846544" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/bin" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
@@ -241,23 +235,22 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1546485913869</updated>
-      <workItem from="1546485919343" duration="13604000" />
+      <workItem from="1546485919343" duration="15127000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13604000" />
+    <option name="totallyTimeSpent" value="15127000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="54" y="-8" width="1874" height="1096" extended-state="6" />
-    <editor active="true" />
+    <frame x="54" y="-8" width="1874" height="1008" extended-state="6" />
     <layout>
       <window_info id="Image Layers" />
       <window_info id="Designer" />
       <window_info id="UI Designer" />
       <window_info id="Capture Tool" />
       <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14829107" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14829107" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Messages" weight="0.32952183" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
@@ -267,7 +260,7 @@
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32848233" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.36155605" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -329,26 +322,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/analyzer/IkVSSmartcn.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="702">
-          <caret line="39" column="29" selection-start-line="39" selection-start-column="29" selection-end-line="39" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/News.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="576">
@@ -359,10 +332,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="27" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/analyzer/IkVSSmartcn.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="702">
+          <caret line="39" column="29" selection-start-line="39" selection-start-column="29" selection-end-line="39" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/CreateIndex.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="83" column="74" lean-forward="true" selection-start-line="83" selection-start-column="74" selection-end-line="83" selection-end-column="74" />
+        <state relative-caret-position="149">
+          <caret line="48" lean-forward="true" selection-start-line="48" selection-end-line="48" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
