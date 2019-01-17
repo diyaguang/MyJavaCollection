@@ -1,0 +1,37 @@
+2.4.3 Luke中查看索引
+需要使用 Luke工具来查看
+
+2.4.4 索引的删除
+索引同样可以进行 CRUD操作，也是通过 IndexWriter对象来操作的，deleteDocuments方法用于实现索引的删除，updateDocument方法用于实现索引的更新。
+其中 IndexWriter 还提供了更多的方法
+DeleteDocument(Query query)
+DeleteDocuments(Query[] queries)
+DeleteDocuments(Term term)
+DeleteDocuments(Term[] terms)
+DeleteAll()  删除所有的 Document
+
+2.4.5 索引的更新
+（查看代码）
+实质是先删除索引，再重新建立新的文档.在代码中 通过 新建一个 IndexWriter对象和 Document对象，通过 updateDocument() 方法完成更新操作。
+Term对象用于定位文档。
+
+2.5 Lucene 查询详解
+先建立文档的索引，然后可以进行搜索（先分析，后搜索）
+
+2.5.1 搜索入门
+IndexSearch 对象，使用 Query对象，返回 TopDocs类型
+使用查询关键词构造 Query对象，搜索需要 IndexSearch独享，调用其中的 search方法完成搜索过程，搜索结果会保存在一个 TopDocs类的文档集合中，遍历 TopDocs集合输出文档信息。
+（查看代码）
+关键代码：
+QueryParser parser = new QueryParser(field,analyzer);   //创建查询对象的解析器
+parser.setDefaultOperator(QueryParser.Operator.AND);    //设置查询解析器的操作符（就是说查询参数会被分解为分词，查询如何处理这些分词查询后的关系的处理）
+Query query = parser.parse("农村学生");                  //床架查询对象，查询内容为参数
+TopDocs tds = searcher.search(query,10);                //返回前10条记录
+其中，QueryParser就是一个解析器用户输入的工具，可以生成Query对象。setDefaultOperator方法会设置查询内容分词后的查询关系。例如 农村学生会被解析为 农村，学生。那么在查询时如何处理这两个的查询关系就是通过这个方法实现的。
+通过改变搜索实例的 Query对象，就可以实现不同种类型的搜索需求。
+
+2.5.2 多域搜索（MultiFieldQueryParser）
+其中 QueryParser可以搜索单个字段，MultiFieldQueryParser则可以查询多个字段。传入Fields字段组，可以搜索多个字段、
+Analyzer analyzer = new IKAnalyzer6x(true);    //传入字符集
+MultiFiledQueryParser parser = new MultiFieldQueryParser(fields,analyzer);
+Query multiFieldQuery = parser.parse("日本");  //搜岁的内容
