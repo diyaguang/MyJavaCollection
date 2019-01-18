@@ -34,4 +34,4 @@ TopDocs tds = searcher.search(query,10);                //返回前10条记录
 其中 QueryParser可以搜索单个字段，MultiFieldQueryParser则可以查询多个字段。传入Fields字段组，可以搜索多个字段、
 Analyzer analyzer = new IKAnalyzer6x(true);    //传入字符集
 MultiFiledQueryParser parser = new MultiFieldQueryParser(fields,analyzer);
-Query multiFieldQuery = parser.parse("日本");  //搜岁的内容
+Query multiFieldQuery = parser.parse("日本");  //搜索的内容

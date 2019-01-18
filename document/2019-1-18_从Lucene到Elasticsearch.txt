@@ -1,0 +1,8 @@
+2.5.3 词项搜索（TermQuery）
+在搜索引擎中，最基本的搜索就是在索引中搜索某一词条，词条是最基本的搜索单位。 
+词条就是一个 key/value对。key是字段名，value则表示字段中所包含的某个关键字。
+Term term = new Term("title","美国");
+Query termQuery = new TermQuery(term);
+
+2.5.4 布尔搜索（BooleanQuery）
+是一个组合的Query，把各种 Query添加进去，标明之间的逻辑关系。
