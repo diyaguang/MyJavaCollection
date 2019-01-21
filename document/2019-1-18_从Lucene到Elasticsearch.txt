@@ -5,4 +5,216 @@ Term term = new Term("title","美国");
 Query termQuery = new TermQuery(term);
 
 2.5.4 布尔搜索（BooleanQuery）
-是一个组合的Query，把各种 Query添加进去，标明之间的逻辑关系。
+是一个组合的Query，把各种 Query添加进去，表明之间的逻辑关系。提供了专门的API，往其添加子句，BooleanClause对象可以指定查询的包含关系，并作为参数通过 BooleanQuery.Builder()构造布尔查询。
+Query query1 = new TermQuery(new Term("title","美国"))；
+Query query2 = new TermQuery(new Term("content","日本"))
+BooleanClause bc1 = new BooleanClause(query1, BooleanClause.Occur.MUST);
+BooleanClause bc2 = new BooleanClause(query2, BooleanClause.Occur.MUST_NOT);
+BooleanQuery boolQuery = new BooleanQuery.Builder().add(bc1).add(bc2).build();
+
+2.5.5 范围搜索（RangeQuery）
+查找满足一定范围的文档。在某范围内的搜索条件，实现从一个开始词条到一个结束词条的搜索。可以包含或不包含在内。
+Query rangeQuery = IntPoint.newRangeQuery("reply",500,1000);
+
+2.5.6 前缀搜索（PrefixQuery）
+使用前缀来进行查找，首先定义一个词条Term，包含要抄着的字段名和前缀。然后构造一个 PrefixQuery对象，进行查找
+Term term = new Term("title","学");
+Query prefixQuery = new PrefixQuery(term);
+
+2.5.7 多关键字搜索（PhraseQuery）
+是一种 Phrase查询，查找几个不同的关键字，使用 PhraseQuery的add 方法添加关键字，通过 setSlop方法设定一个坡度，确定关键字之间是否允许或允许多少个无关词汇的存在。
+PhraseQuery.Builder builder = new PhraseQuery.Builder();
+builder.add(new Term("title","日本"),2);
+builder.add(new Term("title","美国"),3);
+PhraseQuery phraseQuery = builder.build();
+
+2.5.8 模糊搜索（FuzzyQuery）
+简单的识别两个相近的词语，流入 Trump拼成 Trmp或Tramp，则使用模糊搜索都可以搜索到正确结果。
+简单的模糊查询，建立词项，并创建 FuzzyQuery对象
+Term trem = new Term("title","Tramp");
+FuzzyQuery fuzzyQuery = new FuzzyQuery(trem);
+
+2.5.9 通配符搜索（WildcardQuery）
+通配符的查询。在查询参数值种使用通配符，WildcardQuery会进行处理
+WildcardQuery wildcardQuery = new WildcardQuery(new Term("title","学?"));
+
+2.6 Lucene查询高亮
+在一个标准的搜索引擎中高亮的命中结果，几乎是必不可少的一需求。
+
+public static void test() throws IOException, ParseException, InvalidTokenOffsetsException {
+        String field = "title";
+        Path indexPath = Paths.get("indexdir");
+        Directory dir = FSDirectory.open(indexPath);
+        IndexReader reader = DirectoryReader.open(dir);
+        IndexSearcher searcher = new IndexSearcher(reader);
+        Analyzer analyzer = new IKAnalyzer6x();
+        QueryParser parser = new QueryParser(field,analyzer);
+        Query query = parser.parse("北大");
+        System.out.println("Query:"+query);
+        QueryScorer score = new QueryScorer(query,field);
+        SimpleHTMLFormatter fors = new SimpleHTMLFormatter("<span style=\"color:red;\">","</span>");
+        Highlighter highlighter = new Highlighter(fors,score);
+
+        TopDocs tds = searcher.search(query,10);
+        for(ScoreDoc sd : tds.scoreDocs){
+            Document doc = searcher.doc(sd.doc);
+            System.out.println("id:"+doc.get("id"));
+            System.out.println("title:"+doc.get("title"));
+            TokenStream tokenStream = TokenSources.getAnyTokenStream(searcher.getIndexReader(),sd.doc,field,analyzer);
+
+            Fragmenter fragment = new SimpleSpanFragmenter(score);
+            highlighter.setTextFragmenter(fragment);
+            String str = highlighter.getBestFragment(tokenStream,doc.get(field));
+            System.out.println("高亮片段："+str);
+        }
+        dir.close();
+        reader.close();
+    }
+
+  2.7 Lucene新闻高频词提取
+  2.7.1 提出问题
+  2.7.2 需求分析
+  索引过程的本质是一个词条化的生存倒排索引的过程。最后生成词项。然后统计词项在文档中的出现次数，进行降序排序。
+  2.7.3 变成实现
+  （参看代码）
+
+  第三章 Lucene文件检索项目实践
+  3.1 需求分析
+
+  3.2 架构设计
+  业务流程过程：文件存储系统中存放了不同类型的文件，后台功过程序题去了文件名和文档内容，使用Lucene对文件名和文档内容进行索引，前端对用户提供查询接口，用户提交关键字之后检索索引数据库，返回匹配文档至前端页面。一般会使用 开源工具 Tika 完成信息抽取，使用Lucene构建索引，使用JSP给用户提供查询接口，使用 Servlet完成搜索。
+
+  3.3 文本内容抽取
+  使用 Apache Tika 工具
+  3.3.1 Tika简介
+  用于文件类型检测和文件内容提取的库，目标群体主要为搜索引擎以及其他内容索引和分析工具，编程Tika通过提供一个通用的API来检测并提取多种文件格式的内容服务来达到这一目的。
+  特点：统一解析器接口，内存占用低，快速处理，灵活元数据，解析器继承，MIME类型检测，语言检测。
+
+  3.3.2 Tika下载 
+  从 https://tika.apache.org/download.html 下载相应的 jar包。解压启动使用。java -jar tika-app-1.13.jar -g
+  可以使用菜单进行操作使用，
+
+  3.3.3 搭建工程
+  下载 jar包，放入 lib目录下可放入测试文件，编写分析类 
+
+  3.3.4 内容抽取
+  在 分析类中抽取数据
+  File pdfFile = new File(filepath);
+        BodyContentHandler handler = new BodyContentHandler();  //创建内容处理器对象
+        Metadata metadata = new Metadata();  //创建元数据对象
+        FileInputStream inputStream = new FileInputStream(pdfFile);
+        ParseContext parseContext = new ParseContext();  //创建内容解析器对象
+        PDFParser parser = new PDFParser();    //创建PDF解析器对象
+        parser.parse(inputStream,handler,metadata,parseContext);   //解析文档
+        System.out.println("文件属性信息：");
+        for(String name : metadata.names()){
+            System.out.println(name+" : "+metadata.get(name));
+        }
+
+ 过程：提取的文件的文本内容，需要实例化 BodycontentHandler，创建 Metadata对象用于获取文件属性。实例化一个 FileInputStream对象，将 pdf文件对象作为参数构造 FileInputStream，但是不支持随机访问，如果需要，可以使用 Tika提供的 TikaInputStream类。接下来创建一个解析上下文的 ParseContext对象，并实例化一个 PDF解析器对象，然后调用 PDF解析器对象的 parse方法，并传入所有需要的4个参数。解析完成后通过内容处理器对象的 toString方法输出文件内容，文件属性名保存在 元数据对象的 naes方法中，返回字符数组，便利属性名数组通过元数据对象的 get方法得到属性信息。
+ 不同的类型有不同的解析器
+ OOXMLParser parser = new OOXMLParser();
+ TXTParser parser = new TXTParser();
+ HtmlParser parser = new HtmlParser();
+ XMLParser parser = new XMLParser();
+ ClassParser parser = new ClassParser();
+
+ 3.3.5 自动解析
+ 先判断文档类型，再根据文档类型实例化解析器接口。
+ 参见代码
+ AutoDetectParser是 CompositeParser的子类，能够自动检测文件类型，并使用对应的方法把接收到的文档自动发送给最接近的解析器类。
+
+ 3.4 工程搭建
+ 略
+
+ 第四章 从 LucenedaoElasticsearch
+
+ 4.1 Elasticsearch概述
+ 4.1.1 诞生过程
+ Lucene用于底层搜索，Elasticsearch用于企业应用
+ 基于 ES衍生了一系列开源软件，所搜引擎 Elasticsearch，日志采集与解析工具 Logstash，可视化平台工具 Kibana，简称 ESK Stack，是非常流行的集中式日志解决方案。
+ ES公司后来推出了 Beats家族，在数据收集方面使用 Beats取代Logstash，解决性能问题。
+ Beats家族产品：
+ Filebeat 轻量级的日志采集器，可用于收集文件数据
+ Metricbeat 搜集系统，进程和文件系统级别的 CPU和内存使用情况等数据。
+ Packetbeat 收集网络流数据，可实时监控系统应用和服务，可以将延迟时间、错误、响应时间，SLA性能等信息发送到 Logstash或 ES
+ Winlogbeat 搜集Windows事件日志数据
+ Heartbeat 监控服务器运行情况
+
+ 4.1.2 流行度分析
+ 略
+
+ 4.1.3 架构解读
+ ES整体是分为几个不同层次的，
+ Gateway是ES用来存储索引的文件系统，支持 LocalFileSystem，SharedFileSystem，还可使用 Hadoop的 HDFS
+ Gateway上层是一个分布式的 Lucene框架，ES的底层API是由 Lucene提供的，每个ES节点上都有一个 Lucene引擎的吃吃
+ Lucene之上是 ES模块，包括索引模块，搜索模块映射解析模等。
+ ES之上 是 Discovery，Scripting和第三方插件。其中 Discovery是ES的节点发现模块，节点组成集群需要进行消息通信，集群内部需要选举 Master节点，有 Discovery模块完成，Scripting用来支持 JavaScript，Python等多种语言，可以在查询语句中嵌入，使用 Script语句性能稍低。
+ 再上层是 ES的传输模块 和。JMX。支持 Thrift，Memcached，HTTP，默认使用 HTTP传输，JMX是 Java的管理框架，用来管理ES应用
+ 最上层是 ES提供给用户的接口，可以通过 RESTFul API和 ES集群进行交互
+
+ 4.1.4 优点
+ 分布式，全文检索，近实时搜索和分析，高可用，模式自由，RESTful API
+
+ 4.1.5 应用场景
+ 站内搜索，NoSQL数据库，日志分析
+
+ 4.1.6 核心概念
+ 1.集群：一个或多个安装了ES的服务器节点组织在一起就是集群。共同持有整个数据，并一起提供索引和搜索功能，一个集群由一个唯一的名字标示，具有相同的集群名称的节点才会组成一个集群。
+ 2.节点：一个节点是你集群中的一个服务器，存储数据，参与集群的索引和搜索功能。
+ 3.索引：一个索引就是一个拥有几分相似特征的文档的集合，索引的数据机构仍然是倒排索引。一个索引由一个名字来标示，进行操作时，都要使用这个名字。在集群中可以定义任意多的索引，索引做动词来将的时候表示索引数据和对数据进行索引操作。
+ 4.类型：索引中，定义一种或多种类型，类型是索引的一个逻辑上的分类或分区。具有一组共同字段的文档定义一个类型。
+ 5.文档：一个文档是一个可被索引的基础信息但愿。都是 JSON格式。
+ 6.分片：一个索引可以存储超出单个节点硬件限制的大量数据。ES将索引划分为多份，这些份就是分片。创建索引时可以指定分片的数量，每个分片本身是一个功能完整切独立的索引，这个索引可以放置到集群中的任何节点上。
+ 分片允许水平分割/扩展你的内容容量
+ 允许你在分片上进行分布式的，并行的操作，进而提高性能和吞吐量。
+ 7.副本：ES允许创建分片的一份活多份拷贝，这些拷贝叫做复制分片或直接叫副本。
+ 在分片/节点失败的情况下，保证高可用性。扩展搜索量/吞吐量，搜索是可以在所有副本上并行运行的。
+ 每个索引可以被分成多个分片，一个索引可以有一至多个副本，一旦有了副本，每个索引就有了主分片和副本分片之别。创建索引后，可以在任何时候情况下动态改变副本数量，分片数量不能欧冠修改。
+
+ 4.1.7 对比 RDMS
+ ES可以看成一个数据库
+ 数据库（database）-》索引（index）
+ 表（table）-〉类型（type）
+ 行（row）-》文档（document）
+ 列（column）-〉字段（field）
+ 表结构（Schema）-》映射（Mapping）
+ 索引-〉全文索引
+ SQL-》查询DSL
+ SELECT * from。-〉GET http://xxxx
+ UPDATE table SET -》 PUT http://xxxx
+ DELETE -〉 DELETE http://xxxx
+
+ 4.1.8 文档结构
+ 文档是 ES的基本单位，ES中的文档搜是用 JSON来表示的，轻量级数据结构
+ key/value 健值对结构，包括字段名称（在双引号中），后面一个冒号，然后是值。数组结构，也称为有序刘表。JSON值的类型可以是数字，字符串，布尔值，数组，对象，null。JSON对象在或括号中书写，对象可以包含多个名称/值对。
+
+ 4.2 安装 ES
+ 参考 OneOnte
+
+ 4.2.6 基本配置
+ config目录是存放配置文件的地方，elasticsearch.yml是基本的配置文件，jvm.options 是虚拟机参数配置文件，log4j2.properties是日志配置文件。
+cluster.name:my-application
+node.name:node-1
+node.master:true
+node.data:true
+index.number_of_shards:5
+index.number_of_replicas:1
+path.data: /path/to/data
+path.logs: /path/to/logs
+bootstrap.mlockall:true  //设置true来锁住内存。当 jvm开始 swapping时ES效率会降低，要保证不swap。
+network.host：192.168.0.1
+http.port
+transport.tcp.port：9300  //TCP端口，JavaAPI使用的端口
+transport.tcp.compress：true 是否压缩TCP传输时的数据
+http.ax_content_length:100mb。设置内容的最大容量
+http.cors.enabled:false 是否使用HTTP协议对外提供服务
+discovery.zen.mminimum_master_nodes：1 保证集群中的节点可以知道其他N个有master资格的节点
+discovery.zen.ping.timeout：3s 集群中自动发现其他节点的 ping链接超时时间
+discovery.zen.ping.multicast.enabled：false 是否打开多播发现节点
+discovery.zen.ping.unicast.hosts:["host1","host2:port","host3[portX-portY]"]  设置集群中master节点的初始列表，可以通过这些节点来自动发现新加入集群的节点。
+script.engine.groovy.inline.update：on 开启 groovy脚本支持
+script.inline：true  开始所有脚本语言行内执行所有支持的操作。
+
+4.3 中文分词器配置
+4.3.1 IK分词器安装

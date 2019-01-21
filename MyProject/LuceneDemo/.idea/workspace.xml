@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="75ffbee7-5fbc-427f-a941-c4e9ed95ced1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/DeleteIndex.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/UpdateIndex.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/search/SearchTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/search/HighlighterTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/term/IndexDocs.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/tika/ParserExtraction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/tika/TikaExtraction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/search/SearchTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/search/SearchTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../document/2019-1-18_从Lucene到Elasticsearch.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../document/2019-1-18_从Lucene到Elasticsearch.txt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,32 +21,35 @@
     <session id="-1929130747">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="4" />
           <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.5" value="2" />
-          <entry key="project.opened" value="3" />
+          <entry key="project.open.time.6" value="1" />
+          <entry key="project.opened" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="3" />
+          <entry key="class" value="1" />
+          <entry key="java" value="9" />
           <entry key="xml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="3" />
+          <entry key="CLASS" value="1" />
+          <entry key="JAVA" value="9" />
           <entry key="XML" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="1643" />
+          <entry key="java" value="6185" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="1643" />
+          <entry key="JAVA" value="6185" />
         </counts>
       </usages-collector>
     </session>
@@ -51,34 +57,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/DeleteIndex.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="585">
-              <caret line="39" column="9" lean-forward="true" selection-start-line="39" selection-start-column="9" selection-end-line="39" selection-end-column="9" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/UpdateIndex.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="660">
-              <caret line="44" lean-forward="true" selection-start-line="44" selection-end-line="44" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/search/SearchTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="38" column="61" lean-forward="true" selection-start-line="38" selection-start-column="8" selection-end-line="38" selection-end-column="61" />
+            <state relative-caret-position="27">
+              <caret line="56" column="20" lean-forward="true" selection-start-line="56" selection-start-column="20" selection-end-line="56" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -87,27 +69,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/IKAnalyzer.cfg.xml">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/News.java">
+        <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/search/HighlighterTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="720">
-              <caret line="50" column="62" selection-start-line="50" selection-start-column="62" selection-end-line="50" selection-end-column="62" />
-              <folding>
-                <element signature="method#News#0;class#News#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/CreateIndex.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="750">
-              <caret line="63" column="54" selection-start-line="63" selection-start-column="54" selection-end-line="63" selection-end-column="54" />
+            <state relative-caret-position="747">
+              <caret line="64" lean-forward="true" selection-start-line="64" selection-end-line="64" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -118,8 +83,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/tika/TikaParsePdf.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="20" column="78" selection-start-line="20" selection-start-column="78" selection-end-line="20" selection-end-column="78" />
+            <state relative-caret-position="555">
+              <caret line="37" lean-forward="true" selection-start-line="37" selection-end-line="37" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -128,10 +93,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/ik/IKTokenizer6x.java">
+        <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/tika/TikaExtraction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="42" column="67" selection-start-line="42" selection-start-column="67" selection-end-line="42" selection-end-column="67" />
+            <state relative-caret-position="330">
+              <caret line="22" column="27" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="27" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/tika/ParserExtraction.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="615">
+              <caret line="41" lean-forward="true" selection-start-line="41" selection-end-line="41" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -140,22 +117,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/ik/IKAnalyzer6x.java">
+        <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/term/IndexDocs.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="11" column="44" selection-start-line="11" selection-start-column="44" selection-end-line="11" selection-end-column="44" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/analyzer/IkVSSmartcn.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="39" column="29" selection-start-line="39" selection-start-column="29" selection-end-line="39" selection-end-column="29" />
+            <state relative-caret-position="267">
+              <caret line="32" column="35" lean-forward="true" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="35" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -189,6 +154,10 @@
         <option value="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/DeleteIndex.java" />
         <option value="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/UpdateIndex.java" />
         <option value="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/search/SearchTest.java" />
+        <option value="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/search/HighlighterTest.java" />
+        <option value="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/term/IndexDocs.java" />
+        <option value="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/tika/TikaExtraction.java" />
+        <option value="$PROJECT_DIR$/src/com/dygstudio/lucenedemo/tika/ParserExtraction.java" />
       </list>
     </option>
   </component>
@@ -213,8 +182,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -261,6 +230,20 @@
               <item name="lucenedemo" type="462c0819:PsiDirectoryNode" />
               <item name="search" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="LuceneDemo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="LuceneDemo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="lucenedemo" type="462c0819:PsiDirectoryNode" />
+              <item name="term" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="LuceneDemo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="LuceneDemo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="lucenedemo" type="462c0819:PsiDirectoryNode" />
+              <item name="tika" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -270,7 +253,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547708641678" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548061080319" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
@@ -321,17 +304,18 @@
       <workItem from="1546698854847" duration="63000" />
       <workItem from="1546842032585" duration="1313000" />
       <workItem from="1547706131085" duration="3073000" />
+      <workItem from="1548033979887" duration="12005000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21656000" />
+    <option name="totallyTimeSpent" value="33661000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="976" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15506716" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15689866" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -397,20 +381,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/CreateIndex.java">
+    <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/DeleteIndex.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="750">
-          <caret line="63" column="54" selection-start-line="63" selection-start-column="54" selection-end-line="63" selection-end-column="54" />
+        <state relative-caret-position="420">
+          <caret line="39" column="9" selection-start-line="39" selection-start-column="9" selection-end-line="39" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/tika/TikaParsePdf.java">
+    <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/UpdateIndex.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="20" column="78" selection-start-line="20" selection-start-column="78" selection-end-line="20" selection-end-column="78" />
+        <state relative-caret-position="465">
+          <caret line="44" selection-start-line="44" selection-end-line="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/IKAnalyzer.cfg.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/News.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="720">
+          <caret line="50" column="62" selection-start-line="50" selection-start-column="62" selection-end-line="50" selection-end-column="62" />
+          <folding>
+            <element signature="method#News#0;class#News#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/CreateIndex.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="750">
+          <caret line="63" column="54" selection-start-line="63" selection-start-column="54" selection-end-line="63" selection-end-column="54" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -429,7 +436,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/ik/IKAnalyzer6x.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
+        <state relative-caret-position="165">
           <caret line="11" column="44" selection-start-line="11" selection-start-column="44" selection-end-line="11" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -439,7 +446,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/analyzer/IkVSSmartcn.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
+        <state relative-caret-position="492">
           <caret line="39" column="29" selection-start-line="39" selection-start-column="29" selection-end-line="39" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -447,43 +454,67 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/DeleteIndex.java">
+    <entry file="jar://$PROJECT_DIR$/bin/lucene-core-7.6.0.jar!/org/apache/lucene/search/PhraseQuery.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="39" column="9" lean-forward="true" selection-start-line="39" selection-start-column="9" selection-end-line="39" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="286">
+          <caret line="401" column="58" lean-forward="true" selection-start-line="401" selection-start-column="58" selection-end-line="401" selection-end-column="58" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/News.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="50" column="62" selection-start-line="50" selection-start-column="62" selection-end-line="50" selection-end-column="62" />
-          <folding>
-            <element signature="method#News#0;class#News#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/index/UpdateIndex.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="660">
-          <caret line="44" lean-forward="true" selection-start-line="44" selection-end-line="44" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/IKAnalyzer.cfg.xml">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/search/SearchTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="38" column="61" lean-forward="true" selection-start-line="38" selection-start-column="8" selection-end-line="38" selection-end-column="61" />
+        <state relative-caret-position="27">
+          <caret line="56" column="20" lean-forward="true" selection-start-line="56" selection-start-column="20" selection-end-line="56" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/search/HighlighterTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="747">
+          <caret line="64" lean-forward="true" selection-start-line="64" selection-end-line="64" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/term/IndexDocs.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="267">
+          <caret line="32" column="35" lean-forward="true" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/tika/TikaParsePdf.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="37" lean-forward="true" selection-start-line="37" selection-end-line="37" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/tika/TikaExtraction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="27" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dygstudio/lucenedemo/tika/ParserExtraction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="41" lean-forward="true" selection-start-line="41" selection-end-line="41" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
