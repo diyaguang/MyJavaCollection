@@ -218,3 +218,219 @@ script.inline：true  开始所有脚本语言行内执行所有支持的操作�
 
 4.3 中文分词器配置
 4.3.1 IK分词器安装
+索引是把文档写入ES的过程，搜索是匹配查询条件找出文档的过程。第一步是词条化，分词器把输入文本转化为一个个词条流,第二步是过滤，在这个阶段有若干个过滤器处理词条流中的词条。ES中内置了多种分词器可以使用。
+Standard Analyzer：标准分词器
+Simple Analyzer：简单分词器，基于非字母字符进行分词
+Whitespace Analyzer：空格分词器
+Stop Analyzer：同简单分词器，增加了停用词过滤功能
+Keyword Analyzer：关键词分词器
+Pattern Analyzer：正则分词器，单词会被小写，支持停用词
+Language Analyzers：特定语言的分词器
+Fingerprint Analyzer：指纹分析仪分词器
+
+ES中使用的中文分词器使用最多的是 elasticsearch-analysis-ik，第三方插件， https://github.com/medcl/elasticsearch-analysis-ik 使用版本要与 ES一致
+
+使用：下载后，放入 es的 /plugins/目录中，新建ik文件夹，将解压后的所有文件拷贝到 ik目录中。重启 ES服务
+
+4.3.2 扩展本地词库
+可以将扩展词文件放入  xxxx/plugins/ik/config/custom 目录下，新增 hotwords.dic 文件，在其中添加内容
+然后在 xxxx/plugins/ik/config/IKAnalyzer.cfg.xml 文件中指定新增的词库位置。
+<entry key="ext_dict">
+<entry key="ext_stopwords">
+<entry key="remote_ext_dict">
+<entry key="remote_ext_stopwords">
+扩展本地停用词的方法类似，配置完成后 重启 ES。
+
+4.3.3 配置远程词库
+在 ik插件的配置文件中指定新增的远程词库地址，然后重启ES，ik会自动重新加载词典。
+
+4.4 Head插件使用指南
+4.4.1 Head插件的安装 (参考 oneNode)
+4.4.2 Head插件的使用（略）
+
+4.5 REST命令
+ES 应用各种任务的 RESTful API  REST的全称是 Representational State Transfer 翻译为：表述性状态转移
+特点：
+1.采用 客户-服务器 架构，通信只能由单方面发起
+2.通信的会话状态由客户端维护
+3.响应内容可以在同心链的某处被缓存，改善网络效率
+4.通信链组件支架你通过统一的接口相互通信
+5.采用分层系统（Layered System）通过限制组件行为，将架构分解为若干等级的层。
+6.支持通过下载并执行一些代码，对客户端的功能进行扩展
+优点：
+高效的利用缓存提高响应速度
+通信本身无状态性，可以让不同的服务器处理一系列请求中的不同请求，提高服务器的扩展性。
+浏览器可以作为客户端
+相对其他叠加在HTTP协议上的机制，REST的软件依赖性更小
+不需要额外的资源发现机制
+兼容性更好
+
+符合 REST设计风格的 WebAPI 称为 RESTful API，REST是设计风格，不是标准。REST架构中的资源有 URI来指定的。对资源的操作，通过 GET，POST，PUT，DELETE 方法。资源的表现形式可以是 XML，HTML，JSON 或其他的格式
+
+典型应用：
+GET 获取，PUT 增加/更新，POST 创建/追加，DELETE 删除
+
+4.5.1 CURL工具
+CURL是利用 URL 语法在命令行方式下工作的开源文件传输工具，在Unix,Linux 中，支持多种通信协议。
+Ubuntu安装： sudo apt-get install curl libcurl3 libcurl3-dev php5-curl.
+
+4.5.2 Kibana Dev Tools
+
+（参照 OneNode）
+
+第五章 Elasticsearch 集群入门
+
+5.1 索引管理
+5.1.1 新建索引
+使用 PUT xxxx 语法格式   ，如果索引名称含有大写字母，则会报错
+如果添加的索引在 ES中已经存在，同样会报异常
+ES默认给一个索引设置5个分片1个副本，分片数设置后不能修改，副本数随时可以修改，可以通过 settings参数设置初始化信息
+PUT blog
+{
+	"settings":{
+		"number_of_shards":3,
+		"number_of_replicas":0
+	}
+}
+
+5.1.2 更新副本
+PUT blog/_settings
+{
+	"number_of_replicas":2
+}
+
+5.1.3 读写权限
+对索引的读写操作进行限制
+PUT blog/_settings
+{
+	"blocks.write":true,   #禁止对索引写操作
+	"blocks.read_only":true,   #设置当前索引只允许读，不允许写或者更新
+	"blocks.read":true  #禁止对索引读操作
+}
+
+5.1.4 查看索引
+查看索引的配置信息，在 GET方法上加上 _setting 参数,查看索引的配置信息。
+GET test/_settings
+还可以同时查看多个索引的 setting信息，GET blog,twitter/_settings
+或者查看急群众所有索引的setting信息，GET _all/_settings
+
+5.1.5 删除索引
+直接 Delete删除，索引中的文档也将不在。
+DELETE blog    #如果删除的索引名不在，将会异常
+
+5.1.6 索引的打开和关闭
+一个关闭了的索引，不占系统资源 
+POST blog/_close
+POST blog/_open   #也可以同时打开或关闭多个索引
+对不存在的索引进行 打开或关闭操作，则发生异常，可以使用 ignore_unavailable=true 参数操作只存在的索引
+POST blog/_close?ignore_unavailable=true
+POST _all/_close  或  POST test*/_close
+
+5.1.7 复制索引
+_reindex API 可以把文档从一个索引复制到另一个索引(复制文档信息)，目标索引不会复制源索引的配置信息。
+POST _reindex
+{
+  "source":{"index":"test"},
+  "dest": {"index":"test_news"}
+}
+在复制时，可以增加一些条件限制：
+POST _reindex
+{
+  "source": {
+    "index": "blog",
+    "type": "article",
+    "query": {
+      "term": {"title":"git"}
+      }
+    },
+    "dest": {
+      "index":"blog_news"
+    }
+}
+
+5.1.8 收缩索引
+索引的分片初始化后无法在做修改，通过 shrink index AP 提供的缩小索引分片数机制，把一个索引变成一个更少分片的索引，收缩后的分片数必须是原始分片数的因子。收缩索引前，索引中的每个分片都要在同一个节点上。
+在缩小前，索引必须被标识为制度，所有分片都会复制到一个相同的节点并且健康值为绿色。
+PUT test/_settings
+{
+  "index.routing.allocation.requier._name":"shrink_node_name",
+  "index.blocks.write":true
+}
+
+POST test/_shrink/test_new
+{
+  "settings":{
+    "index.number_of_replicas":0,
+    "index.number_of_shards":1,
+    "index.codec":"best_compression"
+  },
+  "aliases":{
+    "my_search_indices":{}
+  }
+}
+
+5.1.9 索引别名
+给索引或多个索引起的另一个名字
+POST /_aliases
+{
+  "actions": [
+    {"add": {"index": "test1","alias": "alias1"}}
+  ]
+}
+移除别名：
+POST /_aliases
+{
+  "actions": [
+    {"remove": {"index": "test1","alias": "alias1"}}
+  ]
+}
+并且可以同时操作多个索引。还可以有简写形式
+POST /_aliases
+{
+	"actions":[
+		{"add":{"indices":["test1","test2"],"alias":"alias1"}}
+	]
+}
+也可以将 增加和删除混合使用
+POST /_aliases
+{
+	"actions":[
+		{"remove":{"index":"test1","alias":"alias1"}},
+		{"add":{"index":"test1","alias":"alias1"}}
+	]
+}
+说明：如果别名和索引是一对一的，则别名可以直接使用对应的文档。如果别名和索引是一对多的，则使用别名会发生错误。
+ES 支持通过通配符同时给多个索引设置别名， 
+{"add":{"index":"test*","alias":"alias1"}}
+
+查看索引的别名：
+GET /test/_alias
+
+查看所有的别名信息：
+GET /_alias
+
+5.2 文档管理
+ES中文档的操作和故事逆袭数据库操作非常相似。
+
+5.2.1 新建文档
+PUT blog/article/1
+{
+  "id":1,
+  "title":"Git简介",
+  "posttime":"2017-05-01",
+  "content":"Git是一款免费、开源的分布式版本控制系统"
+}
+响应的信息中包含创建的文档所在的索引index，类型type，id，版本，分片，是否创建成功。版本号是递增的
+如果不指定 id会自动生成，默认是字符串
+采用默认方式生成的，必须使用 POST方式，PUT会出现异常
+
+5.2.2 获取文档
+使用 GET API 查看在ES中的文档，指定文档所在的索引，类型，id 即可返回一个 JSON文档
+GET blog/article/1
+在返回值中，found属性表明是否查询到文档，_source字段中是文档的内容
+
+使用 HEAD命令查看一个文档是否存在
+HEAD blog/article/1  #返回值巍峨 200 或 404
+
+使用 MULTI GET API来根据索引名，类型名，id，一次获取多个文档，返回一个文档数组
+

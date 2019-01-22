@@ -25,6 +25,5 @@ public class TikaExtraction {
             filecontent = tika.parseToString(f);
             System.out.println("Extracted Content: "+filecontent);
         }
-
     }
 }
