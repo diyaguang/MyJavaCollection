@@ -433,4 +433,376 @@ GET blog/article/1
 HEAD blog/article/1  #返回值巍峨 200 或 404
 
 使用 MULTI GET API来根据索引名，类型名，id，一次获取多个文档，返回一个文档数组
+GET _mget
+{
+  "docs":[
+    {
+      "_index":"blog",
+      "_type":"article",
+      "_id":"1"
+    },
+    {
+      "_index":"twitter",
+      "_type":"tweet",
+      "_id":"2"
+    }
+  ]
+}
+如果没有找到文档的将返回 index_not_found_exception 异常
+还可以在统一 index或同一个 type 下返回多个文档，那样就可以使用简写形式了。
 
+5.2.3 更新文档
+在ES中，需要先找到这个文档，删除旧文档内容执行更新，更新完后在索引最新的文档。
+首先，索引一个文档
+PUT test/type1/1
+{
+  "counter":1,
+  "tags":["green"]
+}
+
+然后对其进行更新操作：
+POST test/type1/1/_update
+{
+  "script": {
+    "inline": "ctx._source.counter+=params.count",
+    "lang":"painless",
+    "params": {
+      "count":4
+    }
+  }
+}
+其中：inline是执行脚本，ctx是脚本语言中的一个执行对象，painless是ES内置的一种脚本语言，params是参数集合。
+上面的功能表述为：使用 painless脚本更新文档，通过ctx获取 _source 在修改 counter字段，counter字段等于原值加上count参数的值。
+ctx对象除了可以访问 _socure之外，还可以访问 _index,_type,_id,_version,_routing,_parent 等字段
+
+tags字段的取值为数组类型，可以对其操作，
+POST test/type1/1/_update
+{
+  "script": {
+    "inline": "ctx._source.tags.add(params.tag)",
+    "lang": "painless",
+    "params":{
+      "tag":"blue"
+    }
+  }
+}
+
+给文档增加字段：
+POST test/type1/1/_update
+{
+  "script": "ctx._source.new_field=\"value_of_new_field\""
+}
+
+移除字段：
+POST test/type1/1/_update
+{
+  "script": "ctx._source.remove=(\"new_field\")"
+}
+
+删除文档中，条件是数组类型数据项：
+POST test/type1/1/_update
+{
+  "script":{
+    "inline":"if (ctx._source.tags.contains(params.tag)) {ctx.op=\"delete\" } else {ctx.op=\"none\"}",
+    "lang":"painless",
+    "params":{"tag":"red"}
+  }
+}
+
+还有一个 upsert操作，如果文档存在则执行script脚本，否则创建文档。
+POST test/type1/1/_update
+{
+  "script": {
+    "inline": "ctx._source.counter+=params.count",
+    "lang": "painless",
+    "params": {"count":4}
+  },
+  "upsert": {
+    "counter":1
+  }
+}
+
+5.2.4 查询更新
+使用 Update By Query API，支持条件查询更新文档
+POST blog/_update_by_query
+{
+  "script":{
+    "inline":"ctx._source.category=params.category",
+    "lang":"painless",
+    "params":{"category":"git"}
+  },
+  "query":{
+    "term":{"title":"git"}
+  }
+}
+
+5.2.5 删除文档
+允许指定 id从索引库中删除一个文档。命令：
+DELETE blog/article/1  #命令格式
+
+如果在索引文档时使用了路由，则删除时也可以增加路由参数。
+DELETE blog/article/1?routing=user123
+
+5.2.6 查询删除
+根据查询条件进行删除操作
+POST blog/_delete_by_query
+{
+  "query":{
+    "term":{
+      "title":"hibernate"
+    }
+  }
+}
+
+还可以指定类型，然后批量删除
+POST blog/csdn/_delete_by_query
+{
+  "query":{
+    "match_all":{}
+  }
+}
+
+5.2.7 批量操作
+通过 Bulk API 执行批量操作，索引，删除，更新等。允许使用单一请求来实现多个文档的 create，index，update，delete
+（略）
+
+5.2.8 版本控制
+ES在文档更新过程：1.读取源文档，对其进行更新操作。2.更新操作完成后，再重新索引整个文档，最后保存在ES中的时最后一次更新后的文档。但是多线程操作时，会发生冲突。
+确保数据在并发更新时，有两种办法：
+1.悲观锁控制：屏蔽一切有可能违反数据完整性的操作。
+2.乐观锁控制：只有在提交数据操作时，检查是否违反数据完整性，ES使用乐观锁机制，省去开销，提高吞吐量。
+ES是一个分布式系统，文档的操作要复制到其他接待你，ES也是异步并发的，ES会处理确保旧版本文档不会被覆盖较新版本的文档。
+版本号：文档每次修改，版本号都会自增一次。version字段确保所有更新都有序进行。旧版本的数据更新会被忽略。
+ES文档版本控制有内部版本控制和外部版本控制。内部版本控制要求每次操作请求，只有当版本号相符时才能操作成功。外部版本控制要求外部文档比内部文档版本高时才能更新成功。
+PUT website   #创建新的索引
+
+PUT /website/blog/1。   #添加一个文档
+{
+  "title":"My first blog entry",
+  "text":"Just trying this out ..."
+}
+
+GET /website/blog/1  #查看文档返回的版本号
+
+POST website/blog/1/_update   #更新一个文档
+{
+  "script": "ctx._source.title=\"Update My first blog\""
+}
+
+GET /website/blog/1?version=1   #指定版本号查看文档，如果版本与当前不一致会返回异常
+
+#更新文档时，可以指定外部文档的版本号，如果外部版本号不高于当前文档版本，同样会发生异常。
+PUT website/blog/1?version=4&version_type=external
+{
+  "title":"My blog entry",
+  "text":"JStarting to get the hang of this ..."
+}
+
+5.2.9 路由机制
+路由机制时通过哈希算法，将具有相同哈希值的文档放置到同一个主分片中
+计算语法：shard= hash(routing) % number_of_primary_shards
+ES默认将文档ID作为 routing值，这个值范围在 0～number_of_primary_shards-1 来确定特定文档所在的分片。从而数据在所有分片上的一个平均分布。
+自定义 routing值，能够带来很多使用上的方便和性能上的提升。
+按照 ES默认的路由规则，数据文档ID将平均分布在所有的分片上，但是导致ES不能确定文档的文职，必须将请求光报道所有的分片上去执行。而且分片数不能够改变，改变后，之前路由值会变成非法的，等于丢失了。使用自定义的路由更具目的性，告诉ES数据在那个分片上。
+ES的 index，get，mget，delete，update 等 API文档都可以接受一个 routing参数。例如：
+PUT /website/blog/1?routing=user123
+{
+  "title":"My first blog entry",
+  "text":"Just trying this out ..."
+}
+在使用时，可以通过 routing值进行过滤，这样可以避免ES向所有的分片都发送请求查询
+GET /website/blog/1?routing=user123
+
+切记：在使用时，如果添加时使用了路由，那么查询时候也要使用路由参数，否则查询不到。而且，带与不带路由，两个相同的数据并不冲突。
+
+可以为文档指定多个路由值，路由值之间使用逗号隔开
+问题：比如造成一个路由下的文档数量非常多，导致分片较大，出现数据偏移情况。特别是多个这样的用户处于同一分片的时候会更加明显。
+
+5.3 映射详解
+映射就是 Mapping，定义一个文档以及其包含的字段如何被存储和索引，可在映射中事先定义字段的数据类型、分词器等属性。
+ES在创建索引时，同样可以设置字段的属性，作用是使所用的配置更加灵活和完善，可在Mapping中设置字段的类型，字段的权重等信息。
+
+5.3.1 映射分类
+映射分为动态映射和静态映射，ES会根据字段类型自动识别（动态映射），静态映射则是写入数据之前对字段的属性进行手工设置。
+
+5.3.2 动态映射
+推测规则： 
+null-》没有字段被添加，
+true or false -〉boolean类型，
+浮点类型数字-》float类型，
+数字-〉long类型，
+JSON对象-》object类型，
+数组-〉由数组中的第一个非空值决定，
+string-》有可能是 date类型，double，long，text，keyword类型
+
+如果将ES当作主要的数据存储使用，并且希望出现未知字段时抛出异常来提醒，那么要关闭Mapping的动态映射。
+在 Mapping中，通过 dynamic来设置是否自动新增字段。true（默认的）/false（忽略新字段）/strict（严格模式，抛出异常）
+PUT books
+{
+  "mappings": {
+    "it":{
+      "dynamic":"strict",
+      "properties":{
+        "title":{
+          "type":"text"
+        },
+        "publish_date":{
+          "type":"date"
+        }
+      }
+    }
+  }
+}
+如果使用新字段，则抛出 strict_dynamic_mapping_exception 异常
+PUT books/it/3
+{
+  "title":"master Elasticsearch",
+  "publish_date":"2017-06-01",
+  "author":"Tom"
+}
+
+5.3.3 日期检测
+ES在碰到一个新的字符串类型时，会检查这个字符串是否包含一个可识别的日期，如果看起来像日期，则被识别为一个date类型的字段，否则将会当作string字段进行添加。
+可以根据类型（type）将，date_detection设置为 false来关闭日期检测。
+PUT /my_index
+{
+  "mappings": {
+    "my_type":{
+      "date_detection":"false"
+    }
+  }
+}
+
+5.3.4 静态映射
+创建索引时，手工指定索引映射，通过静态映射可以添加更详细，更精准的配置信息。
+PUT my_index
+{
+  "mappings":{
+    "user":{
+      "_all":{"enabled":false},
+      "properties":{
+        "title":{"type":"text"},
+        "name":{"type":"text"},
+        "age":{"type":"integer"}
+      }
+    },
+    "blogpost":{
+      "_all":{"enabled":false},
+      "properties":{
+        "title":{"type":"text"},
+        "body":{"type":"text"},
+        "user_id":{"type":"keyword"},
+        "created":{
+          "type":"date",
+          "format":"strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}
+说明：这段代码会引发异常。在Elasticsearch 6.0.0或更高版本中创建的索引可能只包含单个mapping type。在具有多种映射类型的5.x中创建的索引将继续像以前一样在Elasticsearch 6.x中运行。映射类型将在Elasticsearch 7.0.0中完全删除。
+
+5.3.5 字段类型
+ES字段类型主要有 核心类型，复合类型，地理类型，特殊类型
+核心类型：字符串类型（string，text，keyword），数字类型（long，integer，short，byte，double，float，half_float，scaled_float），日期类型（date），布尔类型（boolean），二进制类型（binary），范围类型（range）
+
+复合类型：数组类型（array），对象类型（object），嵌套类型（nested）
+
+地理类型：地理坐标（geo_point），地理图形（geo_shape）
+
+特殊类型：IP类型（ip），范围类型（completion），令牌计数类型（token_count），附件类型（attachment），抽取类型（percolator）
+
+1.string，自ES 5.x 之后，字段类型不再支持string，使用 text，keyword取代
+2.text：如果一个字段是被全文搜索的，应该使用这个类型，字段内容会被分析，生成倒排索引，会被分词器分成一个一个慈祥，该类型不用于排序，何少用于聚合
+3.keyword：用于索引结构化的字段，用于过滤，排序，聚合。只能通过精确值搜索到
+4.对于数字类型的字段，满足需求的清咖滚下，尽可能选择范围小的数据类型，处理浮点时，优先考虑使用 scaled_float 类型，采用这种缩放类型的浮点类型，更加节省空间存储
+5.ES中没有日期类型，可以使用几种形式：1.格式化日期的字符串，2.代表 milliseconds-since-the-epoch 的长整数类型（1970-1-1 UTC 时间），3.代表 seconds-since-the-epoch 的整数类型，ES内部会把日期转换为 UTC，并存储为表示 milliseconds-since-the-epoch 的长整数类型。默认格式为 "strict_date_optional_time || epoch_millis"
+PUT my_index/blogpost/1
+{
+  "created":"2005-01-01"
+}
+PUT my_index/blogpost/2
+{
+  "created":"1420070400001"
+}
+7.binary：接受base64编码的字符串，默认不存储，也不可搜索
+PUT my_index/my_type/1
+{
+  "name":"Some binary blob",
+  "blob":"U29tZSBiaW5hcnkgYmxvYg=="
+}
+8.array: 没有专用的数组类型，默认情况下任何字段都可以包含一个或多个值，但一个数组中的值必须是同一种类型
+字符数组：["one","two"]
+整型数组：[1,3]
+嵌套数组：[1,[2,3]] 等价于 [1,2,3]
+对象数组：[{"name":"Mary","age":12},{"name":"John","age":10}]
+动态添加数据时，数组的第一个值的类型决定整个数组的类型。混合数组类型是不支持的。数组可以包含 null值
+PUT my_index2/my_type/1
+{
+  "message":"some arrays in this document...",
+  "tags":["elasticsearch","wow"],
+  "lists":[
+      {
+        "name":"prog_list",
+        "description":"programming list"
+      },
+      {
+        "name":"cool_list",
+        "description":"cool stuff list"
+      }
+    ]
+}
+查询时使用：
+GET my_index2/_search
+{
+  "query": {
+    "match": {
+      "lists.name": "cool_list"
+    }
+  }
+}
+
+9.object: JSON本质上有层级关系，文档包含内部对象，内部对象本身还包含内部对象。
+PUT my_index2/my_type/2
+{
+  "region":"US",
+  "manager":{
+    "age":30,
+    "name":{
+      "first":"John",
+      "last":"Smith"
+    }
+  }
+}
+写入到ES中后，文档会被索引成简单的扁平 key-value对，格式如下：
+{
+	"region":"US",
+	"manager.age":30,
+	"manager.name.first":"John",
+	"manager.name.last":"Smith"
+}
+
+10.nested
+是 object类型中的一个特例，让对象数组独立索引和查询。ES将对象层次扁平化，转化成字段名字和值构成的简单列表。
+PUT my_index2/my_type/1
+{
+  "group":"fans",
+  "usr":[
+      {
+        "first":"John",
+        "last":"Smith"
+      },
+      {
+        "first":"Alice",
+        "last":"White"
+      }
+    ]
+}
+扁平化转换：
+{
+  "group":"fans",
+  "user.first":["alice","john"],
+  "user.last":["smith","white"]
+}
+扁平化后，user.first 和 user.last 会变为多值字段，alice和 white的关系关系丢失了。
+在搜索的时候，可以按照层级的方式进行使用
