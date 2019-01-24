@@ -806,3 +806,381 @@ PUT my_index2/my_type/1
 }
 扁平化后，user.first 和 user.last 会变为多值字段，alice和 white的关系关系丢失了。
 在搜索的时候，可以按照层级的方式进行使用
+如果需要使用索引对象数组，并避免上述问题的产生，因使用 nested对象类型而不是object类型。
+nested对象类型可以保持数组中每个对象的独立性，讲数组中的每个对象作为独立要隐藏文档来索引，每个嵌套对象都可以独立被搜索。
+PUT /my_index
+{
+	"mappings":{
+    "my_type":{
+      "properties":{
+        "user":{"type":"nested"}
+      }
+    }
+}
+
+11.geo_point
+存储地理位置信息的经纬度。可以 查找一定范围内的地址位置，通过地址位置或相对中心店的距离来聚合文档。吧距离因素整合到文档的评分中。通过距离对文档排序。
+PUT my_index
+{
+  "mappings": {
+    "my_type":{
+      "properties":{
+        "location":{"type":"geo_point"}
+      }
+    }
+  }
+}
+geo_pint 支持四中类型的地址位置数据：
+1.经纬度坐标键值对
+PUT my_index/my_type/1
+{
+  "text":"Geo-point as an object",
+  "location":{
+    "lat":41.12,
+    "lon":-71.34
+  }
+}
+2.字符串格式的地理坐标参数
+PUT my_index/my_type/2
+{
+  "text":"Geo-point as an object",
+  "location":"41.12,-71.34"
+  }
+}
+3.地理坐标的哈希值
+PUT my_index/my_type/3
+{
+  "text":"Geo-point as an object",
+  "location":"derm3btev3e86"
+  }
+}
+4.数组形式的地理坐标
+PUT my_index/my_type/4
+{
+  "text":"Geo-point as an object",
+  "location":[-71.34,41.12]
+  }
+}
+
+12.geo_shape
+存储一块区域，GeoJSON是一种对各种地理数据结构进行编码的格式，包含一个几何对象和其他属性。
+GeoJSON类型-》Elasticsearch类型-》说明
+Point-》point-》一个单独的精度维度坐标点
+LineString-》linestring-》任意的线条，由两到多个点组成
+Polygon-》polygon-》由N+1点组成的封闭N边型
+MultiPoint-》multipoint-》一组不连续但有可能相关连得点
+MultiLineString-》multilinestring-》多条不关联的线
+MultiPolygon-》multipolygon-》多个不关联的多边形
+GeometryCollection-》geometrycollection-》几何对象的集合
+N/A-》envelope-》由左上角坐标或右下角坐标确定的封闭矩形
+N/A-》circle-》由圆心和半径确定的圆，默认单位为米
+
+创建图形使用的 索引：
+PUT geoshape
+{
+  "mappings": {
+    "city":{
+      "properties":{
+        "location":{
+          "type":"geo_shape"
+        }
+      }
+    }
+  }
+}
+根据不同类型，写入不同数据：
+POST geoshape/city/1
+{
+  "location":{
+    "type":"point",
+    "coordinates":[
+      -77.03653,
+      38.897676
+    ]
+  }
+}
+POST geoshape/city/2
+{
+  "location":{
+    "type":"linestring",
+    "coordinates":[[-77.03653,38.897676],[-77.009051,38.889939]]
+  }
+}
+POST geoshape/city/3
+{
+  "location":{
+    "type":"polygon",
+    "coordinates":[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]
+  }
+}
+
+13.ip
+存储 IPv4，或 IPv6的地址
+PUT geoshape
+{
+  "mappings": {
+    "city":{
+      "properties":{
+        "ip_addr":{
+          "type":"ip"
+        }
+      }
+    }
+  }
+}
+使用：
+PUT my_index/my_type/1
+{
+  "id_addr":"192.168.1.1"
+}
+GET my_index/_search
+{
+  "query": {
+    "term": {
+      "ip_addr": "192.168.0.0/16"
+    }
+  }
+}
+
+14.range
+范围类型，比如时间范围选择，年龄范围选择等
+不同的类型范围：integer_range，float_range，long_range，double_range，date_range
+PUT range_index
+{
+  "mappings": {
+    "my_type":{
+      "properties":{
+        "expected_attendees":{
+          "type":"integer_range"
+        },
+        "time_frame":{
+          "type":"date_range",
+          "format":"yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+        }
+      }
+    }
+  }
+}
+放入数据时，使用：
+PUT range_index/my_type/1
+{
+  "expected_attendees":{
+    "gte":10,
+    "lte":20
+  },
+  "time_frame":{
+    "gte":"2015-10-31 12:00:00",
+    "lte":"2015-11-01"
+  }
+}
+
+15.token_count
+用于统计字符串分词后的词项个数，本质上是一个整数型字段。
+PUT my_index
+{
+  "mappings": {
+    "my_type":{
+      "properties":{
+        "name":{
+          "type":"text",
+          "fields":{
+            "length":{
+              "type":"token_count",
+              "analyzer":"standard"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+这个例子中，映射指定name为text类型，增加 name.length 字段用来统计分词后词项的长度。类型为 token_count，使用标准的分词器。
+PUT token_count_index/my_type/1
+{
+  "name":"John Smith"
+}
+
+PUT token_count_index/my_type/2
+{
+  "name":"Rachel Alice Williams"
+}
+然后进行查询：
+GET token_count_index/_search
+{
+  "query": {
+    "term": {
+      "name.length": {
+        "value": "3"
+      }
+    }
+  }
+}
+
+5.3.6 元字段
+描述文档的字段
+文档属性的元字段（_index,_uid,_type,_id）
+源文档的元字段（_source,_size）
+索引的元字段（_all,_field_names）
+路由的元字段（_parent,_routing）
+自定义元字段（_meta）
+1._index
+支持对索引名进行 term查询，terms查询，聚合分析，使用脚本和排序。_index 是一个虚拟字段
+PUT index_1/my_type/1
+{
+  "text":"Document in index1"
+}
+
+PUT index_2/my_type/2?refresh=true
+{
+  "text":"Document in index2"
+}
+使用时：
+GET index_1,index_2/_search
+{
+  "query": {
+    "terms":{"_index":["index_1","index_2"]}
+  },
+  "aggs":{
+    "indices":{
+      "terms": {
+        "field": "_index",
+        "size": 10
+      }
+    }
+  },
+  "sort":[
+      {"_index":{"order":"asc"}}
+    ]
+}
+
+2._type
+每条被索引的文档都有一个 _type和 _id字段，可根据_type 进行查询、聚合、脚本和排序。
+GET my_index/_search
+{
+  "query": {
+    "term": {
+      "_type": {
+        "value": ["type_1","type_2"]
+      }
+    }
+  },
+  "aggs": {
+    "types": {
+      "terms": {
+        "field": "_type",
+        "size": 10
+      }
+    }
+  },
+  "sort": [{"_type": {"order": "desc"}}]
+}
+
+3._id
+每条被索引的文档都有一个 _type和 _id字段，可根据_id 进行 term查询，terms查询，match查询，query_string查询，simple_query_string 查询。不能用于 聚合，脚本和排序。
+GET my_index/_search
+{
+  :"query": {
+    "terms":{"_id":["1","2"]}
+  }
+}
+
+4. _uid
+这个是 _type 与 _id 的组合，取值为 {type}#{id},可用于查询，聚合，脚本和排序。
+GET my_index/_search
+{
+  "query":{
+    "terms":{
+      "_uid":["my_type#1","my_type#2"]
+    }
+  },
+  "aggs":{
+    "UIDs":{
+      "terms":{
+        "field":"_uid",
+        "size":10
+      }
+    }
+  },
+  "sort":[
+    {
+      "_uid":{ "order":"desc"}
+    }
+  ]
+}
+
+5._source
+其中 _source 存储文档的原始值，默认该字段是开启的，可以砸映射中通过 enabled参数关闭
+PUT tweets
+{
+  "mappings": {
+    "tweet":{
+      "_source":{
+        "enabled":false
+      }
+    }
+  }
+}
+
+6._size
+用于描述文档本身的字节大小，默认不支持的。有需要的话，需要安装 mapper-size 插件
+
+7._all
+该字段是把其他字段拼接在一起的超级字段，所有字段内容用空格分开，会被解析和索引，但不存储。
+当需要返回某个关键字的文档，但不明确第搜索某个字段的时候，可使用 _all字段搜索
+PUT my_index/blog/1
+{
+  "title":"Master Java",
+  "content":"learn java",
+  "author":"Tom"
+}
+
+GET my_index/_search
+{
+  "query": {
+    "match": {
+      "_all": "Java"
+    }
+  }
+}
+
+8._field_names (略)
+用来存储文档中的所有非空字段的名字，常用语 exists查询
+
+9._parent 
+用于指定同一个索引中文档的父子关系
+PUT my_index
+{
+  "mappings": {
+    "my_parent":{},
+    "my_child":{
+      "_parent":{
+        "type":"my_parent"
+      }
+    }
+  }
+}
+PUT my_index/my_parent/1
+{
+  "text":"This is a parent document"
+}
+PUT my_index/my_child/2?parent=1
+{
+  "text":"This is a child document"
+}
+PUT my_index/my_child/3?parent=1&refresh=true
+{
+  "text":"This is another child document"
+}
+GET my_index/my_parent/_search
+{
+  "query": {
+    "has_child": {
+      "type": "my_child",
+      "query": {
+        "match": {
+          "text": "child document"
+        }
+      }
+    }
+  }
+}
