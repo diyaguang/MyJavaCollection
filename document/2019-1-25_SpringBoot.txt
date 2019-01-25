@@ -1,0 +1,26 @@
+第一章 JavaEE 简介
+
+1.1 JavaEE
+1.1.1 JavaEE 架构
+JavaEE是一种企业应用的软件架构。功能：Web支持，事务支持，消息服务，数据持久层，Container
+JWS：分布式系统交互的一种方式，是Java实现的一种 WebService
+JAX-RS：JEE6的技术，通过 REST交互
+JNDI：查找服务和对象的接口，如果查找一个配置好的数据源
+JAXP/JAXB：解析和绑定JavaBean 的XML工具
+JAX-REC：分布式系统交互的一种方式，通过 RPC调用
+JACC：安全认证
+Java EE Application Server：提供上述服务的Web服务器，Tomcat，Resin只算是 JavaEEWeb服务器，开源的 JBoss，weblogin等称为应用服务器
+
+1.1.2 Java EE 的缺点
+过于复杂，过于追求分布式，成本高价格不菲，不能及时与流行开源技术结合。
+
+1.2 Spring
+吸取了JavaEE容器管理的有点，提供了一个 IoC容器来关闭Bean，通过 AOP方式来增强Bean的功能，Spring提供了两种机制，控制反转IoC和面向切面AOP，来提供任意的服务和增强Bean的任意特征。
+
+1.2.1 Spring IoC容器和AOP
+依据注解或配置文件，对 Objects进行管理和增强
+IoC Core Container：Spring Container负责管理任意对象，结合你对对象的描述进行初始化和加强。
+Spring提供了一些注解 @Collection，@Service，@Component，@Configuration，只有使用这些注册的类才会引起Spring容器的注意，并根据注解含义来管理和增强对象。
+Spring可以管理和增强任意对象，Spring Container往往会增强这类对象的事务控制能力。
+容器管理还可以为被管理的Bean提供其他被管理和被增强的Bean，使用 @Autowired 自动注入。
+
