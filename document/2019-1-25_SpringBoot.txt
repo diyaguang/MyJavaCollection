@@ -25,3 +25,31 @@ Spring可以管理和增强任意对象，Spring Container往往会增强这类�
 容器管理还可以为被管理的Bean提供其他被管理和被增强的Bean，使用 @Autowired 自动注入。
 
 AOP：面向切面编程，通过预编译方式或运行时刻对目标对象动态第添加功能。AOP分离了企业应用的业务逻辑和系统级服务。
+
+1.2.2 Spring的缺点
+使用门槛贵过高，对过时技术兼容，XML不再是流行的系统配置方式。集成第三方的时候，考虑工具的兼容性。系统启动慢，不具备热部署功能。
+
+1.3 Spring Boot
+SpringBoot 管理Spring容器，第三方插件，并提供很多默认系统级的服务。通过 starter 来提供系统级服务，Spring Boot 提供了一些列 Starter，并且可以自己开发 Starter
+，使用时需要在 Maven中的 Pom中进行配置即可。 例如：spring-boot-starter-web
+优点：
+实现约定大于配置，提供了内置的 Tomcat或Jetty容器，通过依赖的jar包管理，自动装配技术，容易支持与其他技术体系，工具集成。支持热加载，开发体验好。
+
+1.4 Hello，Spring Boot
+ （参看代码）
+ 在SpringBoot中编写的类，建议启用程序的包名层次最高，其他类均在栖霞，这样Spring Boot 默认自动所有启动程序之下的所有类。
+
+ 1.4.4 使用热部署
+ SpringBoot 提供了 spring-boot-devtools 能在修改类或配置文件的时候自动重新加载 Spring Boot 应用。
+
+ 1.4.5 添加REST支持
+ 使用 @RestController 注解，组合了 @Controller 和 @ResponseBody
+
+ 第二章 Spring Boot 基础
+
+ 2.1 检查Java环境与安装Java
+
+ 2.2 安装和配置Maven
+
+ 2.2.1 Maven介绍
+ 
