@@ -24,3 +24,4 @@ Spring提供了一些注解 @Collection，@Service，@Component，@Configuration
 Spring可以管理和增强任意对象，Spring Container往往会增强这类对象的事务控制能力。
 容器管理还可以为被管理的Bean提供其他被管理和被增强的Bean，使用 @Autowired 自动注入。
 
+AOP：面向切面编程，通过预编译方式或运行时刻对目标对象动态第添加功能。AOP分离了企业应用的业务逻辑和系统级服务。
