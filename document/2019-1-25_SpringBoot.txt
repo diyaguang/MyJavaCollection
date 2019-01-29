@@ -52,4 +52,137 @@ SpringBoot 管理Spring容器，第三方插件，并提供很多默认系统级
  2.2 安装和配置Maven
 
  2.2.1 Maven介绍
- 
+ 用来构建项目，采用了不同方式对项目构建进行抽象。
+ 特点：使构建项目变得容易，同一了构建项目的方式，提出了一套开发项目的最佳实践，包含不同环境项目的构建方式，解决了类库依赖的问题。
+ 修改库的镜像：可是修改为 阿里云提供的 Maven镜像库，或使用 Sonatype创建一个私服。本地文件在 用户目录下的 .m2 隐藏文件夹中。
+
+ Maven核心是 pom.xml 用XML方式描述了项目模型
+ groupId：表示项目所属的组
+ artifactId：项目唯一的标示。（groupId，artifactId 组合后，称为项目坐标）
+ packaging：项目的类型，jar，war
+ version：项目版本号（版本号分类：分三段，主版本号.次版本号.修订版本号，其中 主版本号变动代表架构变动或不兼容实现，次版本号是兼容性修改，功能增强，修订版本号是bug修复。版本后缀：意味不同阶段。SNAPSHOT表示开发中版本，RELEASE表示正式发布版，中间可能还有 M1，M2 等里程碑发布，RC表示候选发布，GA表示基本可用版本 
+ 发布过程：SHAPSHOT < m1 < m2 .... < RC < GA < Realease ）
+ modelVersion：表示pom文件的Maven的版本
+ dependencies：核心部分，表示此元素下办好多个 dependency
+ dependency：用来声明项目的依赖
+ scope：代表此类库与项目的关系，（默认 compile：编译和打包都需要的类库，test：测试时需要，provided：编译阶段需要，打包不需要。runtime：编译打包不需要，运行时需要。）
+ build：可选，包含多个插件，用来辅助项目构建，例子：
+ <build>
+ 	<plugins>
+ 		<plugin>
+ 			<artifactId>maven-compileer-plugin</artifactId>
+ 			<version>3.1</version>
+ 			<configuration>
+ 				<source>1.8</source>
+ 				<target>1.8</target>
+ 				<encoding>UTF-8</encoding>
+ 			</configuration>
+ 		</plugin>
+ 	</plugins>
+ </build>
+ 这个插件配置的作用是：Maven默认的java编译方式根据平台的不同或者Maven本身版本的不同有所差别。这个插件可以进行修改，声明使用 Java1.8 的编译方式，并使用 UTF-8编码方式。
+
+ 2.2.2 安装 Maven(略)
+
+ 2.2.3 设置 Maven
+ 默认是从中心库下载，国内有几个镜像可以使用，设置后，当国内镜像下载失败后，切换到中心库下载。
+ 进入 Maven安装目录，进入 conf目录，编辑 settings.xml
+ <mirror>
+ 	<id>alimaven</id>
+ 	<name>aliyun maven</name>
+ 	<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+ 	<mirrorOf>central</mirrorOf>
+ </mirror>
+
+ 2.2.4 使用 IDE设置 Maven （略）
+
+ 2.2.5 Maven常用命令
+ 通常Maven是通过命令构建的，例如：
+ mvn -B archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes -DgroupId=com.mycompany.app -DartifactId=my-app
+ 其中，archetypeGroupId是生成Maven项目的模版。运行完毕后，系统会生成 pom.xml 文件
+ mvn compile：编译 Maven功能
+ mvn package：编译并打包工程
+ mvn install：打包并安装到本地仓库。例如如需要本地其他项目饮用，则需要安装到本地仓库，这样，本地的其他Maven项目就可以通过项目坐标引用。
+ mvn deploy：同install，但打包并安装到远程仓库
+ mvn clean：删除 target 目录
+ Maven的仓库有两大类，第一类是远程仓库，包括中心库。第二类是本地仓库，位于用户目录的 .m2 目录下
+
+ 2.3 Spring 核心技术
+
+ 2.3.1 Spring的历史
+ 2004年，Spring推出了 IoC 和 AOP
+ 2005年，Spring成立了独立的公司，称为 Pivotal，是由（EMC，VMware，GE）共同成立的公司，其产品还包括知名的 Redis，RabbitMQ
+
+2.3.2 Spring容器介绍
+
+2.3.2.1 Spring IoC
+实现依赖IoC原则，（反向控制 Inversion of Control），或称为 DI（dependency injection，依赖注入）。Spring根据Bean之间的依赖关系创建对象，并注入到 Bea中
+
+2.3.2.2 Spring 常用注解
+@Controller：此类是一个 MVC类，通常与 @RequestMapping一起使用
+@Service：业务处理类，通常与 @Transactional一起配合使用
+@Repository：此类是一个数据库或其他NoSQL访问类
+@RestController：同 Controller，用于 REST服务
+@Component：此类是一个 Spring管理的类，通常用于无法用上述注解描述的 Spring管理类
+@Configuration：此类是一个配置类，通常与 @Bean 配合使用
+@Bean：作用在方法上，声明给方法执行的返回结果是一个 Spring容器管理的Bean
+
+Spring负责实例化Bean，可以提供一系列回调函数，用于进一步配置 Bean，使用 @PostConstruct注解和 @PreDestory 注解。例：
+@Component
+public class ExampleBean{
+	@PostConstruct
+	public void init(){
+		....
+	}
+}
+当 Bean被容器初始化后，会调用 @PostConstruct
+其中 @PreDestory：在容器被销毁之前，调用被 @PreDestory 注解的方法。
+@Service
+pulic class ExampleBean(){
+	@PreDestory
+	public void cleanup(){
+		....
+	}
+}
+
+Spring有两种方法来引用容器管理的Bean：
+1.根据名字，为每个管理的Bean指定名字，随后可以通过名字引用此Bean。使用 @Qualifier("xxxxx") 注解
+@Service()
+@Qualifier("exampleBean")
+public class ExampleBean{
+	....
+}
+使用时：
+@Service
+public AnotherExampleBean{
+	@Qualifier("exampleBean") ExampleBean bean;
+}
+
+2.根据类型
+@Service
+public class ExampleBean{
+	....
+}
+@Service
+public AnotherExampleBean{
+	@Autowried ExampleBean bean;
+}
+
+2.3.3 Spring AOP
+
+2.3.3.1 AOP介绍
+AOP（Aspect-Oriented Programming，面向切面编程），使用另外一种思路来实现应用系统的公共服务
+应用场景：每个业务方法调用的权限管理，每个方法调用的审计，数据库事务的管理，缓存
+AOP应用可以在运行时刻动态的在方法调用前后“织入”一些公共代码，从而提供公共服务。
+Aspect：类似于Java中的类声明，其中会包含一些 Pointcut及相应的 Advice。（Aspect：切面）
+Joint point：在程序中明确定义的点。典型的包括方法调用，对类成员的访问，以及异常处理程序块的执行。只支持方法调用。
+Pointcut（切入点）：表示一组 Joint point，定义了相应的 Advice将要发生的地方。用来判断在 Joint point（方法调用）中执行 Advice（操作）
+Advice（建议）：定义了在 Pointcut里面定义的程序点具体要做的操作，通过 before，around，after，来区别是在每一个 Joint point 之前或之后还是前后都要执行。
+	-before：在执行方法前调用，-around：在方法前后调用，-after：在方法后调用，-finally：方法后调用（不管是否异常）
+AOP proxy：也是Java对象，由 AOP 框架完成，用来完成上述动作。
+Weaving：实现上述切面编程的代码织入，可以在编译时刻，也可以在运行时刻。
+
+2.3.3.2 在 Spring Boot 中使用 AOP
+1.需要引入 spring-boot-starter-aop, 在 org.springframework.boot 下
+2.编写切面类：AOP类
+
