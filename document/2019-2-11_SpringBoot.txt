@@ -1,0 +1,161 @@
+3.3 URL映射到方法
+
+3.3.1 @RequestMapping  
+映射URL,可以映射到类或方法上。对应属性：
+value：请求的URL路径，支持正则
+method：HTTP请求方法，GET、POST、PUT
+consumes：允许的媒体类型，对应 HTTP的 Content-Type，consumes="applecation/json"
+produces：相应的媒体类型，对应于 HTTP的 Accept
+prarams：请求的参数
+headers：请求的 HTTP 头参数
+
+3.3.2 URL 路径匹配
+@RequestMapping(value="/get/{id}.json")
+public @ResponseBody User getById(@PathVarivable("id") Long id){
+	return userService.getUserById(id);
+}
+其中 @PathVariable 来获取URL上对应的参数
+在 debug模式或 parameters 编译选项，回保留参数的名字，会自动赋值，会有自动的对应关系
+
+通配符路径：
+使用类似于 Ant路径表达式
+使用 * 表示匹配任意字符，**表示匹配任意路径，？表示匹配单个字符
+/user/*.html 匹配 /user/1.html,/user/2.html
+/**/1.html 匹配 /1.html,/user/1.html,/user/add/1.html
+/user/?.html 匹配 /user/1.html, 不会匹配 /user/11.html
+如果存在一个请求会被多个 @RequestMapping匹配的情况，则是由优先级的：
+有通配符的低于没有通配符的
+有 ** 通配符的低于有 * 通配符的
+URL映射也可以使用 ${} 来获得系统的配置或环境变量，通常用于Controller路径是通过配置文件设定的情况
+
+3.3.3 HTTP method匹配
+用来映射HTTP请求方法，GET，POST，HEAD（同GET，但不返回消息体，用于返回URL对应的元信息），PUT（同POST，提交信息，更像更新操作，POST更像一个新增操作），DELETE，PATCH（同PUT，表示信息局部更新）
+Spring提供了简化的 @QequestMapping的 HTTP方法：
+@GetMapping，@PostMapping，@PutMapping，@DeleteMapping，@PatchMapping
+
+3.3.4 consumes 和 produces
+consumes：请求的HTTP头的 Content-Type 媒体类型域 consumes的值匹配，才能调用此方法。
+@GetMapping(value="/consumes/test.json",consumes="application/json")
+如果在请求时没有配置，则默认是null，是不支持的
+produces：对应于 HTTP请求的 Accept字段，只有匹配上的方法才能够被调用
+@GetMapping(path="/user/{userId}",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+默认浏览器的 Accept设置为 *.* 则按照这个配置，则会返回JSON信息
+
+3.3.5 params 和 header 匹配
+从请求参数或者HTTP头中提取值来进一步确定调用的方法，匹配规则：
+1.如果存在参数，则通过
+2.如果不存在参数，则通过
+3.如果参数等于某一具体的值，则通过
+@PostMapping(path="/update.json",params="action=save") 这样的形式
+header 与 params 一样。
+@GetMapping(path="/update.json",headers="action=update")
+
+
+3.4 方法参数
+Controller方法接受多种类型参数
+1.@PathVariable  将URL中的值映射到方法参数中
+可以{}中的名字和参数对应，也可以不对应。通常情况下Java编译时，会将参数名称编译到class字节码里，Spring会根据名字匹配自动映射。URL参数也支持矩阵变量（出现在路径片段中，通过符号；分割的多个变量）
+
+2.Model  通用的MVC模型，使用Map和ModelMap作为渲染视图的模型
+model对象自带addAttribute，addAllAttributes，mergeAttributes，addAllAttribute 等方法向其添加属性。
+使用时，在 模板文件下，使用 ${xxxx} 来使用。
+
+3.ModelAndView  包含了模型和视图路径的对象
+view.addObject("user",userInfo);
+view.setViewName("/userInfo.html");
+这个 ModelAndView对象，既可以通过方法参数声明，也可以在方法中构造.
+
+4.JavaBean  将 HTTP参数 映射到JavaBean对象
+普通情况下，对于 /javabean/update2.json?name=abc&id=1 这样的参数
+@GetMapping(path="/update2.json")
+@ResponseBody
+public String getUser2(Integer id,String name){
+	return "success";
+}
+可以通过 @RequestParam来进一步设定方法参数与HTTP参数的映射
+public String getUser2(@RequestParam(name="id",requeired=true) Integer id,String name)
+这个注解的设定：
+value：指明HTTP参数的名称
+required：声明此参数是否必须有
+defaultValue：字符类型，指定默认值，会进行自动转为目标类型
+
+还可以将HTTP参数，转换为 JavaBean对象，HTTP参数名字对应到 POJO的属性名。
+
+还可以将HTTP参数，转换为 支持前缀自动映射到不同的对象上，例如：
+public class OrderPostForm{
+	private Order order;
+	private List<OrderDetail> details;
+}
+这样，将 OrderPostForm作为参数映射时，使用order为前缀的HTTP参数，将映射到order属性上，details属性为前缀的HTTP参数映射到details属性上。
+<from action="/javabean/saveOrder.json" method="post">
+	<input name="order.name">
+	<input name="details[0].name">
+	<input name="details[1].name">
+@PostMapping(path="/saveorder.json")
+@ResponseBody
+public String saveOrder(OrderPostForm form){
+	return "success"
+}
+这样就可以进行映射了
+
+5.MultipartFile  用于处理文件上传
+@PostMapping("/form")
+@ResponseBody
+public String handleFormUpload(String name,MultipartFile file) throws IOException{
+	if(!file.isEmpty()){
+		String fileName = file.getOriginalFilename();
+		InputStream ins = file.getInputStream();
+	}
+}
+处理上传数据的常用方法：
+getOriginalFilename，getBytes，getInputStream，isEmpty，getSize，transferTo(File dest)(保存上传文件到目标文件系统)
+
+可以同时接受多个文件的上传
+public String handleFormUpload(String name,MultipartFile[] file) throws IOException{
+
+可以在 application.properties中对 SpringBoot上传文件进行设定。
+
+6.@ModelAttribute  使用该注解的变量将作为 Model的一个属性
+这个注解用在Controller的某个方法上，此方法会被首先调用，并将结果作为Model的属性，然后再调用对应的Controller处理方法
+@ModelAttribute
+public void findUserById(@PathVariable Long id,Model model){
+	model.addAttribute("user",userService.getUserById(id));
+}
+
+@GetMapping(path="/{id}/get.json")
+@ResponseBody
+public String getUser(Model model){
+	model.containsAttribute("user");
+	return "success";
+}
+这样配置后，在请求后，都会初始化 model对象，在初始化时，都会对其内部属性调用对应的 @ModelAttribute标记的方法。
+
+7.WebRequest或 NativeWebRequest  类似于 Servlet Request ，但做了封装
+8.InputStream 和 Reader  用来获取 ServletAPI中的 InputStream/Reader
+9.OutputStream 和 Writer  用来获取 ServletAPI中的 OutputStream/Writer
+10.HttpMethod，枚举类型，对应 HttpMethod，POST，GET
+11.@MatrixVariable 矩阵变量  
+12.@RequestParam  对应HTTP请求的参数，自动转化为参数对应的类型
+13.@RequestHeader  对应 HTTP请求头参数，自动转化为对应的类型
+14.@RequestBody  自动将请求内容转为指定的对象
+要求请求的HTTP消息体内容是一个 JSON，会转换为指定参数类型。默认使用 Jackson来反序列化
+
+15.@RequestPart  用于文件上传，对应HTTP协议的 multipart/from-data
+16.@SessionAttribute  标注变量来自于 Session的属性
+17.@RequestAttribute  标注变量来自于 request的属性
+18.@InitBinder  用在方法上，说明这个方法会注册多个转化器，用来个性化地将 HTTP请求参数转化成对应的 Java对象
+用在扩展绑定的特性，这个注解是用在自定义方法上的，在HTTP参数绑定到 JavaBean对象中时，Spring通过 WebDataBinder类实现绑定。
+@InitBinder
+protected void initBinder(WebDataBinder binder){
+	binder.addCustomFormatter(new DateFormatter("yyyy-MM-dd"));
+}
+这样配置后，在绑定参数时，将采用自定义扩展的日期格式。  
+
+19.BindingResult 和 Errors  用来处理绑定过程中的错误
+
+3.5 验证框架 (略)
+在 方法参数上使用 @Valid注解，即可对参数对象进行校验，结果放在 BindingResult对象中。
+
+3.6 WebMvcConfigurer
+
+
