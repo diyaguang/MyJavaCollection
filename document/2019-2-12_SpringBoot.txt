@@ -1,0 +1,95 @@
+3.6 WebMvcConfigurer
+自定义配置，MVC特性配置类（扩展配置类）。用来全局化定制MVC特性，这是个接口
+@Configuration
+public class MvcConfigurer implements WebMvcConfigurer{
+	#配置拦截器
+	public void addInterceptors(InterceptorRegistry registry)
+	#配置跨域访问
+	public void addCorsMappings(Corsregistry registry)
+	#格式化
+	public void addFormatters(FormatterRegistry registry)
+	#URI到视图的映射
+	public void addViewControllers(ViewControllerRegistry registry)
+	......
+}
+
+3.6.1 拦截器
+通过 在 addInterceptors 方法中，调用参数 registry的 addInterceptor方法来添加拦截器，并设置拦截规则.
+public void addInterceptors(InterceptorRegistry registry){
+        registry.addInterceptor(new SessionHandlerInterceptor()).addPathPatterns("/admin/**");
+    }
+
+其中拦截器对象要求 实现 HandlerInterceptor 接口，并实现 preHandle（在调用 Controller之前会调用），postHandle（在调用Controller之后，渲染页面之前调用），afterCompletion（页面渲染完毕后调用） 方法，来实现拦截操作。
+public class SessionHandlerInterceptor implements HandlerInterceptor{
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,Object handler) throws Exception {
+        response.sendRedirect("/login.html");
+        return false;
+    }
+
+3.6.2 跨域访问
+通常，浏览器会禁止 AJAX访问不同域的地址，W3C的 CORS 规范，允许实现跨域访问，并被大多数浏览器所支持。
+Spring提供了 CORS的支持，通过 addCorsMappings 方法的实现，添加特定的配置
+registry.addMapping("/**");
+
+同样可以精细化设置，
+registry.addMapping("/api/**").allowedOrigins("http://domain2.com").allowedMethods("POST","GET");
+这样，仅仅允许来自 Domain2.com的跨域访问，并且限定访问路径为 /api 方法是 POST或GET
+
+3.6.3 格式化
+HTTP请求映射到 Controller方法的参数上后，Spring会自动进行类型转换，对于日期来行 Spring并没有配置如何进行转化。需要添加一个 DateFormatter类
+在 addFormatters 方法中添加
+   public void addFormatters(FormatterRegistry registry){
+        registry.addFormatter(new DateFormatter("yyyy-MM-dd HH:mm:ss"));
+    }
+
+3.6.4 注册 Controller
+可以直接将 URI请求转到对模版的渲染上
+ public void addViewControllers(ViewControllerRegistry registry){
+        //index.html 的请求，设置返回的视图为 index.btl
+        registry.addViewController("/index.html").setViewName("/index.btl");
+        //对所有以 .do结尾的请求重定向到 /index.html 请求
+        registry.addRedirectViewController("/**/*.do","/index.html");
+        
+    }
+
+3.7 视图技术
+SpringBoot支持多种视图技术，FreeMarker，Groovy，thymeleaf，Mustache
+
+3.7.1 Freemarker（略）
+
+3.7.2 使用 Beetl
+第三方的 模版引擎，需要在 POM中引入
+ <dependency>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>beetl-framework-starter</artifactId>
+            <version>1.1.6.RELEASE</version>
+        </dependency>
+
+引擎自动识别以 btl结尾的视图名称，并交给 Beetl模版引擎渲染。
+ view.setViewName("/userInfo.btl");
+渲染会使用 templates/userInfo.btl 模版文件
+
+3.7.3 使用 Jackson
+默认在 SpringBoot中，使用 Jackson来完成JSON的序列化和反序列化，需要在方法中使用 @ResponseBody注解。
+如果想自定义一个转换，需要自定义一个 ObjectMapper来代替，使用 JavaConfig 并使用 @Boolean来使用
+@Configuration
+public class JacksonConf {
+    public ObjectMapper getObjectMapper(){
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        return objectMapper;
+    }
+}
+这样定义一个 ObjectMapper后，将会使用自定义的 Jackson来序列化而非默认配置的。
+
+3.7.4 Redirect 和 Forward
+Controller会返回客户端一个 HTTP Redirect重定向请求，希望客户端按照指定地址重新发起一次请求
+1.在 Controller中重定向可以返回以 "redirect:" 为前缀的 URL
+2.可以使用 ModelAndView 中设置带有 "redirect:" 为前缀的 URL
+3.还可以使用 RedirectView 类
+RedirectView view = new RedirectView("/order/detail.html?orderId="+orderId);
+
+Mvc也支持 foward前缀，用来在Controller执行完毕后，在执行另外一个 Controller的方法
+可以在 Controller中的方法中返回带有 "forward:"为前缀的 URL
+
+3.8 通用错误处理

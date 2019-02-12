@@ -156,6 +156,6 @@ protected void initBinder(WebDataBinder binder){
 3.5 验证框架 (略)
 在 方法参数上使用 @Valid注解，即可对参数对象进行校验，结果放在 BindingResult对象中。
 
-3.6 WebMvcConfigurer
+
 
 
