@@ -92,4 +92,5 @@ RedirectView view = new RedirectView("/order/detail.html?orderId="+orderId);
 Mvc也支持 foward前缀，用来在Controller执行完毕后，在执行另外一个 Controller的方法
 可以在 Controller中的方法中返回带有 "forward:"为前缀的 URL
 
-3.8 通用错误处理
+注：Redirect重定向和 Forward向前 的重要区别在于 Forward共享Request中的数据，地址栏地址不变。
+

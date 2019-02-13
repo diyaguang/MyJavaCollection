@@ -1,0 +1,116 @@
+3.8 通用错误处理
+SpringBoot中，默认异常交给 /error 来处理，如果要自定义处理，则需要定义个 继承 AbstractErrorController的类，并且映射 "/error" 的 Controller类，来同一处理系统的各种异常
+@Controller
+public class ErrorController extends AbstractErrorController {
+
+其中 AbstractErrorController提供了多种方法可以从 request获取错误信息
+timestamp，status，error，message，exception（字符串，表示异常的类名），path（请求的uri），errors
+
+使用时需要考虑页面渲染和JSON的区别，不同类型，处理返回不同。
+@RequestMapping("/error")
+    public ModelAndView getErrorPath(HttpServletRequest request, HttpServletResponse response){
+        Map<String,Object> model = Collections.unmodifiableMap(getErrorAttributes(request,false));
+        Throwable cause = getCause(request);
+        int status = (Integer)model.get("status");
+        String message = (String)model.get("message");
+        String errorMessage = getErrorMessage(cause);
+        log.info(status+","+message,cause);
+        response.setStatus(status);
+        if(!isJsonRequest(request)){
+            ModelAndView view= new ModelAndView("/error.btl");
+            view.addAllObjects(model);
+            view.addObject("errorMessage",errorMessage);
+            view.addObject("status",status);
+            view.addObject("cause",cause);
+            return view;
+        }else{
+            Map error = new HashMap();
+            error.put("success",false);
+            error.put("errorMessage",errorMessage);
+            error.put("message",message);
+            //writeJson(response,error);
+            return null;
+        }
+    }
+
+判断页面类型：
+    protected boolean isJsonRequest(HttpServletRequest request){
+        String requestUri = (String)request.getAttribute("javax.servlet.error.request_uri");
+
+        if(requestUri!=null && requestUri.endsWith(".json")){
+            //也可以根据获取 HTTP头，根据 Accept字段是否包含JSON来进一步判断
+            //request.getHeader("Accept").contains("application/json")
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+使用时需要注意的地方：
+protected Throwable getCause(HttpServletRequest request){
+        Throwable error = (Throwable)request.getAttribute("javax.servlet.error.exception");
+        if(error!=null){
+            //MVC有可能会封装成 ServletException，需要调用 getCause获取真正的异常
+            while(error instanceof ServletException && error.getCause()!=null){
+                error = ((ServletException)error).getCause();
+            }
+        }
+        return error;
+    }
+
+3.9 @Service 和 @Transactional
+
+3.9.1 声明一个 Service类
+其中 Service类用来完成业务逻辑，实现一个 Service类，需要定义一个业务接口。然后实现业务接口，需要增加 @Service注解（在实现的类上）。同时可以搭配 @Transactional来进行实务增强。
+
+3.9.2 事务管理
+其中 @Transactional 可以作用在类上，这样所有的接口方法都会参与实务管理。也可以用在 方法上，调用时，该方法处于实务上下文中。
+
+实务上下文：处于同一个上下文的处理，会处在同一个实务中。可以在事务上下文中再次开启一个新的事务上下文，这时候，通过注解 @Transactional(propagation=Propagation.REQUIRES_NEW) 完成。
+
+3.10 curl命令 (略)
+
+
+第四章 视图技术
+
+4.1 Beetl模板引擎
+特点：功能完备，语法和使用习惯简单，超高的性能，易于整合，支持模板单独开发和测试，扩展和个性化。
+
+4.1.1 安装 Beetl
+<dependency>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>beetl-framework-starter</artifactId>
+            <version>1.1.15.RELEASE</version>
+        </dependency>
+beetl-framework-starter 将自动配置以 btl结尾的所有视图，将自动使用 Beetl渲染相应的 resources/templates 目录下的视图文件
+
+4.1.2 设置定界符号和占位符
+默认使用  <%%> 作为定界符号，${ } 作为占位符号，也可以自定义配置。
+可以通过 配置文件 来设置定界符号，需要在 resources目录下创建 beetl.properties 文件
+设置：DELIMITER_PLACEHOLDER_STSRT=${
+          DELIMITER_PLACEHOLDER_END=}
+          DELIMITER_STATEMENT_START=@
+          DELIMITER_STATEMENT_END=
+
+4.1.3 配置 Beetl
+模板解析后，会有缓存功能，Beetl每次渲染前都会检测末班文件是否更新，否则重新解析模板
+取消检测在 application.properties 中添加配置 beetl-beetlsql.dev = false
+注：有的IDE不会将 resource/templates 目录下的文件变化同步到 Maven功能的 target目录下，需要将 resource目录设定为 src目录，这样就会有变动同步。
+SpringBoot中，Beetl默认使用 "btl" 结尾的模板文件进行渲染，这个配置可以修改，在 application.properties 文件中进行配置 beetl.suffix=html
+
+4.1.4 groupTemplate
+这个类是 Beetl的核心类，用来渲染模板，提供扩展函数。如果相对 groupTemplatge进行定制，则可以通过自动注入的方式实现。
+@Configuration
+public class BeetlExtConfig {
+    @PostConstruct
+    public void config(){
+        //
+    }
+其中 @PostConstruct 作用在 config 方法上，Spring会在启动阶段调用此方法，可以完成 groupTemplate的扩展
+
+4.2 使用变量
+
+4.2.1 全局变量
+
+
+
