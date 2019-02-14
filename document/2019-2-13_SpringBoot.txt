@@ -107,10 +107,3 @@ public class BeetlExtConfig {
         //
     }
 其中 @PostConstruct 作用在 config 方法上，Spring会在启动阶段调用此方法，可以完成 groupTemplate的扩展
-
-4.2 使用变量
-
-4.2.1 全局变量
-
-
-

@@ -1,0 +1,256 @@
+4.2 使用变量
+
+4.2.1 全局变量
+就是通过 Model或 ModelAndView传入的变量，可以在模板或子模板中使用。还可以通过 request设置的变量在模板中使用。
+例：ModelAndView view = new ModelAndView("/index.btl");
+       view.addObject("user",user);
+       return view;
+然后在 模板中使用  <span>${user.name}</span>
+
+Beetl中默认的全局变量：
+1.request， 中所有的 attribute 在模板中可以直接通过 name 来引用。例如在 controller 中配置 request.setAttribute("user",user); 在模板中直接应用 ${user.name} 。
+2.Session提供了 Session 会话，模板通过 session["name"] 或 session.name 来引用 Session 中的变量。其中 Session 并非 Servlet中标准Session对象，需要通过 HTTPSession来获取。
+3.request，标准的 HTTPServletRequest，在模板中引用 request属性，如：${request.requestURL}
+4.parameter， 读取用户提交的参数 如：${parameter.userId}
+5.ctxPath， Web应用中的 ContextPath，SpringBoot中默认是“/”，通过 application.properties的属性，server.context-path 配置
+6.servlet， WebVariable的实例，包含了 HTTPSession，HTTPServletRequest，HTTPServletResponse 三个属性，模板中通过 request，response，session 来引用，如：${servlet.request.requestURL} 使用
+7.所有的 groupTemplate 的共享变量
+
+4.2.2 局部变量
+在模板中定义的变量，只能在当前模板中使用，无法在子模板中使用。
+@ var salary = user.salary*2
+<span>${user.name}</span>
+@ var a=0,b="你好",d=true,e=34343.343434343434h,f=e+a;
+@ var list = [1,2,3]
+@ var map = {"name":"xiandafu","age":18,"data":list};
+说明：变量类型同 JavaScript 相同，其中e是一个高精度数据，可以任意长，要以字母h结尾，向Beetl标明这是高精度数据。Beetl中，任何与高精度数据进行算数运算后的结果也必然转为 BigDecimal。map 和 list 像JS中的 JSON，在Beetl中，通过 HashMap和ArrayList 来实现的。
+
+4.2.3 共享变量
+类似于全局变量，可以在任何模板中使用，需要通过 groupTemplate 的API添加
+@Configuration
+public class BeetlExtConfig{
+	@Autowired GroupTemplate groupTemplate;
+	@PostConstruct
+	public void config(){
+		groupTemplate.getSharedVars().put("jsVersion",System.currentTemeMillis());
+	}
+}
+在模板中使用：<script src="/js/xxxx.js?version=${jsVersion}" />
+
+4.2.4 模板变量
+变量的内容是模板对应的输出，例如：
+@var a = 1;
+@var template = { <span>${a}</span> }   输出：${template}
+说明：template是个变量，内容位于 { } 中，模板变量可以用在后面的任何地方，Beetl使用模板变量来完成继承布局方式。
+
+4.3 表达式
+4.3.1 计算表达式
+支持 +, -, *, /,%  等，计算类型与java类型一致。 @var b=1, @var a=(b+12)*3  
+说明：如果在计算中需要使用 高精度数代替 double，则需要在数字后面加上 “h”，来表示是一个高精度数据。
+
+4.3.2 逻辑表达式
+类似于 JS或Java的条件表达式，如 >, <, ==, !=, >=, <=, !, &&, || 以及三元表达式
+@if(user.status == 1 && user.salary < 1000){
+	<span>失业</span>
+@}
+三元表达式如果只考虑 true 条件对应的值得花，可以做简化。 ${a==1?"selected":''}  替换为 ${a==1?"selected"} Beetl占位符对 null值不做输出。
+
+4.4 控制语句
+4.4.1 循环控制
+支持多种 循环方式，for....in 循环方式
+@for(user in userList){
+	<span>${user.name}</span>
+@}
+其中，userLIst可以使 Java中的集合，数组，如果遍历的是 Java中的Map，则需要对应Map的 Entry元素，通过key，value 来获取。
+@for(entry in userList){
+	@var name = entry.key,user = entry.value;
+	<span>${user.name}</span>
+@}
+
+for...in 循环支持 elsefor 语法，如果未进入循环体，则执行 elsefor 部分
+@for(item in array){
+	....
+@} elsefor {
+	....
+@}
+
+for...in 支持在集合变量后加上感叹号，进行安全输出，如果变量不存在或为null，则不进入循环体
+@for(entry in data.userList ! ){
+	....
+}
+
+Beetl循环还支持其他形式的循环，比如  for(exp;exp;exp)) 这种，或 while(exp) 这种
+@for(var i=1;i<10;i++){
+	<span>${i}</span>
+}
+
+说明：for...in 循环可以得到循环的上下文信息，在循环中，会自动创建一个 “变量名+LP” 后缀的变量，提供循环的上下文信息。
+@for(user in users){
+	<span>${userLP.index}</span>
+@}
+可以得到的属性有：index，size，first，last，even(是否偶数)，odd(是否奇数)
+
+4.4.2 条件语句
+支持的有 if...else 语句，还提供了 switch...case 这样的语法（支持任何类型的表达式）.
+Beetl 支持 switch...case 的加强版 select-case，允许case中有逻辑表达式，默认遇到符合条件的 case 执行后就退出。
+<%
+	var b = 1;
+	select(b){
+		case 0,1:
+			print("it's small int");
+		case 2,3:
+			print("it's big int");
+		default:
+			print("error");
+	}
+
+	支持逻辑表达式：
+	var b = 1;
+	select {
+		case b<1 , b>10 :
+			print("it's out of range");
+		default:
+			print("error");
+	}
+%>
+
+4.4.3 try...catch
+模板捕获异常
+<%
+	try{
+		callOtherSystemView();
+	}catch(error){
+		print("xxxx");
+	}
+%>
+其中 error 代表了一个异常，可以通过 error.message 来获取可能的错误信息。
+
+4.5 函数调用
+Beetl内置了大量的常用函数以辅助模板的渲染，规则引擎等功能，调用方式与JS一些样，并且可以注册自定义函数，可以通过Java实现或通过Beetl本身来实现
+print，println
+has，判断是否具有这个全局变量
+isEmpty，判断变量或表达式是否为空，不存在，null 都返回 true，空字符串，空集合也返回 true，isNotEmpty 函数判断相反。
+debug， 在控制台打印变量或表达式
+date， 日期函数，获取当前日期
+trim， 截取一个日期或数字类型，并返回字符串，例如 trim(126.18,1) 返回 126.18 ,trim(date(),'yyyy')  返回 2019
+parseInt，parseLong，parseDouble，将字符串或number转为对应的类型
+global， 返回一个全局碧昂量值，参数时一个字符串 var user=global("user_"+i);
+cookie， 返回指定的cookie对象，var userCook = cookie("user");
+strutil.*， 系列函数，对字符串操作，如：strutil.split("abc,def",",");  将返回一个字符串数组。
+array.*， 集合相关的函数，array.contain
+shiro.*， shiro安全框架相关的，并非是 Beetl的内置函数
+spring.*， Spring框架中可以使用的一系列函数，比如 spel表达式
+reg.*， 正则表达式的相关函数
+
+4.6 格式化函数
+允许在占位符输出的时候，指定格式化函数来格式化输出，常见的是日期格式化和数字格式化。
+语法： ${exp,formatName="可选参数"} 
+系统提供了 dateFormat，numberFormat，两个内置的格式化函数
+${ date(),dateFormat="yyyy-MM-dd HH:mm" } 或 ${date(),dateFormat} 或 ${date(),"yyyy-MM-dd"}
+
+4.7 直接调用 Java
+可以在模板中以 Java方式调用表达式，必须在表达式钱使用 @符号 以表示器后表达式是 Java风格的。
+@var a=[1,2];
+@var size = a.~size;   //数组长度由 Beetl提供的虚拟属性获取，虚拟属性有前缀~，表示其后面的属性并非对象本身的属性，而是虚拟的。可以通过注册为任何对象增加多个虚拟属性。
+@var size2 = @a.size();   //调用集合本身的 size方法，使用 @告诉Beetl，使用Java直接调用了，其中a.size() 是Java表达式
+注：可以调用实例的 public方法和属性，也可以调用静态类的属性和方法，需要加上一个 @指示此调用是直接调用 class
+${@user.getMaxFriend("lucy")}
+${@user.maxFriend[0].getName()}
+${@com.xxxx.constants.Order.getMaxNum()}
+${@com.xxx.User$Gender.MAN}
+注意事项：
+1.对于直接Java调用，groupTemplate可以配置为禁用此功能
+2.可以通过安全管理器配置到底 Beetl 不允许调用哪些类
+3.按照Java规范书写类名、方法名和属性名
+4.可以省略包名，只用类名。（Beetl将搜索包路径到合适的类，需要设置配置 “IMPORT_PACKAGE=包名.;包名.”，包名后需要跟一个“.”）
+5.内部类（包括枚举）访问同Java一样，例如User类有个内部类 Gender，访问时是 User$Gender
+6.表达式是java 风格的，但参数仍然是 Beetl表达式
+
+4.8 标签函数
+标签函数，允许处理模板文件中的一块内容，功能等同于 jsp tag。例如：Beetl 内置的 layout 标签
+index.html 页面
+@layout("/inc/layout.html",{title:'主题'}){     //title属性
+	<span>Hello,this is main part</span>           //loyoutContent 内容
+@}
+layout.html 页面：
+<title>${title}</title>      //替换 title 属性内容
+<div>
+	${layoutContent}        //替换标签内容
+</div>
+
+常用的标签函数还有 include，用来包含一个模板页面。
+
+4.9 HTML标签
+Beetl默认通过 “#” 符号来区分 Beetl的 HTML 标签
+<#footer stype="simple"/>
+其中，footer是标签名，style是标签属性
+
+<#richeditor id="rid" path="${ctxPath}/upload" name="rname" maxlength="${maxlength}">
+	${html}
+</#richdeitor>
+<#html:input id='aaa'>
+
+说明：实现标签有两种方式：
+1.用Java写一个标签函数，注册为 footer 的名字
+2.用 Beetl语言本身实现，需要在 templates/htmltag 目录下创建一个 footer.tag文件，内容就是普通的模板文件。
+@ if(stype=='simple'){
+	... ...
+}
+其中，style是标签中定义的变量，可以在 HTML中标签文件中使用。 
+规则：
+1.可以在自定义标签中引用标签体的内容，标签体可以使普通文本，Beetl模板，一起嵌套的自定义标签等。
+2.HTML自定义标签的属性值均为字符串 <#input value="${user.age}" /> 此时，input.tag 中，value的取值类型 取决于 user.age
+3.在属性中引用 Beetl变量，不支持格式化 <#input value="${user.date,'yyyy-MM-dd'}" /> 如果需要的话，需要在 input.tag文件中格式化
+4.在标签属性中传 JSON变量，需要谨慎，因为JSON中包含了 "}" ，容易解析出错。因此得使用 “\” 符号，<#input value="${ { age:25\} }" />
+5.html tag 属性名将作为其对应模板的变量名，需要确保命名符合变量名规范
+
+4.10 安全输出
+模板语言使用的全局变量有可能不存在，Beetl在变量表达式后面使用“！”符号来提醒，此变量可能不存在，表达式将返回“！”后的表达式值，如果没有后表达式，则返回null。${user.wife.name!}  或 ${user.wife.name!"单身汉"}
+Beetl提供了 has函数来判断全局变量是否存在，也可以使用 isEmpty函数来判断全局变量是否存在。
+
+4.11 高级功能
+4.11.1 配置 Beetl
+可以在 resources 下添加 beetl.properties 文件来格式化 Beetl，其可以对 Beetl使用的定界符，占位符，等内容进行配置。（参看文档）
+
+4.11.2 自定义函数
+ 可以通过 Function接口的 call方法实现，定义函数类，实现Function接口的 call 方法实现。
+ call方法有两个参数：Object[] paras 代表调用该方法的参数，Context ctx 表示调用方法的上下文参数（包含：ByteWriter：Beetl中输出流，globalVar：全局变量，resourceId：当前正在渲染的模板名称）
+ public class MyPrint implements Function{
+ 	public String call(Object[] paras,Context ctx){
+ 		Object o = paras[0];
+ 		if(o != null){
+ 			try{
+ 				ctx.byteWriter.write(o.toString());
+ 			}catch(IOException e){
+ 				throw new RuntimeException(e);
+ 			}
+ 		}
+ 		return "";
+ 	}
+ }
+
+定义完类后，要在 beetl.properties 中注册这个 Beetl函数： FN.myPrint = xxxx.MyPrint
+其中：FN前缀表示这是一个函数配置项，myPrint表示在 Beetl中的名称，xxx.MyPrint 则是其实现类。Beetl会在模板引擎初始化的时候创建此类的一个实例来服务所有的调用。
+如果自定义的函数比较多，可以使用命名空间来管理。 FN.io.myPrint = xxx.MyPrint 这样调用时，就是 io.myPrint
+@io.myPrint("hello, my function");
+
+也可以将普通类的所有 public方法注册为自定义函数，称之为“功能包”，需要在public 方法的最后增加 Context参数即可
+public class IOUtil{
+	public Object print(Object a,Context ctx){
+		return null;
+	}
+}
+使用 FNP来注册，该类的某个 public方法都自动注册为 Beetl扩展函数： FNP.ioutil = xxx.IOUtil 
+则 print方法将自动注册为 ioutil.print 函数
+
+第二种方式：
+使用 Beetl语言本身来实现函数，需要在 templates/functions 目录下添加扩展名为 html的模板文件，方法参数分别对应 para0、para1 ... ...
+则在对应的 functions目录下对应一个名为 print.html 的文件：
+@var obj = para0;
+${obj}
+@return null;
+会自动建立一个 print 方法。
+注：自定义方法会使用 Spring管理的 Bean，可以为自定义 Function添加 @Component，使其成为 Spring管理的 Bean。
+
+
+

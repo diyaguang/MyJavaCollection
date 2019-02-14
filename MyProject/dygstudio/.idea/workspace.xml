@@ -2,19 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="45a1b8c8-b61b-4e29-b8ea-78041836af5d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/config/BeetlExtConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/controller/ErrorController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/TestspringbootApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/TestspringbootApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/config/MvcConfigurer.class" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/config/MvcConfigurer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/config/SessionHandlerInterceptor.class" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/config/SessionHandlerInterceptor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/controller/BeetlController.class" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/controller/BeetlController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/testspringboot.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../document/2019-2-12_SpringBoot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../document/2019-2-12_SpringBoot.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/config/BeetlExtConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/config/BeetlExtConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../document/2019-2-13_SpringBoot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../document/2019-2-13_SpringBoot.txt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -34,8 +24,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/config/BeetlExtConfig.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="17" selection-start-line="17" selection-end-line="20" selection-end-column="5" />
+            <state relative-caret-position="380">
+              <caret line="20" column="5" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -111,6 +101,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -181,7 +172,6 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -196,7 +186,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -231,16 +221,17 @@
       <updated>1549943485122</updated>
       <workItem from="1549943488246" duration="12254000" />
       <workItem from="1550030098508" duration="10922000" />
+      <workItem from="1550104939430" duration="3345000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23176000" />
+    <option name="totallyTimeSpent" value="26521000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2521322" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2553419" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -248,7 +239,6 @@
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info id="Capture Tool" order="6" />
       <window_info id="Web" order="7" side_tool="true" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3286334" />
@@ -264,7 +254,7 @@
       <window_info anchor="bottom" id="Java Enterprise" order="12" />
       <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="14" show_stripe_button="false" />
-      <window_info anchor="right" id="Maven" />
+      <window_info anchor="bottom" id="Docker" order="15" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -275,6 +265,7 @@
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info anchor="right" id="Bean Validation" order="9" />
+      <window_info anchor="right" id="Maven" order="10" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -292,9 +283,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot/testspringboot.iml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot/testspringboot.iml" />
     <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/TestspringbootApplication.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -384,8 +373,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/config/BeetlExtConfig.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="17" selection-start-line="17" selection-end-line="20" selection-end-column="5" />
+        <state relative-caret-position="380">
+          <caret line="20" column="5" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
