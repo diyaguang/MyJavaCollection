@@ -1,0 +1,271 @@
+4.11.3 自定义格式化函数
+需要实现 Format 接口或 ContextFormat接口，后者提供 Context参数，使用这种方式，可以防止XXS攻击。
+public class XXSDefenderFormat implements Format{
+public Object format(Object data,String pattern){
+	if(data instanceof String){
+		String js = (String)data;
+		String str = StringEscapeUtils.escapeHtml4(js);
+		return str
+	}else{
+		return data;
+	}
+}
+}
+在使用的时候：在 beetl.properties 中增加函数定义
+FT.xxs = xxxx.XXSDefenderFormat
+前端模版调用：${"<script>alert(1)</script>",xss}
+
+4.11.4 自定义标签函数
+标签函数类似于 JSP Tag，运行处理一段模版内容，HTML Tag 是一种特殊的标签函数。
+通过继承 Tag类，并重载 render方法来实现
+public class SimpleTag extends Tag{
+	@Override
+	public void render(){
+		ctx.byteWriter.write("被删除了，付费可以看");
+	}
+}
+在配置文件中注册此前缀标签。TAG.myTag = xxx.SimpleTag;
+在模版中使用自定义标签
+@myTeg(){
+	<span>这段内容不会被看到</span>
+@}
+其中，Tag类提供了如下方法设置内容：
+doBodyRender()：渲染标签片段并输出
+getBodyContent()：渲染标签片段，得到渲染后的内容，返回是一个 BodyContent类，通过调用 getBody方法获得其渲染的内容
+属性args：标签传入的参数，是个数组列表，对应传入的参数
+ctx：是Content，上下文信息
+
+自定义标签函数和自定义HTML标签都会使用 Spring管理的Bean，可以为自定义 Tag添加@Component，使其成为Spring管理的Bean
+
+4.11.5 自定义 HTML 标签
+也通过 Tag类来实现HTML标签函数， 其中 args的第一个参数 args[0] 表示函数签名，args[1]则是标签的属性，是个map类型，key为HTML Tag的属性，value是属性值。
+public class SimpleHtmlTag extents Tag{
+	@Override
+	public void render(){
+		String tagName = (String)this.args[0];
+		Map attrs = (Map)args[1];
+		String value = (String) attrs.get("attr");
+		try{
+			this.ctx.byteWriter.writeString(value);
+		}catch(IOException e){
+			...
+		}
+	}
+}
+需要在配置文件中注册此 HTML Tag标签，
+然后使用 <#simpleTag attr="hello">xxxx</#simpleTag>  然后这个标签会输出 “hello”
+说明：默认 HTML_TAG_FLAG的值为 “#”，用来区别是否是 Beetl的 HTML Tag，可以设置为其他符号，例如 HTML_TAG_FLAG=my:  那么使用时会为：<my:simpleTag attr="hello">
+
+还可以实现一类模版标签，它会返回一组变量供标签体渲染使用，通常称为绑定变量的 HTML Tag。（主要是可以返回绑定数据，用来渲染自定义HTML标签体中的数据）
+<#article type="1" var="article,index">
+	<div>
+		${index} ${artile.title,xss},${artile.postDate,'yyyy-MM-dd'}
+	</div>
+<#/article>
+定义HTML Tag类：
+@Component
+@Scope("prototype")
+public class AtricleSample extends GeneralVarTagBinding{
+	@Override
+	public void render(){
+		int type = Integer.parseInt((String)this.getAttributeValue("type"));
+		List<Atricle> list = service.query(type);
+		for(int i=0;i < limit; i++){
+			this.binds(list.get(i),i+1);
+			this.doBodyRender();
+		}
+	}
+}
+说明：带绑定变量的必须继承 GeneralVartagBinding类，此类提供了一个 binds函数。可以在Java中传入多个需要绑定的变量，与 var 属性中声明的一一对应上，否则 Beetl会抛出错误。
+
+4.11.6 布局
+布局时保持模板重用的重要功能，Beetl中可以使用 include 和 layout 来实现重用
+@ include("/inc/header.html",{"title":"测试页面"}){}
+<span>这是正文</span>
+@include("/inc/footer.html"){}
+说明：
+include标签函数的第一个参数是公共模板的路径，其后可以接受一个map参数，map中的每一项值都会传递给子模板作为模板的全局变量
+
+layout 指定一个布局页面，因此模板渲染后的结果将会回填到布局页面中
+@layout("/inc/layout.html",{"title":"测试页面"}){
+	<span>这是正文</span>
+@}
+其中 layout.html 是一个布局页面，隐含的使用了变量 layoutContent 来代替标签体渲染的内容，例：
+<title>${title}</title>
+<body>
+	${layoutContent}
+</body>
+
+还有一种比 layout更复杂的布局，称为继承布局，即父页面定义了页面的大致结构，需要子页面回填多个内容片段，这种布局混合使用了 include 和 模板变量。
+（看不懂了，略） P124
+
+
+4.11.7 AJAX局部渲染
+可以使用 AJAX标记标注模板的一个片段，在Controller中，可以仅渲染这个片段，而不是整个模板，常用在 AJAX请求中
+<div id="pageContainer">
+	@ #ajax userPage:{
+		<table>
+			@for(user in userList){
+				...
+			@}
+		</table>
+	@}
+</div>
+在模版页面上使用了 #ajax 标注了一段 AJAX模版。正常渲染的时候，语法 #ajax被忽略，内容正常处理，跟没有 #ajax一样，如果Controller中声明只渲染 user.btl#userPage，则 Beetl模版引擎只会渲染 #ajax userPage 部分。
+@RequestMapping("/user/queryUser.html")
+public ModelAndView queryUser(){
+	ModelAndView view = new ModelAndVie();
+	view.setViewName("/user/user.btl#userPage");
+	view.addObject("userList",users);
+	return view;
+}
+这样，前端开发者可以将此渲染结果回填到 id 为 pageContainer的部分，从而实现 AJAX加载模板片段。
+前端 JS调用：$("#pageContainer").load("/user/queryUser.html",params);
+
+
+4.12 脚本引擎
+Beetl是模板引擎，但实质上是脚本语言，解析阶段会讲模板转换为 Beetl脚本执行。groupTemplate提供了执行脚本的功能。
+（略）
+
+
+4.13 JSON技术
+SpringBoot 内置了 Jackson来完成 JSON 的序列化和反序列化操作。
+
+4.13.1 在 SpringBoot 中使用 Jackson
+在 Controller 中，方法添加 @ResponseBody 注解，自动将方法返回的对象序列化成 JSON
+
+4.13.2 自定义 ObjectMapper
+自定义 ObjectMapper的话，需要使用 Java Config，使用 @Bean来配置一个类，替代默认的 ObjectMapper 对象。
+
+4.13.3 Jackson 的三种使用方法
+Jackson使用 ObjectMapper类将 POJO对象进行序列化和反序列化，支持三种层次：
+1.采用 JsonParser 来解析 JSON，解析结果是一串 Tokens，采用 JsonGenerator来生成 JSON，最底层方式。（常用于辅助个性化序列化和反序列化）
+2.采用树便利（Tree Traversing）方式，JSON被读入到 JsonNode对象中，可以像操作 XML DOM 那样读取 JSON（常用于没有县城的 POJO做数据绑定的时候）
+3.采用 DataBind方法，将 POJO序列化或反序列化，最直接和简单的方式。
+
+4.13.4 Jackson树遍历
+public @ResponseBody String readtree() throws JsonProcessingException,IOException{
+	String json = "{\"name\":\"lijz\"}";
+	JsonNode node = mapper.readTree(json);
+	String name = node.get("name").asText();
+	return "name:"+name;
+}
+readTree方法接受一个字符串或字节数组，文件，InputStream等，返回 JsonNode作为根节点，像操作 XML DOM 那样操作遍历JsonNode以获得数据。
+JsonNode支持一下方法来读取 JSON数据：
+asXXX：读取 JsonNode对应的值，asText，asBoolean，asInt 等等
+isArray：判断JsonNode是否是数组，如果是，可以调用 get(i)来进行遍历
+get(String)：获取当前节点的子节点，返回 JsonNode
+
+4.13.5 对象绑定
+常见的是使用 Java对象来与 JSON数据相互绑定，仅仅调用 ObjectMapper的 readValue来实现。
+{"name":"lijz",age:10}
+创建 POJO对象
+public class User{ Long id; String name; }
+然后使用 readValue来反序列化JSON字符串
+String json="{\"name\":\"lijz\",\"age\":10}"
+User user = mapper.readValue(json,User.class);
+return "name:"+user.getName()+",id:"+user.getId();
+
+将POJO序列化成 JSON，使用 mapper 的 writeValueAsString 方法
+String str = mapper.writeValueAsString(user);
+return str;
+
+4.13.6 流式操作
+（略）
+
+4.13.7 Jackson 注解
+Jackson包含很多注解，用来个性化序列化和反序列化操作：
+@JsonProperty：用在属性上，用来为 JSON Key指定一个别名。@JsonProperty("userName")
+
+@JsonIgnore：用在属性上，用来忽略此属性。
+
+@JsonIgnoreProperties：忽略一组属性，作用在类上。@JsonIgnoreProperties({"id","photo"})
+
+@JsonAnySetter：标记在某个方法上，有 Key，Value两个参数，在反序列化过程中，未找到对应属性都调用此方法。通常使用一个 map来实现。
+@JsonAnySetter
+private void other(String property,Object value){
+	map.put(property,value);
+}
+
+@JsonAnyGetter：标记在一个返回 Map的方法上，会取出Map中的每一个值进行序列化。
+
+@JsonFormat：用在属性上，用于日期格式化。
+@JsonFormat(pattern="yyyy-MM-dd HH-mm-ss")
+private Date createDate;
+
+@JsonNaming：指定一个命名策略，用于类或属性上，可以实现自己的命名策略。
+@JsonNaming(PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy.class)
+
+@JsonSerialize：指定一个实现类来自定义序列化，必须实现 JsonSerializer接口
+public static class Userializer extends JsonSerializer<User>{
+	@Override
+	public void serialize(User value,JsonGenerator jgen,SerializerProvider provider)...
+}
+其中 JsonGenerator对象是 Jackson底层的序列化实现
+编写完后，使用注解 JsonSerialize 来指定 XXX 对象的序列化方式：
+@JsonSerialize(using=Userializer.class)
+public class User{ ... }
+
+@JsonDeserialize：用户自定义的反序列化，同 JasonSerialize，需要实现 JsonDeserializer接口
+public class UserDeserializer extends JsonDeserializer<User>{
+	@Override
+	public User deserialize(JsonParser jp,DeserializationContext ctxt)...
+}
+编写完后，使用 JsonDeserialize来指定User 对象的序列化方式
+@JsonDeserialize(using=UserDeserializer.class)
+public class User{ ... }
+
+@JsonView：用作类或属性上，用来定义一个序列化组（略）
+
+4.13.8 集合的反序列化
+在 Controller方法中，可以使用 @RequestBody将提交的 JSON自动映射到方法参数上
+public @ResponseBody String say(@RequestBody List<User> list){ ... }
+SpringBoot 能识别List包含的范型类型从而能正确反序列化。如果集合对象并没有包含范型定义，则反序列化并不能得到预期的效果。
+（略）
+
+
+4.14 MVC分离开发
+Beetl提供了 WebSimulate 来支持这种分离，前端人员只需要编写 Beetl脚本，模拟返回值即可。
+shiyogn  beetl-framework-starter 后，WebSimulate实例已经配置好，可以直接使用，可以编写一个 Controller来开启 WebSimulate
+@Controller
+public class SimulateController{
+	@Autowired
+	WebSimulate webSimulate;
+	@RequestMapping("/api/**/*.json")
+	public void simlateJson(HttpServletRequest request,HttpServletResponse response){
+		webSimulate.execute(request,response);
+	}
+}
+采用 ** 作为通配符优先级较低，一旦Controller代码写好了，自动会切换到非模拟代码
+
+4.14.2 模拟 JSON响应
+WebSimulate的工作目录默认是 template/values 目录，对应 Controller请求 /api/user/1.json 会执行 /values/api/user/1.json.var 脚本文件，并且要求脚本文件包含一个叫 json的变量。
+var name="xiandafu";
+var json = {"name":name}
+WebSimulate 会对请求的URI路径做一定转化，匹配 values目录下的某个脚本。
+匹配规则：
+1.完全匹配
+2.匹配 HTTP Method（如果Method是 GET，则会优先匹配 /user/1.json.get.var）
+3.可以使用 $$ 进行路径匹配（可以匹配 /user/$$.var 或者 /user/$$.get.var ，匹配的值可以从全局变量 pathVars中获取。）
+例如：var userId = parseInt(pathVars[0]); var json={"name":name,"id":userId};
+
+4.14.3 模拟模板渲染
+可以在 SimulateController 方法中增加对模板渲染的模拟：
+@RequestMapping("/**/*.html")
+	public void simlateJson(HttpServletRequest request,HttpServletResponse response){
+		webSimulate.execute(request,response);
+	}
+采用 ** 作为通配符优先级较低，一旦Controller代码写好了，自动会切换到非模拟代码
+模拟模版渲染期望脚本能渲染所有的变量和视图名称，默认配置下，脚本中的所有变量都是视图的全局变量，脚本中为 view 变量指明了视图的名称，如果没有view变量，则认为URL的文件名就是模板名。
+
+例如： /user/userlist.html 会先调用 /values/user/userlist.html.var 获得渲染模版需要的数据，如果在 var中包含了 view变量，则会渲染此变量对应的视图，如果不存在，默认渲染 /user/userlist.html 文件
+var users = [{name:"xiandafu"},{name:"lucy"}];
+var view = "/user/userlist.btl";
+WebSimulate 会执行上面的脚本，构造 类似 SpringMVC 的 ModelAndView，视图名称是 userlist.btl ，用到的全局变量就是脚本定义的所有顶级变量。
+
+在 /values 目录下，允许将一些公共变量放到 common.var 中，比如session数据：
+var session = {user:{name:"xiandafu"}};
+这样，在模拟 JSON或者模板渲染时，可以直接使用 session变量。
+
+
+
