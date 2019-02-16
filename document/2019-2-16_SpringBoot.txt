@@ -1,0 +1,5 @@
+第五章 数据库访问
+Spring JDBC Template 和 BeetlSQL 两种数据库访问方式，JDBC Template是Spring自带的，在JDBC基础上做了一定的封装，BeetlSQL是笔者研发的。都是基于 SQL为中心的。
+
+5.1 配置数据源
+使用数据库连接池 HikariCP，需要在 POM中添加对 HikariCP 依赖
