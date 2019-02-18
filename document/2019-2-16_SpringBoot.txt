@@ -3,3 +3,163 @@ Spring JDBC Template 和 BeetlSQL 两种数据库访问方式，JDBC Template是
 
 5.1 配置数据源
 使用数据库连接池 HikariCP，需要在 POM中添加对 HikariCP 依赖
+ <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>2.7.4</version>
+        </dependency>
+
+ 使用MySql，需要添加 MySQL驱动依赖
+ <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>6.0.5</version>
+        </dependency>
+
+配置好尚需文件后，需要一个 JavaConfig来创建数据源
+@Configuration
+public class DataSourceConfig {
+
+    @Bean(name="dataSource")
+    public DataSource datasource(Environment env){
+        HikariDataSource ds = new HikariDataSource();
+        ds.setJdbcUrl(env.getProperty("spring.datasource.url"));
+        ds.setUsername(env.getProperty("spring.datasource.username"));
+        ds.setPassword(env.getProperty("spring.datasource.password"));
+        ds.setDriverClassName(env.getProperty("spring.datasource.driver-class-name"));
+        return ds;
+    }
+}
+
+5.2 Spring JDBC Template
+在 SpringBoot 中使用 JDBC，需要添加依赖：
+<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+ 这是书上没有的
+
+@Repository
+public class UserDao {
+
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+}
+其中，@Repository通常用在同存储的相关的类上
+
+5.2.1 查询
+普通查询：this.jdbcTemplate.queryForObject("select count(*) from user",Integer.class);
+带参数的查询：this.jdbcTemplate.queryForObject("select count(*) from user where department_id=? ",Integer.class,1);
+如果希望返回 POJO实例，则 JdbcTemplate 需要一个 RomMapper，将查询结果集 ResultSet映射成一个对象
+public User getUser(Long userId){
+        String sql = "select * from user where user_id=? ";
+        User user = this.jdbcTemplate.queryForObject(sql, new RowMapper<User>() {
+            @Override
+            public User mapRow(ResultSet resultSet, int i) throws SQLException {
+                User user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setName(resultSet.getString("name"));
+                user.setDepartment_id(resultSet.getInt("department_id"));
+                return user;
+            }
+        },userId);
+        return user;
+    }
+
+通常使用 RowMapper可以被其他查询复用，最好是在 DAO创建一个内部类，然后在普通的查询中使用。
+public class UserDao{
+	static class UserRowMapper implements RowMapper<User>{
+		public User mapRow(ResultSet rs,int rowNum) throws SQLException{ ... ... }
+	}
+}
+
+如果查询期望返回的是列表，则需要使用 query 方法：
+List<User> user = jebcTemplate.query(sql,new UserRowMapper(),departmentId);
+
+JdbcTemplate允许查询结果返回一个 Map而不是 POJO，这样免去了 RowMapper的工作，数据库的字段名就是 Map的 key
+Map map = jdbcTemplate.queryForMap(sql.userId);
+输出为：{id=63,name=NewName,department_id=63,create_time=null}
+
+5.2.2 修改
+JdbcTemplate 提供 update方法来实现 SQL的修改语句，包括 新增，修改，删除，执行存过
+String sql = "update user set name=? and department_id=? wehre id=?";
+jdbcTemplate.update(sql,user.getName(),user.getDepartmentId(),user,getId());
+
+对于有自增序列的操作，需要使用 KeyHolder来放置返回的序列：
+public Integer insertUser(final User user){
+        final String sql = "insert into user(name,department_id) values(?,?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                //指出自增主键的列名
+                PreparedStatement ps = connection.prepareStatement(sql,new String[]{"id"});
+                ps.setString(1,user.getName());
+                ps.setInt(2,user.getDepartment_id());
+                return ps;
+            }
+        },keyHolder);
+        return keyHolder.getKey().intValue();
+    }
+
+5.2.3 JdbcTemplate增强
+NamedParameterJdbcTemplate继承了 JdbcTemplate，允许SQL中使用参数的名字作为占位符
+SpringBoot中，自动配置了 NamedParameterJdbcTemplate，可以注入使用。
+@Autowired
+NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+查询语句中使用 "... where department_id=:deptId" 作为查询参数，使用 :name 作为占位符。
+
+传递参数时，使用 MapSqlParameterSource 对象，传入参数：
+MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("deptId",departmentId);
+这个对象是一个类似 Map风格，包含 Key-Value，Key就是SQL中的参数名字
+
+Spring提供了 SqlParameterSource 来封装任意 JavaBean，为 NamedParameterJdbcTemplate提供参数，JavaBean的属性名将作为SQL的参数名：
+SqlParameterSource source = new BeanPropertySqlParameterSource(user);
+namedParameterJdbcTemplate.update(sql,source);
+
+
+5.3 BeetlSQL介绍
+吸取了 MyBatis这样的SQL集中管理的优点。
+5.3.1 BeetlSQL功能概览
+特点：全功能DAO，以SQL为中心，能自动生成大量常用的 SQL的应用。
+无需注解，大量内置SQL。数据模型支持 POJO。
+SQL模板基于Beetl实现。
+可针对单个表或视图生成POJO类和SQL模板。
+支持ORM查询功能。
+SQL写在Markdown文件中。
+可以自动将SQL文件映射为DAO接口类。
+具备Interceptor功能。
+灵活直观支持一对一，一对多，多对多映射。
+内置支持主从数据库。
+支持跨数据库平台。
+
+5.3.2 添加 Maven依赖，支持BeetlSQL
+<dependency>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>beetl-framework-starter</artifactId>
+            <version>1.1.15.RELEASE</version>
+        </dependency>
+beetl-framework-starter 会自动集成 Spring Boot 已经配置好的数据源，可参考上面的配置
+
+5.3.3 配置 BeetlSQL
+会自动读取 application.properties 的配置：
+beetlsql.sqlPath   默认存放SQL文件的根目录，位于 /resources/sql 下
+beetlsql.nameConversion=org.beetl.sql.core.DefaultNameConversion   数据库命名规则转换
+beetlsql.dev=true    向控制台输出执行时的SQL，参数，执行时间，未知等信息
+beetlsql.daoSuffix=Dao    设置启动时扫描以 指定后缀 的接口，自动管理Dao类，自动注入Dao类
+beetlsql.basePackage=com.dygstudio.testspringboot.dao   设置自动扫描Dao包的位置
+beetlsql.dbStyle=org.beetl.sql.core.db.MySqlStyle   设置数据库风格，不同数据库不同风格
+
+配置完后，在Spring的Bean中，自动可以引入 SQLManager使用完成数据库操作：
+  @Autowired
+    SQLManager sqlManager;
+
+5.3.4 SQLManager
+这是 BeetlSQL的核心类，提供了所有数据库访问操作：
+1.根据主键查找实体：sqlManager.unique(User.class,pk);
+2.获取单个实体：sqlManager.single(User.class,pk);
+3.添加一个实体：sqlManager.insert(user)。如果实体ID是自增的，想要获取自增主键，传入 true参数 sqlManager.insert(user,true);
+4.根据主键更新实体：sqlManager.undateById(user);
+5.只更新有值的实例属性：sqlManager.updateTemplateById(user);
