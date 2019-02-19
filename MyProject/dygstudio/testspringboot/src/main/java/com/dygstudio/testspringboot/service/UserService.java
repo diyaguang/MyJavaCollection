@@ -1,6 +1,9 @@
 package com.dygstudio.testspringboot.service;
 
+import com.dygstudio.testspringboot.entity.User;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author: diyaguang
@@ -9,5 +12,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface UserService {
-
+    public List<User> getUserByName(String name);
 }

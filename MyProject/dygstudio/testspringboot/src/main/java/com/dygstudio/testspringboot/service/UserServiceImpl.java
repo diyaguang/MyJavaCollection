@@ -1,9 +1,12 @@
 package com.dygstudio.testspringboot.service;
 
 import com.dygstudio.testspringboot.dao.UserDao;
-import org.beetl.sql.core.SQLManager;
+import com.dygstudio.testspringboot.dao.UserDaoImpl;
+import com.dygstudio.testspringboot.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author: diyaguang
@@ -13,8 +16,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    UserDao userDao;
+    UserDaoImpl userDaoImpl;
 
     @Autowired
-    SQLManager sqlManager;
+    UserDao userDao;
+
+    public List<User> getUserByName(String name){
+        User query = new User();
+        query.setName(name);
+        List<User> list = userDao.selectSample(query);
+        return list;
+    }
 }

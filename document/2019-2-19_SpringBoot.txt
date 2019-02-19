@@ -1,0 +1,149 @@
+5.3.5 使用 SQL文件
+复杂的SQL，使用 md文件格式，在 /resources/sql 目录下
+
+比如：user.md 文件
+selectSample
+===
+*一个简单的查询例子
+*根据用户名查询用户
+	select * from user where 1=1
+	@if(!isEmpty(name)){
+	and name = #name#
+	@}
+说明：包含了一个简单查询，根据name变量来确定SQL语句
+采用 md格式，“===” 上面是SQL语句在文件中的唯一标识，下面是SQL语句
+注释采用 “*” 开头，“===” 下面可以放多行注释
+@和回车是界定符号，可以在其中写 Beetl语句
+“#”是占位符，生成SQL语句时，占位符输出“？”，并记录位置
+isEmpty是 Beetl 的一个函数，用来判断变量是否为空或者是否不存在
+文件名约定为类名，首字母小写。
+
+使用时，可以联合文件名来引用SQL，例如 user.selectSample
+User query = new User();
+query.setName("NewName");
+List<User> list = sqlManager.select("user.selectSample",User.class,query);
+
+sqlManager会查询 resources/sql 目录下的 user.md 文件，找到对应的 selectSample 模板语句，User.class表示要将数据映射到User类上（会选择结果集与类的共同属性进行映射）。
+参数 query，包含了 name 属性，并且有值为 “NewName”，这样就会添加查询条件 “ and name=#name# ”
+
+可以向 SQL模板传入一个 Map，而不是 POJO：
+public static void queryUserByMap(SQLManager sqlManager){
+	Map paras = new HashMap();
+	paras.put("name","NewName");
+	List<User> list = sqlManager.select("user.selectSample",User.class,paras);
+}
+
+5.3.6 Mapper
+md文件中的 SQL查询，使用 sqlld 不方便维护和使用，BeetlSQL提供 Mapper功能，将 md文件的 sqlld 映射为 方法名。
+可以创建一个接口，继承 BaseMapper接口，并且添加一个 “selectSample” 方法
+@Repository
+public interface UserDao extends BaseMapper<User> {
+    public List<User> selectSample(User query);
+}
+
+在使用时，引入这个 Dao接口：
+@Autowired
+    UserDao userDao;
+ User query = new User();
+        query.setName(name);
+        List<User> list = userDao.selectSample(query);
+
+BaseMapper 是 BeetlSQL 提供的一个内置的 Dao接口，内置了多种增删改查的方法。
+Insert
+insertTemplate（只插入非空属性）
+insertBatch
+updateById
+updateTemplateById（只更新非null属性）
+deleteById
+unique（根据主键查询实体，如果没有找到，抛出 Runtime异常）
+single（根据主键查询实体，没有找到，返回 null）
+lock（根据主键使用数据库悲观锁，等于 select xxx from xxx where id=? fro update;）
+all
+allCount
+templateOne（查询符合模板的第一个实体）
+execute（执行一个 JDBC查询，在Java中提供一个SQL语句）
+executeUpdate（执行一个 Jdbc更新操作，在java中提供一个SQL语句）
+并且，BaseMapper 可以定制自己的风格
+
+5.3.7 使用实体
+按照 NameConverson指定的命名约定一个普通的 JavaBean即可。最好继承 Serializable 可序列化接口
+BeetlSQL并不要求列名能和实体的属性名一一对应，在SQL操作时，会选取列名和属性名的“交集”来操作。
+
+除了实体，还有大量查询返回额外属性，可以考虑新增java对象来映射SQL查询结果。有三种方法解决：
+1.在实体上新增属性
+2.新建一个 xxxXXXX 对象，包含用户属性和 新增的列
+3.推荐方法：继承TailBean类，有一个类似 Map结构，可以设置查询返回的额外属性到 Map中。
+
+
+5.4 SQLManager内置 CRUD
+内置API，不需要自己写 SQL，根据传入 POJO对象，来生成内置的CRUD语句。
+
+5.4.1 内置的插入API
+insert
+insertTemplate
+insertBatch
+
+5.4.2 内置的更新（删除）API
+updateById
+updateTemplateById
+updateBatchTemplateById
+updateByIdBatch
+
+5.4.3 内置的查询API
+all(Class class)
+all(Class class,int start,int size)：指定查询范围
+allCount
+template(T t)：根据模板查询，返货所有符合模板的数据
+templateOne(T t)：根据模板查询，返回一条结果，没有找到返回 null
+template(T t,int start,int size)：指定查询范围
+unique(Class class,Object pk)：根据主键查询，未找到抛出异常
+single(Class class,Object pk)：根据主键查询，未找到返回 null
+templateCount(T t)：获取符合条件的个数
+
+5.4.4 代码生成方法
+BeetlSQL 能自动生成表对应的实体、Dao操作和md文件，md文件包含了相关SQL查询
+
+genPojoCodeToConsole(String table)：根据表名生成POJO类，输出到控制台
+genSQLTemplateToConsole(String table)：生成查询条件，更新SQL语句，输出到控制台
+genPojoCode(String table,String pkg,GenConfig config)：生成POJO代码到项目工程中，pkg指定包名，GenConfig制定了生成的细节（baseClass，spaceCount，preferBigDecimal，preferDate）
+genSQLFile(String table)：生成表对应的md文件
+genAll(String pkg,GenConfig config,GenFilter filter)：生成所有POJO代码和SQL模板，GenFilter用来过滤，仅生成 user表对应的POJO，Dao，md文件。
+sqlManager.genAll("com.test",new GenConfig(),new GenFilter(){
+	public boolean accept(String tableName){
+		if(tableName.equalsIgnoreCase("user")){
+			return true;
+		}else{
+			return false;
+		}
+	}
+});
+谨慎使用 genAll，会覆盖已经生成好的 Dao和 POJO，以及md文件
+
+5.5 使用 sqlId
+5.5.1 md文件命名
+针对数据库中每一个表或视图对应的实体 POJO，都可以创建一个同名切首字母小写的文件名，放在默认的SQL目录下。SQL文件以md为扩展名，也可以sql为扩展名。通过SQLIdNameConversion接口可以自定义匹配规则
+原理：BeetlSQL会先根据数据库类型首先寻找SQL目录下是否存在与数据库同名的文件夹，如果有则先在此目录下寻找匹配的 sqlId，如果没有找到，才会在SQL目录下寻找。这样对于同一个应用支持不同库是由好处的，不同的库的SQL写到不同的目录下，根据当前使用数据库来有限寻找数据库下的md文件。
+
+5.5.2 md文件构成
+SQL片段通过md的“===”分开，通过 md 的“*”号来表示这是注释
+SQL语句可以任意长，使用“ ···sql ” 来标注SQL内容，md编辑器会识别片段，并高亮显示SQL语法。
+
+5.5.3 调用 sqlId
+通过 sqlManager 或者 Mapper 来调用
+
+查询类接口
+public List select(String sqlId,Class clazz,Map/Object paras)
+public List select(String dqlId,Class clazz)
+public List select(String sqlId,Class clazz,Map/Object paras,int start,int size)
+public T selectSingle(String id,Map/Object paras,Class target)   将对应的唯一值映射成指定的 target对象
+public T selectUnique(String id,Map/Object paras,Class target)   未找到，抛异常
+public Integer intValue(String id,Map/Object paras)   查询结果映射为 Integer，再找不到返回 null，还有更多的方法。
+
+插入方法
+public int insert(String sqlId,Object paras,KeyHolder holder)   插入并返回主键，主键id由paras对象指定，调用此方法，数据库必须主键自增
+public int insert(String sqlId,Object paras,KeyHolder holder,String keyName)
+public int insert(String sqlId,Map paras,KeyHolder holder,String keyName)
+
+
+
+
