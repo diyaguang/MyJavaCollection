@@ -1,0 +1,262 @@
+5.5.3 调用 sqlId
+通过 sqlManager 或者 Mapper 来调用
+
+查询类接口
+public List select(String sqlId,Class clazz,Map/Object paras)
+public List select(String dqlId,Class clazz)
+public List select(String sqlId,Class clazz,Map/Object paras,int start,int size)
+public T selectSingle(String id,Map/Object paras,Class target)   将对应的唯一值映射成指定的 target对象
+public T selectUnique(String id,Map/Object paras,Class target)   未找到，抛异常
+public Integer intValue(String id,Map/Object paras)   查询结果映射为 Integer，再找不到返回 null，还有更多的方法。
+
+插入方法
+public int insert(String sqlId,Object paras,KeyHolder holder)   插入并返回主键，主键id由paras对象指定，调用此方法，数据库必须主键自增
+public int insert(String sqlId,Object paras,KeyHolder holder,String keyName)  主键由 keyName指定，
+public int insert(String sqlId,Map paras,KeyHolder holder,String keyName)
+
+更新方法
+public int update(String sqlId,Map/Object obj)
+public int[] updateBatch(String sqlId,List<?> list)
+public int[] updateBatch(String sqlId,Map[] maps)
+
+
+5.5.4 翻页查询
+public void pageQuery(String sqlId,Class clazz,PageQuery query)
+BeetlSQL提供了 一个 PageQuery对象，用于 SpringBoot的翻页查询，可以提供参数，查询范围，培训。
+BeetlSQL嘉定有 sqlId 和 sqlId$count 两个 sqlId，用来翻页和查询结果总数
+
+queryNewUser
+===
+select * from user order by id desc;
+
+queryNewUser$count
+===
+select count(1) from user
+
+一个SQL也可是，需要使用 page函数或 pageTag标签
+queryNewUser
+===
+select
+@pageTag
+a.*,b.name role_name
+@}
+from user a left join b ...
+
+如果字段较少，可以使用 page函数进行分页
+
+具体翻页范例：
+PageQuery query = new PageQuery();
+query.setParas(xxxx);
+sql.pageQuery("user.queryNewUser",User.class,query);
+使用查询结果
+query.getTotalPage()
+query.getTotalRow()
+query.getPageNumber()
+query.getList();
+
+常用PageQuery方法
+setParas(Object paras)
+setPara(String key,Object value)
+setPageSize
+setPageNumber
+setOrderBy：设置排序方式，如 “id desc”
+
+跨数据库的支持：
+对于使用了一个 SQL语句 + page函数 的统计方式，不应该在SQL语句中包含排序，因为大部分数据库都不支持。因为在查询总数中包含了 order by 语句，会报错。
+如果要使用，建议使用 PageQuery，该对象中有 order by 属性，可以用于排序，而不是放在SQL语句中。
+BeetlSQL 也提供了 标签函数 pageIgnoreTag，可以用在翻页查询中，当用用统计总数是，会忽略标签体内容。
+select  page("*") from xxx
+@pageIgnoreTag{
+	order by id
+@}
+
+5.5.5 TailBean
+查询结果集映射到 POJO，可以为复杂的结果集专门写一个 POJO。可以在实体对象上添加额外属性来保存映射。BeetlSQL也提供查询结果映射到 Map上。
+BeetlSQL 提供了 TailBean类，POJO类来继承此类，SQL查询结果集映射不到的字段将会放到此类中，称为混合模型，可以通过 get(xxx) 来获取其值：
+public class User extends TailBean{
+	....
+}
+获取：user.get("departmentName");
+还可以在 user 对象中创建一个 getDepatmentName 方法，内部调用 get 来获取对应的值。
+
+5.5.6 ORM查询
+BeetlSQL 关系映射在 SQL语句中，通过 orm.single，orm.many，orm.lazySingle，orm.lazyMany 函数进行声明。
+会根据这些关系完成关系映射，完成ORM查询只是在主查询完毕后，发出的一次或者多次查询。
+函数可以用在 SQL语句的任何地方，最好放在头部或尾部
+使用 关系函数有两种方式：
+1.使用模板方式查询关系对象：orm.single({"departmentId","id"},"Department")
+第一个参数为关系映射，SQL查询结果的属性，对应关系表的查询属性。BeetlSQL会根据关系发起一个 template 查询，映射的结果集放在第二个参数类中
+2.使用 sqlId 来查询关系对象：orm.single({"departmentId","id"},"user.selectDepartment","Department")
+第一个参数为映射关系，第二个参数时SQL查询id，映射的结果集放在第第三个参数类中
+
+lazy意味着，在调用的时候再加载。BeetlSQL会再用一个数据库连接去查询。业务代码确定要用，建议不适用 lazy方式，性能会差。
+
+关系查询对象均放到 TailBean中，名称以小写类名开头：
+User user = sqlManager.select("user.selectUserAndDepartment",User.class,paras);
+Department dept = user.get("department")
+
+例：
+在 user.md 文件中：
+selectUserAndDepartment
+===
+select * from user where user_id=#userId#
+@ orm.single({"departmentId":"id"},"Department")
+@ orm.many({"id":"userId"},"user.selectRole","Role");
+
+user.selectRole
+===
+select r.* from user_role ur left join role r on ur.role_id=r.id
+where ur.user_id=#userId#
+
+在Java代码中使用：
+User user = sqlManager.select("user.selectUserAndDepartment",User.class,paras);
+Department dept = user.get("department");
+List<Role> roles = user.get("role");
+
+BeetlSQL 也支持通过在 POJO上联合使用注解 @OrmQuery 和 OrmCondition来完成ORM查询。
+
+5.5.7 其他API
+直接执行SQL模板语句：
+public List execute(String sqlTemplate,Class clazz,Object/Map paras)
+public int executeUpdate(String sqlTemplate,Object/Map paras)
+例：List list = sqlManager.execute("select * from user where name=#name#",User.class,paras)
+
+也可以使用 SQLReady 直接执行已经构建好的 JDBC SQL，SQLReady对象包含了SQL和参数
+public List execute(SQLReady p,Class clazz)
+public int executeUpdate(SQLReady p)
+public PageQuery execute(SQLReady p,Class clazz,PageQuery pageQuery)
+
+SQLReady ready = new SQLReady("update user set age=?",age);
+sqlManager.executeUpdate(ready);
+
+PageQuery query = new PageQuery(1,10);
+PageQuery page = sqlManager.execute(new SQLReady("select * from user"),User.class);
+
+
+5.5.8 Mapper详解
+另一个对数据库的主要操作，支持 将 SQL 文件映射到一个 interface 中。
+public interface UserDao extends BaseMapper<User>
+int getCount()  #使用 user.getCount语句
+void setUserStatus(Map paras)  #使用 user.setUserStatus语句，更新用户状态
+void setUserAnotherStatus(User user)
+User findById(Integer id)    #使用 user.findById
+User findByIdAndStatus(Integer id,Integer status)
+void queryNewUser(PageQuery query);   #翻页查询，使用 user.queryNewUser，结果在 query对象中
+@Sql(value="update user set age=? where id=?")   #使用 sqlReady
+void updateAge(int age,int id);
+@Sql(value="select name from user")    #使用 sqlReady，并返回字符串
+List<String> allNames
+
+说明：
+BaseMapper的一些公用方法都可以使用。
+Interface中方法名和SQL文件中的SQL片段对应。
+方法参数可以使Object或Map，也可以使用@Param注解来标注。
+public void setUserStatus(Map paras,@Param("name") String name);
+
+BetlSQL 会根据方法对应的SQL语句解析开头，select开头就是select操作。如果模板不是以这些关键字开头，需要使用 @SqlStatement注解
+@SqlStatement(type=SqlStatementType.INSERT)
+public KeyHolder newUser(User user); 
+
+对于 Mapper的查询，会将结果映射到返回值上：
+返回值与查询结果对应。
+如果返回值是List或实体集合，不需要泛型，如果其他类型，需要使用泛型说明。
+翻页查询PageQuery默认返回实体本身，如果返回其他类型，需要使用泛型说明
+
+
+5.6 BeetlSQL 的其他功能
+5.6.1 常用函数和标签
+在SQL模板中可使用常用函数：
+isEmpty  判断变量是否存在
+print    println变量输出
+debug  将变量值输出到控制台
+text   占位符中输出变量对应的文本
+join    用逗号连接数组或集合，通常用于 in 操作，select *from user where status in (#join(ids)#)
+
+use    可以重用当前SQL文件的一段模板
+condition
+====
+xxxxxx
+selectUser
+===
+select * from user #use("condition")#  这样可以重复使用
+还可以传入参数到片段 select * from user #use("condition",{'paral':para})#
+还可以使用 globalUse，调用其他文件的SQL片段 select * from user where #globalUse("share.accessControl")#
+
+trim   删除标签内的前后缀，默认不传参数，删除的是标签体最后的逗号
+updateStatus
+===
+update user set
+@trim(){
+	@if(!isEmpty(age){
+		age=#age#,
+	@} if(!isEmpty(status)){
+		status= #status#,
+	@}
+	@)
+@}
+where id=#id#
+
+pageTag   用于对SQL进行翻页，是的在求总数时候输出成 count(1)
+page 功能同上   select #page("*")# from user
+
+5.6.2 主键设置
+BeetlSQL 支持三种主键
+1.自增主键，@AutoID，作用于主键字段或 getter方法上，表示对应数据库的自增主键列，如果是MySQL，且字段名是id，则可以省略
+2.序列主键，@SqlID(name="seqname")，作用于主键字段或 getter方法上，对应数据库序列名字
+3.程序赋值主键，@AssignID，表示主键是程序赋值，也支持某个算法交给BeetlSQL 自动赋值，例如 snowflake算法
+@AssignId("simple")
+public long getId(){ ... }
+其中，simple对应于 BeetlSQL内置的 Snowflake算法，当调用insert方法后，BeetlSQL将自动按照 Snowflake赋值。可以自定义算法，并添加到SQLManager中：
+sqlManager.addIdAutonGen("yourName",new IDAutoGen(){
+	public T nextId(String params){
+		return ... ...
+	}
+})
+
+@AutoID 和@SeqID，可以叠加使用，不同数据库Style只关心自己支持的注解。
+
+BeetlSQL支持复合注解，这样主键就是其对象本身。
+User key = new User();
+key.setId1();
+key.setId2();
+User user = sqlManager.unique(key);
+
+5.6.3 BeetlSQL注解
+@InsertLgnore：内置插入的时候忽略此属性
+@UpdateLgnore：更新时忽略此属性
+@EnumMapping：如果属性是美剧，可以通过此注解来指定如何将数据库的值转为美剧
+@Table：指明数据库表名和Java类存在对应关系
+@SqlResource：用在Mapper接口上，说明 md文件的位置
+
+5.6.4 NameConversion
+UnderlinedNameConversion：数据库和列名全部小写，删除下划线，采用Java驼峰命名  SYS_USER => SysUser
+DefaultNameConversion：不做任何变化
+JPA2NameConversion：支持属性上使用 JPA注解，可以传入一个 NameConversion，作为默认命名转化类
+
+5.6.5 锁
+BeetlSQL 支持悲观锁和乐观锁
+悲观锁： public <T> T lock(Class<T> clazz,Object pk)  或者 BaseMapper中的API：T lock(Object key)
+这两种方法都相当于向数据库发起了一个 行级锁查询：select * from table where id=? fro update
+
+API返回意味获得了悲观锁，如果没有获得，则一直处于等待状态。
+悲观锁的释放实在实务结束后，其他环境请确认是否在实务环境下 调用的 lock 方法
+
+BeetlSQL在实体属性上使用 @Version来提供乐观锁功能，此视图属性必须是 Integer或者Long
+public class Credit implements Serializable{
+	private Integer id;
+	@Version
+	private integer version;
+}
+当调用内置的 updateById或者 updateTemplateById时，被@Version注解的字段将作为 where条件的一部分
+更新失败，updateById方法会返回0，数据已被其他应用更改了，而且版本号增加了。
+如果方法返回1，表示更新成功，同时版本号递增。
+
+
+
+第六章 Spring Data JPA
+
+6.1 集成 Spring Data JPA
+6.1.1 集成数据源
+
+
+

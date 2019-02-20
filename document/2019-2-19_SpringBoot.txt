@@ -128,21 +128,7 @@ sqlManager.genAll("com.test",new GenConfig(),new GenFilter(){
 SQL片段通过md的“===”分开，通过 md 的“*”号来表示这是注释
 SQL语句可以任意长，使用“ ···sql ” 来标注SQL内容，md编辑器会识别片段，并高亮显示SQL语法。
 
-5.5.3 调用 sqlId
-通过 sqlManager 或者 Mapper 来调用
 
-查询类接口
-public List select(String sqlId,Class clazz,Map/Object paras)
-public List select(String dqlId,Class clazz)
-public List select(String sqlId,Class clazz,Map/Object paras,int start,int size)
-public T selectSingle(String id,Map/Object paras,Class target)   将对应的唯一值映射成指定的 target对象
-public T selectUnique(String id,Map/Object paras,Class target)   未找到，抛异常
-public Integer intValue(String id,Map/Object paras)   查询结果映射为 Integer，再找不到返回 null，还有更多的方法。
-
-插入方法
-public int insert(String sqlId,Object paras,KeyHolder holder)   插入并返回主键，主键id由paras对象指定，调用此方法，数据库必须主键自增
-public int insert(String sqlId,Object paras,KeyHolder holder,String keyName)
-public int insert(String sqlId,Map paras,KeyHolder holder,String keyName)
 
 
 
