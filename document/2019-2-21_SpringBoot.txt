@@ -1,0 +1,102 @@
+第六章 Spring Data JPA
+
+6.1 集成 Spring Data JPA
+6.1.1 集成数据源
+集成 Spring Data JPA，需要在pom文件中添加相关依赖 spring-boot-starter-data-jpa 
+<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+6.1.2 配置 JPA支持
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.show-sql=true
+
+6.1.3 创建 Entity
+JPA以Entity为中心，实体类必须使用 @Entity来注解
+@Id 映射主键字段
+@Column  属性对应到数据库的一个字段，且列名为 name 指定的名称
+@ManyToOne  其中 Many指的是定义次属性的实体，One指的是此注解所注解的属性。
+@JoinColumn  与ManyToOne搭配使用，说明外键字段
+@OneToMany  其中 one指的是此注解所在的实体，Many是此注解所注解的属性。必须使用 mappedBy，声明Many端的对象
+说明：对于对象中的结合，使用 Set，而不是 List，Set结构是存放不同元素的集合，也是JPA要求的。
+
+6.1.4 简化 Entity
+去掉了关系映射的相关配置，去掉了数据库外键设置。
+
+6.2 Repository
+抽象了对数据库和NoSQL的操作
+CrudRepository：提供了基本的增删改查，批量操作接口
+PagingAndSortingRepository：集成 CrudRepository，提供了附加的分页查询功能
+JpaRepository：专门用于JPA，提供了更多丰富的数据库访问接口
+SpringData可以用来操作数据库和NoSQL库，但是有优点，也有缺点
+
+6.2.1 CrudReppsitory 接口
+实现 Entity的简单增删改查功能。
+public interface UserRepository extends CrudRepository<User,Integer>{ ... }
+
+6.2.2 PagingAndSortingRepository 接口
+增加了翻页查找和排序相关的操作
+public interface PagingAndSortingRepository<T,ID extends Serializable> extends CrudRepository<T,ID>{
+	Iterable<T> findAll(Sort sort);
+	Page<T> findAll(Pageable pageable);
+}
+
+6.2.3 JpaRepository 接口
+提供了更多实用功能，以及通过 Example 对象进行查询
+
+6.2.4 持久化 Entity
+定义接口，继承 JpaRepository
+public interface UserRepository extends JpaRepository<User,String> {
+Spring Data提供了另外一个判断实体是否是“新的实体”的方法 --Entity实现 Persistable 接口的 isNew方法
+Spring Data JPA 默认采用 Hibernate实现，但是打印SQL并不包含参数信息，如果需要，可以使用 第三方工具 log4jdbc 来完成
+
+6.2.5 Sort
+用来指示排序，可以传入一个属性名列表，默认采用升序排列。
+Sort sort = new Sort("id");
+return userDao.findAll(sort);
+其中有 Direction.ASC 和 Direction.DESC 两类。还可以传入一个 Order 对象，可以通过 Order静态方法来创建。
+
+6.2.6 Pageable 和 Page 接口
+用于构造分页查询，PageRequest是其实现类，可以通过工厂方法创建。
+public static PageRequest of(int page,int size)
+public static PageRequest of(int page,int size,Sort sort)
+public static PageRequest of(int page,int size,Direction direction,String... properties)
+
+其中 page总是从0开始，size表示期望行数。
+Spring Data 翻页查询总是返回 Page对象，Page对象提供了常用的方法：
+int getTotalPages() 总页数
+long getTotalElements()  返回总数
+List getContent()  返回此次查询的结果集
+
+例：
+  public List<User> getAllUser(int page,int size){
+        PageRequest pageRequest = PageRequest.of(page,size);
+        Page<User> pageObject = userRepository.findAll(pageRequest);
+        int totalPage = pageObject.getTotalPages();
+        long count = pageObject.getTotalElements();
+        return pageObject.getContent();
+    }
+
+6.2.7 基于方法名字查询
+通过查询的方法名和参数来自动构造一个 JPA OQL 查询
+例如添加 public User findByName(String name)
+规则：
+1.方法名通常包含多个实体属性用于查询，属性之间可以使用 AND和 OR 连接，也支持 Between，LessThan，GreaterThan，Like
+2.方法名可以以 findBy，getBy，queryBy 开头
+3.查询结果可以排序，方法名包含 OrderBy+属性+ASC(DESC)
+4.可以通过 Top，First 来限定查询结果集
+5.一些特殊的参数可以出现在参数列表里，比如 Pageable，Sort
+
+例：findByLastnameOrderByFirstnameAsc,
+findByLastname,
+findFirst10ByLastname,
+findByLstnameAndFirstname,
+findDistinctPeopleByLastnameOrFirstname,
+findByuNameLike
+
+
+
+
+
+

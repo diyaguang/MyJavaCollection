@@ -58,9 +58,9 @@ public class UserDaoImpl {
             @Override
             public User mapRow(ResultSet resultSet, int i) throws SQLException {
                 User user = new User();
-                user.setId(resultSet.getInt("id"));
+                user.setId(resultSet.getString("id"));
                 user.setName(resultSet.getString("name"));
-                user.setDepartment_id(resultSet.getInt("department_id"));
+                //user.setDepartment_id(resultSet.getInt("department_id"));
                 return user;
             }
         },userId);
@@ -86,7 +86,7 @@ public class UserDaoImpl {
                 //指出自增主键的列名
                 PreparedStatement ps = connection.prepareStatement(sql,new String[]{"id"});
                 ps.setString(1,user.getName());
-                ps.setInt(2,user.getDepartment_id());
+               //ps.setInt(2,user.getDepartment_id());
                 return ps;
             }
         },keyHolder);

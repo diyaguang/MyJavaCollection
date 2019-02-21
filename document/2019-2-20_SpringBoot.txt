@@ -250,13 +250,3 @@ public class Credit implements Serializable{
 当调用内置的 updateById或者 updateTemplateById时，被@Version注解的字段将作为 where条件的一部分
 更新失败，updateById方法会返回0，数据已被其他应用更改了，而且版本号增加了。
 如果方法返回1，表示更新成功，同时版本号递增。
-
-
-
-第六章 Spring Data JPA
-
-6.1 集成 Spring Data JPA
-6.1.1 集成数据源
-
-
-

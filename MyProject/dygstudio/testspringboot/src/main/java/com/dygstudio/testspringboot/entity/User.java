@@ -2,6 +2,7 @@ package com.dygstudio.testspringboot.entity;
 
 import org.springframework.stereotype.Component;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,17 +12,32 @@ import java.util.Date;
  * @description: com.dygstudio.testspringboot.entity
  */
 @Component
+@Entity
 public class User implements Serializable {
-    private Integer id;
+    @Id
+    private String id;
+
+    @Column
     private String name;
-    private Integer department_id;
+
+    @Column(name="create_time")
     private Date createTime;
 
-    public Integer getId() {
+    @ManyToOne
+    @JoinColumn(name="department_id")
+    Department department;
+
+    public User(){
+        //
+    }
+
+
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -41,13 +57,11 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public Integer getDepartment_id() {
-        return department_id;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setDepartment_id(Integer department_id) {
-        this.department_id = department_id;
+    public void setDepartment(Department department) {
+        this.department = department;
     }
-
-
 }
