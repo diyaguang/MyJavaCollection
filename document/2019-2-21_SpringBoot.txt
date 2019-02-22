@@ -77,26 +77,3 @@ List getContent()  返回此次查询的结果集
         long count = pageObject.getTotalElements();
         return pageObject.getContent();
     }
-
-6.2.7 基于方法名字查询
-通过查询的方法名和参数来自动构造一个 JPA OQL 查询
-例如添加 public User findByName(String name)
-规则：
-1.方法名通常包含多个实体属性用于查询，属性之间可以使用 AND和 OR 连接，也支持 Between，LessThan，GreaterThan，Like
-2.方法名可以以 findBy，getBy，queryBy 开头
-3.查询结果可以排序，方法名包含 OrderBy+属性+ASC(DESC)
-4.可以通过 Top，First 来限定查询结果集
-5.一些特殊的参数可以出现在参数列表里，比如 Pageable，Sort
-
-例：findByLastnameOrderByFirstnameAsc,
-findByLastname,
-findFirst10ByLastname,
-findByLstnameAndFirstname,
-findDistinctPeopleByLastnameOrFirstname,
-findByuNameLike
-
-
-
-
-
-

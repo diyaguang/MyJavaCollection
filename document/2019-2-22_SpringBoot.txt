@@ -1,0 +1,240 @@
+6.2.7 基于方法名字查询
+通过查询的方法名和参数来自动构造一个 JPA OQL 查询
+例如添加 public User findByName(String name)
+规则：
+1.方法名通常包含多个实体属性用于查询，属性之间可以使用 AND和 OR 连接，也支持 Between，LessThan，GreaterThan，Like
+2.方法名可以以 findBy，getBy，queryBy 开头
+3.查询结果可以排序，方法名包含 OrderBy+属性+ASC(DESC)
+4.可以通过 Top，First 来限定查询结果集
+5.一些特殊的参数可以出现在参数列表里，比如 Pageable，Sort
+
+例：findByLastnameOrderByFirstnameAsc,
+findByLastname,
+findFirst10ByLastname,
+findByLstnameAndFirstname,
+findDistinctPeopleByLastnameOrFirstname,
+findByuNameLike
+
+常用的 Spring Data 支持的关键字：
+And，Or，Between，LessThan，LessThanEqual，GreaterThan，GreaterThanEqual，After，Before，IsNull，IsNotNull/NotNull，OrderBy，Not，In，NotIn，True，False，IgnoreCase，Like，NotLike
+
+6.2.8 @Query查询
+注解 @Query允许在方法上使用 JPQL
+@Query("select u from User u where u.name=?1 and u.department.id=?2")
+public User findUser(String name,Integer departmentId)
+
+还可以使用标准的SQL，使用 @Query的 nativeQuery属性，设置为 true
+@Query(value = "select * from user where name=?1 and department_id=?2",nativeQuery = true)
+public User nativeQuery(String name,String departmentId);
+
+如果方法返回结果集并非 Entity，可以使用 Object[]数组代替
+@Query(value = "select department_id,count(*) from user group by depatment_id",nativeQuery = true)
+    public List<Object[]> queryUserCount();
+这个查询返回数组，对象类型依赖于查询结果，数组中的每个元素的类型要小心处理
+
+查询可以使用 Pageable 和 Sort 来对协助 JPQL 完成翻页和排序
+@Query(value = "select u from User u where u.department.id=?1")
+    public Page<User> queryUsers(String departmentId, Pageable page);
+
+ @Query还允许使用SQL更新、删除 语句，必须搭配 @Modifying 使用
+ @Modifying
+    @Query("update User u set u.name=?1  where u.id=?2")
+    public int updateName(String name,String id);
+
+6.2.9 使用 JPA Query
+Repository 类似 BeetlSQL中的 BaseMapper接口，提供了内置查询或注解查询
+底层使用 EntityManager 来完成查询，EntityManager是JPA提供的数据库访问接口，类似BeetlSQL 的 SQLManager
+会在复杂的查询中，使用 EntityManager，弥补 Repsoitory的不足。
+EntityManager提供了实体操作的所有接口，可以通过自动注入方式注入到 Spring 管理的 Bean中，通常是由 @Service 注解的业务处理类上。
+ @Autowired
+    EntityManager em;
+
+ EntityManager提供了 createQuery(String jpqlString) 来创建 Query对象，Query对象提供了数据的查询和翻页功能
+ 复杂动态翻页查询结构：
+ 1.构造一个 JPQL，包含条件查询部分，将复用这个 JPQA作为求总数和翻页查询的基础JPQL
+ 2.用基础的 JPQL构造一个查询复合条件的总数，调用 Query.getSingleresult 查询出满足条件的总数
+ 3.用基础的 JPQL构造结果查询，并调用 Query.getResultList 查询出结果集
+ 4.组装成一个 Spring Data 的 Page实例，返回
+
+ public Page<User> queryUser2(String departmentId, Pageable page){
+        StringBuilder baseJpql = new StringBuilder("from User u where 1=1");
+        Map<String,Object> paras = new HashMap<String,Object>();
+        if(departmentId!=null){
+            baseJpql.append("and u.department.id=:deptId");
+            paras.put("deptId",departmentId);
+        }
+        long count = getQueryCount(baseJpql,paras);
+        if(count == 0){
+            return new PageImpl<>(Collections.emptyList(),page,0);
+        }
+        List list = getQueryResult(baseJpql,paras,page);
+        Page ret = new PageImpl(list,page,count);
+        return ret;
+    }
+
+    private Long getQueryCount(StringBuilder baseJpql,Map<String,Object> paras){
+        Query query = em.createQuery("select count(1)"+baseJpql.toString());
+        setQueryParameter(query,paras);
+        Number number = (Number)query.getSingleResult();
+        return number.longValue();
+    }
+
+    private void setQueryParameter(Query query,Map<String,Object> paras){
+        for(Map.Entry<String,Object> entry:paras.entrySet()){
+            query.setParameter(entry.getKey(),entry.getValue());
+        }
+    }
+
+    private List getQueryResult(StringBuilder baseJpql,Map<String,Object> paras,Pageable page){
+        Query query = em.createQuery("select u "+baseJpql.toString());
+        setQueryParameter(query,paras);
+        query.setFirstResult((page.getPageNumber()-1)*page.getPageSize());
+        query.setMaxResults(page.getPageNumber());
+        List list = query.getResultList();
+        return list;
+    }
+
+
+
+ 6.2.10 Example 查询
+ 使用实例对象作为查询构造的条件，ExampleMatcher 提供了模式查询。
+ 通过 实体创建 Example对象，通过 Example对象来构造 JPQL，通过 Example.of 构建查询。
+  public List<User> getByExample(String name){
+        User user = new User();
+        Department dept = new Department();
+        user.setName(name);
+        dept.setId(1);
+        user.setDepartment(dept);
+        Example<User> example = Example.of(user);
+        List<User> list = userRepository.findAll(example);
+        return list;
+    }
+
+大部分查询都非完全匹配查询，ExampleMatcher提供了更多的条件指定。
+ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("name",GenericPropertyMatchers.startsWith().ignoreCase());
+Example<User> example = Example.of(user,matcher);
+
+
+
+第七章 Spring Boot 配置
+Spring之前会存在多个配置文件，应用本身也需要多个配置文件，还需要编写代码去读取这些配置文件的参数。
+SpringBoot简化了Spring配置的管理和读取，只需要一个 application.properties，并提供多种读取配置文件的方式。
+
+7.1 配置 SpringBoot
+默认 8080端口，Web上下文是“/” 可以通过在 application.properties 中进行重新配置
+
+7.1.1 服务器配置
+配置端口：server.port=9090       
+或启动时：java -jar bootsample.jar --server.port=9000   
+或传入虚拟机系统属性：java -Dserver.port=9000 -jar bootsample.jar
+
+配置应用程序上下文路径：server.servlet.Path=/config
+
+常用配置：
+server.address：服务器IP地址绑定
+server.session.timeout：会话过期时间，单位 秒
+server.error.path：服务器出错后的处理路径/error
+server.servlet.contextpath：SpringBoot应用上下文
+server.port：应用监听端口
+
+7.1.2 使用其他Web服务器
+默认使用 Tomcat，同时支持 jetty，Undertow。更换只需要引用相应的 starter
+根据数据统计表明：Undertow的性能要优于 Tomcat 和 Jetty
+ <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jetty</artifactId>
+        </dependency>
+排除 tomcat 的引用
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+在 application.properties 文件中包含了 server.tomcat.* 的相关配置：
+server.tomcat.accesslog.enable=false：打开tomcat访问日志
+server.tomcat.accesslog.directory=logs：访问日志的路径
+server.tomcat.accept-count=：允许HTTP请求缓存到请求队列的最大个数，默认不限制
+server.tomcat.max-connections=：最大连接数，默认不限制，到达最大后，剩下的链接会保存到请求缓存队列里
+server.tomcat.max-threads=：最大工作线程
+server.tomcat.max-http-post-size=：POST内容最大长度，默认不限制
+
+后续 undertow，jeety 服务器相关配置（略） P194
+
+
+7.1.3 配置启动信息
+可以在 classpath 中增加 banner.txt 文件，现实启动SpringBoot 的自己的输出信息。文件放在 resources 目录下，也可以设置 banner.gif(png/jpg)，将自动转为ASCII字符。
+banner.charset=UTF-8
+banner.location=classpath:banner.txt
+banner.image.location=classpath:banner.gif
+banner.image.with=
+banner.image.height=
+banner.image.margin=2 ：图片与左边的距离，默认为2字符
+
+
+7.1.4 配置浏览器显示 ico
+在 resources目录下新建一个 static目录，再在其中创建一个 images目录，放入项目的 favicon.ico 文件，添加样式：
+<link rel="shortcut icon" href="/image/apple.ico">
+
+7.2 日志配置
+SpringBoot默认使用 LogBack 作为日志的实现，使用 apache Commons Logging 作为日志接口
+private Log log = LogFactory.getLog(HelloworldController.class);
+内容输出：日期时间+日志级别+进程ID+分隔符号+[线程名称]+类名+消息体
+日志级别：ERROR，WARN，INFO，DEBUG，TRACE
+
+默认之后INFO以上级别才会输出打印到控制台，可以自己定义输出级别：
+logging.level.root = info
+logging.level.org=warn
+logging.level.com.youcorp=debug
+
+SpringBoot 默认并未输出日志到文件，可进行配置：
+logging.path=my.log  或 logging.path=e:/temp/log
+
+当日志文件达到 10M后，会自动生成新日志文件
+
+SpringBoot可以对控制台日志输出和文件输出进行格式控制：
+logging.pattern.console=%level %date{HH:mm:ss} %logger{20}.%M %L :%m%n
+logging.pattern.file=%level %date{ISO8601} [%thread] %logger{20}.%M %L :%m%n
+其中 %logger 用于输出 Logger的名字，包名+类名，%M 日志发生时方法名字，%L 日志调用所在代码行，%m 日志消息，%n 日志换行
+
+可以通过在 resources目录使用 logback.xml logback-spring.xml 来对 Logback进行更详细的配置
+
+SpringBoot支持多种日志框架 ，Log4J2,Logback,Java Util Logging 等，可以替换内置的 logback
+
+
+7.3 读取应用配置
+SpringBoot有三种读取方式
+1.通用的 Enviroment类
+2.通过 @Value 注解，自动注入属性值
+3.将一组属性自动注入到一个配置类中
+
+7.3.1 Environment
+通用的读取运行时环境变量的类，可以读取 application.properties，命令行输入参数，系统属性，操作系统环境变量 等
+Environment 是 Spring Boot 最早初始化的一个类，用在 Spring 应用的任何地方
+通过 Spring 容器自动注入：
+@Autowired private Environment env;
+
+env.getProperty("user.dir")：返回程序运行目录，user.dir是系统属性
+env.getProperty("user.home")：返回程序的用户的 home目录
+env.getProperty("JAVA_HOME")：读取设置的环境变量（不区分大小写）
+env.getProperty("server.port")：读取配置文件中 server.port 配置
+
+7.3.2 @Value
+直接通过 @Value 注解注入一个配置信息到 Spring管理的 Bean中
+public @ResponseBody String value(@Value("${server.port}") int port){
+	....
+}
+注：@Value并不能在任何 Spring管理的 Bean中使用，因为本身是通过 AutowiredAnnotationBeanPostProcessor实现的，是 BeanPostProcessor接口的实现类，因此任何 BeanPostProcessor 和 BeanFactoryPostProcessor 的子类都不能使用 @Value 来注入属性，那时候 @Value还没有被处理
+
+@Value注解支持 SpEL表达式，如果属性不存在，可以提供一个默认值
+@Value("${cache.enable:false}")
+private boolean isCache;
+
+7.3.3 @ConfigurationProperties
+
+

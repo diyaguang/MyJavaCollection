@@ -2,22 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="45a1b8c8-b61b-4e29-b8ea-78041836af5d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/dao/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dygstudio.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/dao/UserDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/dao/UserDaoImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/entity/Department.java" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/entity/Department.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/dao/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/dao/UserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/service/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/dao/UserDaoImpl$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/dao/UserDaoImpl$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/dao/UserDaoImpl$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/dao/UserDaoImpl$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/entity/Department.class" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/entity/Department.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/entity/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/entity/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/service/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/service/UserServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../document/2019-2-20_SpringBoot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../document/2019-2-20_SpringBoot.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../document/2019-2-21_SpringBoot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../document/2019-2-21_SpringBoot.txt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -32,65 +22,49 @@
     <option name="MAKE_PROJECT_ON_SAVE" value="true" />
     <option name="PARALLEL_COMPILATION" value="true" />
   </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-252319376">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.5" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="JAVA" value="2" />
+          <entry key="XML" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="JAVA" value="2045" />
+          <entry key="XML" value="140" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/service/UserServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="841">
-              <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
+            <state relative-caret-position="667">
+              <caret line="110" column="20" selection-start-line="110" selection-start-column="20" selection-end-line="110" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#2313#2328#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/entity/User.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/testspringboot/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="461">
-              <caret line="35" column="23" selection-start-line="35" selection-start-column="23" selection-end-line="35" selection-end-column="23" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/dao/UserDao.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/dao/UserDaoImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="431">
-              <caret line="60" column="47" selection-start-line="60" selection-start-column="47" selection-end-line="60" selection-end-column="47" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/entity/Department.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="23" column="11" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#590#596#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="742">
+              <caret line="65" column="21" selection-start-line="65" selection-start-column="21" selection-end-line="65" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -98,8 +72,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/dao/UserRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="16" selection-start-line="16" selection-end-line="16" />
+            <state relative-caret-position="627">
+              <caret line="33" column="14" selection-start-line="33" selection-start-column="14" selection-end-line="33" selection-end-column="14" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -135,15 +109,21 @@
         <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/dao/UserDao.java" />
         <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/service/UserService.java" />
         <option value="$PROJECT_DIR$/testspringboot/src/main/resources/sql/user.md" />
-        <option value="$PROJECT_DIR$/testspringboot/pom.xml" />
         <option value="$PROJECT_DIR$/testspringboot/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/entity/Department.java" />
-        <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/dao/UserRepository.java" />
         <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/entity/User.java" />
         <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/dao/UserDaoImpl.java" />
+        <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/dao/UserRepository.java" />
         <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/service/UserServiceImpl.java" />
+        <option value="$PROJECT_DIR$/testspringboot/pom.xml" />
       </list>
     </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -157,11 +137,10 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="1680" />
+    <option name="height" value="976" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -247,6 +226,16 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="testspringboot" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
+              <item name="testspringboot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="testspringboot" type="462c0819:PsiDirectoryNode" />
               <item name="dao" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -291,7 +280,7 @@
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550741373909" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550820772431" />
     <property name="jdk.selected.JAVA_MODULE" value="1.8" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -340,16 +329,18 @@
       <workItem from="1550545070435" duration="5759000" />
       <workItem from="1550625775748" duration="2488000" />
       <workItem from="1550719403112" duration="12489000" />
+      <workItem from="1550801564343" duration="8759000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="63695000" />
+    <option name="totallyTimeSpent" value="72454000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="0" y="23" width="1680" height="976" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21192758" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21428572" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -388,6 +379,9 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="SHOW_DIRTY_RECURSIVELY" value="true" />
@@ -434,9 +428,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="361">
           <caret line="22" selection-start-line="22" selection-end-line="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -455,9 +446,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="247">
           <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -472,9 +460,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
           <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -492,16 +477,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="494">
           <caret line="26" column="1" selection-start-line="26" selection-start-column="1" selection-end-line="26" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="3" column="38" lean-forward="true" selection-start-line="3" selection-start-column="38" selection-end-line="3" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -512,13 +487,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/entity/Department.java">
+    <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/entity/User.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="23" column="11" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
+        <state relative-caret-position="589">
+          <caret line="35" column="23" selection-start-line="35" selection-start-column="23" selection-end-line="35" selection-end-column="23" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#590#596#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -533,20 +507,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/entity/User.java">
+    <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/dao/UserDaoImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="461">
-          <caret line="35" column="23" selection-start-line="35" selection-start-column="23" selection-end-line="35" selection-end-column="23" />
+        <state relative-caret-position="836">
+          <caret line="60" column="47" selection-start-line="60" selection-start-column="47" selection-end-line="60" selection-end-column="47" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/dao/UserDaoImpl.java">
+    <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/entity/Department.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="431">
-          <caret line="60" column="47" selection-start-line="60" selection-start-column="47" selection-end-line="60" selection-end-column="47" />
+        <state relative-caret-position="304">
+          <caret line="23" column="11" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -555,8 +529,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/dao/UserRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        <state relative-caret-position="627">
+          <caret line="33" column="14" selection-start-line="33" selection-start-column="14" selection-end-line="33" selection-end-column="14" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -565,11 +539,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/service/UserServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="841">
-          <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
+        <state relative-caret-position="667">
+          <caret line="110" column="20" selection-start-line="110" selection-start-column="20" selection-end-line="110" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2313#2328#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="742">
+          <caret line="65" column="21" selection-start-line="65" selection-start-column="21" selection-end-line="65" selection-end-column="21" />
         </state>
       </provider>
     </entry>
