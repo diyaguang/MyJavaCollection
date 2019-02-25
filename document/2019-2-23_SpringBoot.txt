@@ -1,0 +1,219 @@
+7.3.3 @ConfigurationProperties
+将配置转化为一个配置类使用，与使用的配置文件中的前缀相关
+@ConfigurationProperties("web")
+@Configuration
+public class CustomWebConfig {
+    private String name;
+
+说明：处理名称时，会自动将 “-” 或者 “_” 转化为 Java命名规范。建议使用 @ConfigurationProperties，能同一将一组的属性进行管理
+@Value的优点是支持 SpEL表达式。
+备注：使用这个注解时，会报：Spring Boot Configuration Annotation Processor not fount in classpath
+解决：引入 Maven：  org.springframework.boot   spring-boot-configuration-process
+还会报：Not registeved via @EnableConfigurationProperties 的问题
+解决：在其注解上加上 @Component
+
+7.4 Spring Boot 自动装配
+使用注解 @Configuration 来配置多个 Bean，在其内部使用 @Bean
+
+7.4.1 @Configuration 和 @Bean
+Spring 的 Java 配置的核心：使用  @Configuration 在类上使用，此类上使用 @Bean声明多个方法，来管理 Bean
+@Configuration
+public class MyConfiguration{
+	@Bean("testBean")
+	public TestBean getBean(){
+		return new TestBean();
+	}
+}
+返回对象会作为一个Spring容器，注解 @Bean可以给Bean指定一个名字，通常是类名首字母的小写方式。
+配置类还可以获取外部属性，Environment提供了获取外部属性的 API
+
+可以在 @Bean注解的方法上提供任意参数来说明依赖：
+@Bean
+public MyService getMyService(DataSource datesource)
+
+7.4.2 Bean条件装配
+通过有无指定 Bean来决定是否配置 Bean。
+@ConditionalOnBean：在当前上下文中存在某个对象时，才会实例化一个 Bean
+@ConditionalOnMissingBean：当上下文中不存在某个对象时，才会实例化一个 Bean
+
+@Configuration
+@ConditionalOnBean(DataSource.class)
+public class BeetlSqlConfig{
+	.......
+}
+
+7.4.3 Class条件装配
+按照某个类是否在 Classpath中来决定是否要装配 Bean
+@ConditionalOnClass
+@ConditionalOnMissingClass
+
+7.4.4 Environment 装配
+根据 Environment属性来决定配置知否生效
+@ConditionalOnProperty(name="message.center.enabled",havingValue="true",matchIfMissing=true)
+public class MessageCenterAutoConfiguration{ ... }
+说明：
+根据name来读取 SpringBoot的 Environment的变量包含的属性，
+其值域 havingValue的值比较结果决定配置是否生效。如果没有 havingValue，则只要属性部位 false，配置都能生效。
+matchIfMissing为 true，表示 如果 Environment没有包含 “xxx.xxxx.xxxx”，配置也能生效，默认为 false
+
+7.4.5 其他条件装配
+@ConditionalOnExpression：当表达式为 true 时，才会实例化一个 Bean，支持 SpEL表达式
+@ConditionalOnJava：当存在指定 Java版本时。@ConditionalOnJava(range=Range.EQUAL_OR_NEWER,value=JavaVersion.EIGHT)
+
+7.4.6 联合多个条件
+（略）
+
+7.4.7 Condition 接口
+可以自定义实现构造一个 Condition的类，使用注解 @Conditional 来引用此 Condition来实现。需要继承 Condition接口
+public interface Condition{
+	boolean matches(ConditionContext context,AnnotatedTypeMetadata metadata);
+}
+其中 ConditionContext可以得到条件判断的辅助类。（包含 Evcironment，可以读取系统属性，环境变量，配置参数。ResourceLoader 一个 Spring类，用来加载和判断资源文件。ConfigurableListableBeanFactory， Spring容器）
+
+例：对于存入数据库的手机进行加密的类，使用条件判断注解，要求存在 salt.txt 文件且配置允许手机加密时才生效
+public class MobileEncryptCondtion{
+	@Bean
+	@Conditional(EncryptCondition.class)
+	public MobileEncryptBean mobileEncryptBean(){
+		return new MobileEncryptBean();
+	}
+	static class EncryptCondition implements Condition{
+		public boolean matches(ConditionContext ctx,AnnotatedTypeMetadata metadata){
+			Resource res = ctx.getResourceLoader.getResource("salt.txt");
+			Environment env = ctx.getEnvironment();
+			return res.exists() && env.containsProperty("mobile.encrypt.enable");
+		}
+	}
+}
+
+4.7.8 制作 Starter 
+包含了两项主要功能才使得 SpringBoot变得非常容易使用：
+1.配置了依赖库
+2.自动配置
+编写 Starter 需要在 pom 文件中写好依赖，使用 @Configuration 和 @Bean 来自动装配完成。通过 spring.factories 文件，告诉 SpringBoot自动装配类在哪里。这个文件在 resources/META-INF 目录下。将 SpringBoot应用导出成 jar 文件并通过 Maven发布到仓库，就具备了一个 Starter。（略）
+
+
+第八章 部署 SpringBoot 应用
+可以以 jar 方式运行，也可以部署到支持 Servlet3.0 或 Servlet2.5 的 Web服务器上
+
+8.1 以 jar 文件运行
+默认以 jar包方式运行，可以配置插件，导出成可以执行的 jar文件
+ <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <executable>true</executable>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+然后在工程目录下运行命令 mvn package; 打包成功后，可以以 jar 方式运行，可以使用命令行的方式，进行配置启动。
+
+8.2 以 war 方式部署
+在 pom 中修改打包方式，<packaging>war</packaging>
+需要将嵌入的 Tomcat 依赖方式变成 provided
+<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+需要对 Main类进行修改，使其继承 SpringBootServletInitializer类，并重写 configure 方法
+@SpringBootApplication
+public class TestspringbootApplication extends SpringBootServletInitializer {
+
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application){
+        return application.sources(TestspringbootApplication.class);
+    }
+这种部署方式更适合 Servlet3.0 的容器
+
+8.3 多环境部署
+不同的环境使用不同的配置文件，设置环境变量名称，在 启动参数或application.properties 中进行配置
+application-{profile}.properties   设置：spring.profiles.active=xxxx 来指定环境变量。
+
+可以使用 spring.config.location 指定配置文件的目录，用于设置在指定配置文件目录找到环境相关的配置文件。
+
+原理：默认读取 application.properties文件，然后搜索 classpath:，classpath:/config，file:，file:config/ 这些目录下的配置文件。后面的优先级更高.
+可以使用 spring.config.name 来配置文件的名称，默认是 application
+
+
+8.4 @Profile 注解
+可以使用注解，@Profile 来配合 @Configuration 或 @Component 使用，决定配置是否生效
+
+@Bean(name="xxxxx")
+@Profile("test")
+public DataSource testDatasource(Environment env){
+	xxxx xxxx
+}
+@Profile注解可以支持多种 profile，也可以使用 “！” 来排除特定 profile
+@Profile({"test","!prod"})  表示 测试环境和非线上环境生效
+
+
+第九章 Testing 单元测试
+(略) P216~242
+
+
+第十章 REST
+10.1 REST简介
+REST（ Representational State Transfer 表现层状态转化）一个架构符合 REST原则，则就会被称为 RESTful 架构
+资源（Resources）：表现层就是指的资源，每种资源由URI对应
+表现层（Representation）：资源具体呈现出来的形式称为 表现层，应是 HTTP请求头信息中的 Accept和Content-Type
+状态转化（State Transfer）：客户端与服务端交互过程，涉及数据和状态的变化，这个过程，通过手段，让服务器端发生“状态转化”，这种转化是建立在表现层上的。
+手段只能是 HTTP协议，常用五个操作：GET，POST（新建或更新），PUT（更新），DELETE，PATCH（更新资源的部分属性）
+
+10.1.1 REST 风格的架构
+REST并非一种技术或规范，而是一种架构风格，包括了 REST架构中如何标识资源，如何标识操作接口及操作的版本，如何标识操作的结果。
+
+10.1.2 使用 API 作为上下文
+http://192.168.0.1/api  或 http://api.xxx.com
+
+10.1.3 增加版本标识
+http://api.xxx.com/v1.1
+
+10.1.4 标识资源
+http://api.xxx.com/v1.1/user
+
+10.1.5 确定 HTTP Method
+POST：增加资源
+PUT：更改资源，提供完整的资源属性
+GET：查询资源
+PATCH：更新资源，仅提供部分需要更改的资源属性
+DELETE：删除资源
+HEAD：与GET类似，仅仅只有 HTTP 头信息
+OPTIONS：获取 URI所支持的方法，响应信息会在 HTTP头中包含一个名为 Allow 的头，值是所支持的方法，如 GET，POST
+可以为资源标识添加后缀，使得 REST代码更加容易阅读。
+
+10.1.6 确定 HTTP Status
+200
+400：错误的请求
+404：NOT Found
+405：用来访问本页面的 HTTP Method 不被允许
+406：标识无法使用请求的内容特性来响应请求的资源
+500：服务器内部错误
+
+10.1.7 REST  VS  WebService
+（略） P246
+
+
+10.2 Spring Boot 集成 REST
+10.2.1 集成 REST
+引入 spring-boot-starter-web
+
+10.2.2 @RestController
+是 @Controller + @ResponseBody 的组合
+
+10.2.3 REST Client
+SpringBoot采用 RestTemplate 来发起一个REST请求，默认通过 HttpURLConnection 来作为底层 HTTP消息的发送方式。使用 JackSon来序列化服务器返回的 JSON数据。
+
+10.2.3.1 RestTemplate
+核心类，提供了所有访问 REST服务的接口，提供了 RESTful 风格的API
+DELETE -> delete
+GET -> getForObject,getForEntity
+HEAD -> headForHeaders
+OPTIONS -> optionsForAllow
+POST -> postForObject,postForLocation
+PUT -> put
+其他 -> exchange（通用）

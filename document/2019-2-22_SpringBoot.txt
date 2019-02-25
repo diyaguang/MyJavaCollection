@@ -235,6 +235,6 @@ public @ResponseBody String value(@Value("${server.port}") int port){
 @Value("${cache.enable:false}")
 private boolean isCache;
 
-7.3.3 @ConfigurationProperties
+
 
 

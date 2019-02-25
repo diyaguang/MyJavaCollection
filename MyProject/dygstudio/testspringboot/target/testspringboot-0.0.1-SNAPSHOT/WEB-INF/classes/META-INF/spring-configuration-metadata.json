@@ -1,0 +1,27 @@
+{
+  "groups": [
+    {
+      "name": "web",
+      "type": "com.dygstudio.testspringboot.config.CustomWebConfig",
+      "sourceType": "com.dygstudio.testspringboot.config.CustomWebConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "web.description",
+      "type": "java.lang.String",
+      "sourceType": "com.dygstudio.testspringboot.config.CustomWebConfig"
+    },
+    {
+      "name": "web.name",
+      "type": "java.lang.String",
+      "sourceType": "com.dygstudio.testspringboot.config.CustomWebConfig"
+    },
+    {
+      "name": "web.version",
+      "type": "java.lang.String",
+      "sourceType": "com.dygstudio.testspringboot.config.CustomWebConfig"
+    }
+  ],
+  "hints": []
+}
