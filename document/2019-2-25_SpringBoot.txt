@@ -208,12 +208,3 @@ OPTIONS：获取 URI所支持的方法，响应信息会在 HTTP头中包含一�
 10.2.3 REST Client
 SpringBoot采用 RestTemplate 来发起一个REST请求，默认通过 HttpURLConnection 来作为底层 HTTP消息的发送方式。使用 JackSon来序列化服务器返回的 JSON数据。
 
-10.2.3.1 RestTemplate
-核心类，提供了所有访问 REST服务的接口，提供了 RESTful 风格的API
-DELETE -> delete
-GET -> getForObject,getForEntity
-HEAD -> headForHeaders
-OPTIONS -> optionsForAllow
-POST -> postForObject,postForLocation
-PUT -> put
-其他 -> exchange（通用）

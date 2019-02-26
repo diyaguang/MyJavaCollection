@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class Home {
 
-    @RequestMapping(value = "/")
+    @RequestMapping(value = "/home")
     @ResponseBody
     public String home(){
         return "the test page!";
