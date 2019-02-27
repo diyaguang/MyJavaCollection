@@ -1,0 +1,5 @@
+12.2.4 Redis List
+Redis中的 List，类似 Java中的 LinkedList，通过链表完成，添加元素很快，按照索引方式获取元素较慢。
+rpush命令：尾部插入值
+lpush命令：头部插入值
+lrange命令：从左到右显示指定范围的列表，这是一个有意思的问题
