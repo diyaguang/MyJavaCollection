@@ -2,4 +2,250 @@
 Redis中的 List，类似 Java中的 LinkedList，通过链表完成，添加元素很快，按照索引方式获取元素较慢。
 rpush命令：尾部插入值
 lpush命令：头部插入值
-lrange命令：从左到右显示指定范围的列表，这是一个有意思的问题
+lrange命令：从左到右显示指定范围的列表，这是一个有意思的问题（第一个参数key，后面两个参数是范围，从列末尾开始） lrange platform:history 0 2
+rpop命令：从尾部取出元素（取出后，从源列表中删除），如果列表为空，返回 nil
+lpop命令：从头取出一个元素（取出后，从源列表中删除），如果列表为空，返回 nil
+llen命令：返回 List 的长度
+blpop，bropo命令：同样是取出，如果列表为空，则处于等待状态，直到列表有元素。blopo platform:history 0。blpop参数可以接受同时获取的多个列表，返回时一个两元素列表，第一个元素是Key值，第二个是获取的元素值
+
+应用场景：例如消息服务，rpush追加消息，lpop取出消息
+
+12.2.5 Redis Hash
+类似 HashMap，SpringBoot 在 SpringSession 中即采用了 Hash结构来存放用户的 Session数据
+hset key field value：给指定的 Key设定一个字段值，如有覆盖，返回0失败，1成功
+hget key filed：获取，若不存在返回 nil
+hexists key filed：判断是否存在
+hkeys key：返回所有字段名
+hgetall key：返回所有字段名和字段值
+hdel key field [field]：删除多个字段
+
+Hash的字段支持递增计算，原子操作
+hincby key field value：对 Key指定的 Hash数据中的 field 的值进行计算，增加整型 value
+hincbyfloat key field value：对Key指定的 Hash数据中的 field的值进行计算，增加浮点数 value
+
+12.2.6 Set
+与 Java中的 Set类似，元素不可重复，并提供了 集合的并集，交集功能，可用来统计相关数据
+sadd key member [member]：添加元素
+srem key member [member]：删除元素
+smember key：返回一个集合中的所有元素
+sinter key1 key2:返回两个集合共同的元素
+sinterstore key1，key2，key3 ：取得key1，key2 的交集，放到 key3 集合中
+sunion key1 key2：返回一个合并后的集合
+sunionstore key1 key2 key3：合并 key1，key2 集合，存放到 key3 集合中
+
+Redis 还提供了对 Sorted Sets 排序的集合的各种操作命令
+
+Set用于查看两人共同好友
+
+12.2.7 Pub/Sub
+提供简单的 消息服务，客户端定义一个或多个频道（Channel），称为 subscribe。其他客户端可以向 Channel发送消息，称为 publish，订阅的就可以收到消息。
+解耦了发送者和接收者
+
+publish/subscribe 模式在 Spring Boot 中可以用于事件通知
+
+subscribe：订阅频道   subscribe news  会返回一个数据结构，第一行固定subscribe字符串，第二行是订阅频道名称，第三行数字表示该频道公共有多少个订阅者
+redis-cli 一旦使用 subscribe，将一直等待频道的消息，并输出到屏幕。
+
+publish：向终端发送一条消息，返回整数，表示有多少订阅者收到此消息。  publish news "hello"
+
+Redis还提供了订阅指定的模式（pattern），使用 psubscribe 命令 ：psubscribe new.*    可以泗洪 *，？，[123] 这样的正则模式
+
+
+12.3 Spring Boot 集成 Redis
+需要引入相关依赖 
+<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+需要配置 application.properties 指定 redis相关信息
+spring.redis.host=39.105.102.17
+spring.redis.port=6379
+#spring.redis.password=Redis!123
+spring.redis.jedis.pool.max-active=8   指定 SpringBoot应用的最大链接数，0表示不限制
+
+StringRedisTemplate 是 SpringBoot 默认提供的 Redis操作接口，适合 Key 和 Value 都是字符串的情况。SpringBoot也可以采用 JDK序列化的方式来序列化 Key和Value的 RedisTemplate类，通用类，提供不同的序列化方式。
+
+12.4 使用 StringRedisTempate
+是 SpringBoot 内置的操作 Redis 的 API，嘉定所有的数据类型都是字符串类型，List，Hash的元素值也是字符串，默认使用 StringRedisSerializer类来序列化 Key-Value。另一个是 RedisTemplate
+
+12.4.1 opsFor
+opsForValue：用来设置普通的 Key-Value
+opsForList：操作 List结构，还提供了 lefPush，leftPushAll，leftPop，rightPush，rightPushAll，rightPop 等操作
+例如：redisClient.opsForList().leftPush("platform:message","hello,xiandafu");
+opsForHash：用来操作 Hash结构。redisClient.opsForHash().put("cache",key,value);
+其他的方法还有 delete，size，hasKey，keys，increment，multiGet
+
+12.4.2 绑定 Key的操作
+可以通过 Redistemplate提供的 boundXXXXOps() 来定义个key，返回 BoundXXXXOperations 对象，在这个对象上操作就不用在提供 Key作为参数了
+BoundListOperations operations = redisClient.boundListOps("somekey");
+
+SpringBoot 提供了一下 bound操作：
+boundValueOps：返回 BoundValueOpertions，value操作相关，set，get，append，incr 等
+boundListOps：返回 BoundListOperations，List相关操作，lpush，rpush，lopo，rpop 等
+boundHashOps：返回 BoundHashOperations，Hash 相关操作，hset，hget，hkeys 等
+boundSetOps：返回 BoundSetOpertions，Set相关操作
+boundZSetOps：返回 ZSetOperations，Sorted Set 相关操作
+boundGeoOps：返回 BoundGeoOperations ，Geo，地理信息相关操作
+
+12.4.3 RedisConnection
+SpringBoot提供了 ReisConnetion抽象，具体实现有 JRedis或者 Lettuce
+StringRedisTemplate 通过内置的序列化机制将字符串序列化成 byte，也提供了 RedisTemplate，默认使用 Java的序列化机制将 Redis数据序列化成 byte
+RedisConnection 提供了低级别的 API草走，用 byte数组作为参数操作 Redis服务器
+
+@RequestMapping("/connectionset.html")
+    public @ResponseBody String connectionSet(final String key,final String value) throws Exception{
+        redisClient.execute(new RedisCallback() {
+            public Object doInRedis(RedisConnection connection) throws DataAccessException{
+                try{
+                    connection.set(key.getBytes(),value.getBytes());
+                }catch (Exception e){
+                    throw new RuntimeException(e);
+                }
+                return null;
+            }
+        });
+        return "success";
+    }
+在这个例子中，可以将 RedisConnection 转为 StringredisConnection 使用
+((StringRedisConnection)connection).set(key,value);
+
+12.4.4 Pub/Sub
+RedisTemplate 支持 Pub/Sub 功能，调用 convertAndSend 方法来发送一条消息。内部将消息体序列化成字节后发送到 Redis Server
+redisClient.convertAndSend("news","hello,world");
+
+订阅频道消息，需要实现 MessageListener接口的 onMessage 方法：
+public class MyRedisChannelListener implements MessageListener {
+    public void onMessage(Message message,byte[] pattern){
+        byte[] channal = message.getChannel();
+        byte[] bs = message.getBody();
+        try{
+            String content = new String(bs,"UTF-8");
+            String p = new String(channal,"UTF-8");
+            System.out.println("get "+content+" from "+p);
+        }catch (UnsupportedEncodingException e){
+            e.printStackTrace();
+        }
+    }
+}
+
+MessageListenerAdapter主要用来对消息进行序列化工作，默认采用 StringRedisSerializer
+RedisMessageListenerContainer 作用是在 Redis 客户端接收到消息后，通过 PatternTopic 派发消息到对应的消息监听者，构造一个线程池任务来调用 MessageListener
+@Configuration
+public class RedisConfig {
+
+    @Bean
+    MessageListenerAdapter listenerAdapter(){
+        return new MessageListenerAdapter(new MyRedisChannelListener());
+    }
+
+    @Bean
+    RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory,MessageListenerAdapter listenerAdapter){
+        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.addMessageListener(listenerAdapter,new PatternTopic("news.*"));
+        return container;
+    }
+}
+
+
+12.5 序列化策略
+SpringBoot 默认提供了 StringRedisTemplate 和 RedisTemplate，前者用于操作包含字符串的结构，后者使用 JDK的序列化策略。
+StringRedisTemplate 继承了 RedisTemplate，只是设置了不同的序列化策略
+
+StringRedistemplate 使用了 StringRedisSerializer 策略
+RedisTemplate 使用了 JdkSerializationRedisSerializer 策略
+
+序列化策略，都实现 RedisSerializer 接口，在这个接口中主要有两个方法：
+byte[] serialize(T t) throws SerializationException     将默认的对象转化为字节数组，供给 RedisConnection操作
+T deserialize(byte[] bytes) throws SerializationException     将读取的字节数组转化为对象
+
+12.5.1 默认序列化策略
+（略）
+
+12.5.2 自定义序列化策略
+（略）
+
+
+第十三章 Elasticsearch
+13.1 ES介绍
+
+13.1.1 安装 ES
+9200端口是对外的 RESTFul接口，9300 端口是 ES内部使用的端口
+cluster_name 对应名字是同一个集群的标记
+默认只能本机访问，如果想外部访问，需要配置 config/elasticsearch.yml 文件
+
+13.1.2 ES的基本概念
+Index：是文档的集合，包含了 Type，对文档进行进一步分类，相当于数据库，Type相当于数据库中的表
+Type：进一步组织 Document，一个Index下可以有多个 Type
+Document：ES存储和搜索的基本信息，相当于 表中的“行数据”，为JSON格式，文档属于Type
+Node：节点，集群中的一台ES Server，用于文档的存储和查询
+集群：相同集群名组成ES集群，用来联合完成数据的存储和搜索
+分区（Shards）复制（Replicas）：ES会讲 Index在物理上分为多个分区，分区会按照配置复制到多个节点，Index的分区称为主分区，复制的分区称为复制分区。每个分区是一个独立的工作单元，可以完成存储和搜索功能，每个分区能存储最多 2147483519 个文档
+
+13.2 使用 REST 访问 ES
+ES基于 RESTFul接口，基本上分为 文档增删改查，全文搜索，聚合搜索，处理人类语言，地理位置搜索 等
+
+13.2.1 添加文档
+使用 PUT添加文档
+
+13.2.2 根据主键查询
+使用 GET
+
+13.2.3 根据主键更新
+使用 PUT
+
+13.2.4 根据主键删除
+使用 DELETE 删除指定主键的文档
+
+13.2.5 搜索文档
+（略）
+
+13.2.6 联合多个索引搜索
+每个 Index 存储的文档数量有限，在将文档放入 Index中的时候，可以增加日期后缀。例如 product，product2008，product2009 。ES在搜索的时候，可以引用多个索引。
+
+13.3 使用 RestTemplate 访问 ES
+可以直接是哦功能 SpringBoot 的 RestTemplate 来编写 Java代码
+
+13.3.1 创建 Book
+（看代码）
+
+13.3.2 使用 RestTemplate 获取搜索结果
+创建一个 RestController 来测试
+
+@RestController
+@RestController
+public class RestClientController {
+
+    @RequestMapping("/restclient/book/{id}")
+    public String getLogById(@PathVariable String id) throws Exception{
+        Book book = null;
+        RestTemplate template = new RestTemplate();
+        Map<String,Object> paras = new HashMap<>();
+        paras.put("id",id);
+        String str = template.getForObject("http://10.211.55.34:9200/product/book/{id}",String.class,paras);
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonFactory factory = mapper.getFactory();
+        JsonParser parser = factory.createParser(str);
+        JsonNode root = mapper.readTree(parser);
+        JsonNode sourceNode = root.get("_source");
+
+        book = mapper.convertValue(sourceNode,Book.class);
+        return book.getMessage();
+        //return ""; //log.getMessage();
+    }
+}
+
+说明：通过 RestTemplate按照 ES 的格式，获取数据（字符串）。使用 Jackson获取到 _source 节点，ES返回的信息是存放在 _source 节点中的。最后反序列化 sourceNode 到 Book 对象。
+
+
+13.4 Spring Data Elastic
+Spring官方提供的 ES访问方式（完善的封装，屏蔽了 ES REST 的复杂性）
+
+13.4.1 安装 Spring Data ES
+添加香瓜你的依赖 
+
+
+
+
