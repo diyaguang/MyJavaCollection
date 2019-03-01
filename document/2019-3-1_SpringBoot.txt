@@ -1,0 +1,151 @@
+13.4.1 安装 Spring Data ES
+添加相关的依赖 
+org.springframework.boot
+spring-boot-starter-data-elastisearch
+
+在 application.properties 文件中配置 ES的访问地址
+spring.data.elasticsearch.cluster-node=127.0.0.1:9300
+
+13.4.2 编写 Entity
+使用实体，要使用相关的注解：@Document,@Id
+
+@Document(indexName="product",type="book")
+public class BookEntity{
+	@Id
+	String id;
+	String name;
+	String message;
+}
+其中 @Document 表示这是一个 Elastic Data，indexName 和 type 对应于 ES 的 Index 和 Type，@Id 声明了文档的主键
+
+13.4.3 编写 Dao 接口
+继承 CrudRepository 接口，将会有简单的增删改查操作，可以在Dao接口中添加自己的操作方法。
+使用的命名规则同 普通 JDBC 的命名方法规则相同
+（P316）
+
+如果要使用翻页功能，可以使用 Pageable 对象
+public Page<BookEntity> getByMessage(String key,Pageable pageable);
+
+13.4.4 编写 Controller
+使用 @RestController 来标记该 Controller
+参考代码
+
+第十四章 Cache
+Spring Cache 对 Cache进行了抽象，使用 @Cacheable，@CachePut，@CacheEvict 注解，即提供了基于内存实现的缓存管理，也集成了 Redis，EhCache等缓存服务器。
+
+14.1 关于Cache
+
+14.1.1 Cache的组件和概念
+CacheManager
+Cache类似 Map那样的 Key-Value 存储结构，通过 Key来获得缓存对象
+缓存项：存放在缓存里的对象
+Cache存储方式：内存或其他缓存服务器
+缓存策略：缓存的不同设置
+分布式缓存：可根据缓存数据类型存放不同服务器上，或同一类型缓存按照不同算法，不同Key，存放在不同服务器上
+Cache Hit：缓存命中
+Cache Miss：缓存丢失，根据 Key没有找到对应缓存项
+Cache Evication：缓存清除操作
+Hot Data：热点数据
+On-Heap：在堆内存中存放数据，虚拟机垃圾回收机制管理
+Off-Heap：堆外内存存放，不受垃圾回收机制影响，但要调用堆外内存，需要序列化成堆内对象。
+
+14.1.2 Cache 的单体应用
+缺点是会占用系统大量内存
+
+14.1.3 使用专有的 Cache 服务器
+Ehcache就是痛殴 Terracotta 来组建的一个缓存集群，使用 Redis作为缓存，Redis作为单独的缓存服务器，分布式应用通过局域网访问 Redis
+
+14.1.4 使用一二级缓存服务器（二级缓存架构）
+使用 Redis缓存，通常为二级缓存，从内存中存取缓存，称为一级缓存。
+
+14.2 Spring Boot Cache
+本身提供了一个 ConcurrentHashMap 缓存机制，也集成了 EhCache2.x，JCache，还有 Couchbase，Redis 等 Spring Boot 应用通过注解的方式使用统一的缓存
+使用时，需要在方法上使用缓存注解，其缓存的具体实现依赖于选择的目标缓存管理器
+
+使用时，就是在 方法名上使用 @Cacheable("name") 这样的注解即可
+
+集成 Spring Cache，引入相关依赖
+org.springframework.boot
+spring-boot-starter-cache
+
+在 application.properties 中配置Cache相关属性：
+spring.cache.type=Simple
+设置中，不同的实现类型设置不同的 type：
+Simple：基于 ConcurrentHashMap实现的缓存
+None；关闭缓存
+redis：使用 Redis 作为缓存，需要在 pom 中增加依赖
+Generic：用户自定义缓存，需要实现一个 org.springframework.cache.CacheManager
+其他
+
+在 应用程序启动类上，增加 @EnableCaching 打开缓存功能
+@SpringBootApplication
+@EnableCaching
+public class xxxxxApplication{
+	public static void main(String[] age){
+		SpringApplication.run(xxxxxApplication.class,args);
+	}
+}
+
+14.3 注释驱动缓存
+配置好后，可以在 Spring管理的 Bean中使用缓存注解，一般直接放在 Service 类上
+
+@Cacheable：触发缓存读取操作
+@CacheEvict：触发缓存失效操作
+@CachePut：触发缓存更新操作
+@Cache：调用业务会触发多种缓存操作
+@CacheConfig：设置当前缓存的一些公共设置
+
+14.3.1 @Cacheable
+使用这个声明了的方法，结果是可缓存的。如果缓存存在，目标方法不会调用
+可以声明多个缓存，如果至少有一个缓存有缓存项，则缓存项将被返回
+
+@Cacheable({"Menu","menuExt"})
+public Menu findMenu(Long menuId){ ... }
+
+14.3.2 Key生成器
+缓存Key生成，Spring使用 KeyGenerator来根据方法参数生成 Key
+
+如果只有一个参数，这个参数就是 Key
+@Cacheable(cacheNames="menu")
+public Menu getMenu(Long id)
+
+如果没有参数，使用 SimpleKey.EMPTY 作为Key
+
+如果有多个 Key，则返回包含多个参数的 SimpleKey 对象
+@Cacheable("user_function")
+public boolean canAcessFunction(Long userId,Long orgId,String functionCode)
+
+具体 SimpleKeyGenerator 实现，看代码 P326
+也可以自己实现 KeyGenerator 使用。
+（略）
+
+14.3.3 @CachePut
+使用该注解，总是会执行方法体，用返回的结果更新缓存
+
+14.3.4 @CacheEvict
+用于删除缓存项或清空缓存，可以指定多个缓存名来清空多个缓存
+
+@CacheEvict(cacheNames="user",key="#id")
+public void updateUser(Long id,int status){ ... }
+
+CacheEvict 可以清空缓存中的所有项目，使用 aallEntries=true 来删除清空缓存。
+@CacheEvict(cacheNames="config",allEntries=true)
+public void loadConfig(){ ... }
+
+@CacheEvict(cacheNames={"menu","menuTree"},allEntries=true)
+public void addMenu(Menu menu){ ... }
+
+14.3.5 @Caching
+混合使用各种注解
+@Caching(evict={@CacheEvict(cacheNames="user",key="#user.id"),@CacheEvict(cacheNames="userExt",key="#ext.id") })
+public void updateUser(User user,User Ext ext){ ... }
+
+14.3.6 @CacheConfig
+这个注解用在 类 上，此类的方法的缓存注解提供默认值
+1.缓存的默认名称
+2.缓存的 KeyGenerator
+@CacheConfig("menu")
+public class MenuServiceImpl implements MenuService{
+	@Cacheable()
+	public Menu getMenu(Long id){ ... }
+}

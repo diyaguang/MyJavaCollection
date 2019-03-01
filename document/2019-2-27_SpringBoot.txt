@@ -243,8 +243,7 @@ public class RestClientController {
 13.4 Spring Data Elastic
 Spring官方提供的 ES访问方式（完善的封装，屏蔽了 ES REST 的复杂性）
 
-13.4.1 安装 Spring Data ES
-添加香瓜你的依赖 
+
 
 
 
