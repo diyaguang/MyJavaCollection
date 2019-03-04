@@ -1,0 +1,36 @@
+14.4 使用 Redis Cache
+
+14.4.1 集成 Redis 缓存
+一般用在分布式应用中，需要在项目中引用 spring-boot-starter-data-redis
+并在 Application.properties 中配置相关 redis 的连接信息。
+#------- Cache ---------------------------
+spring.cache.type=Redis
+
+14.4.2 禁止缓存
+设置 spring.cache.type=None 来禁止缓存，方便开发
+
+14.4.3 定制缓存
+通过 CacheManagerCustomizer 类来配置完成定制
+（略）
+
+14.5 Redis缓存原理
+(略)
+
+14.6 实现 Redis 两级缓存  （略） P334
+原理：在访问钱，先从一个 ConcurrentHashMap 实现简单的一级缓存，如果没有，再从Redis中获取，并且换粗你对象放到一级缓存中
+当缓存项发生变化时，两级缓存需要同时更新 ConcurrentHashMap 和 Redis 缓存，而且需要通过 Redis的 Pub发出通知消息，其他 SpringBoot应用通过 Sub来接受消息，同步更新 SpringBoot应用自身的一级缓存
+
+14.6.1 实现 TwoLevelCacheManager
+
+
+第十五章 Spring Session
+分布式应用，一般采用 Nginx提供反向代理，会话管理通过 Spring Session 使用 Redis 来存放 Session
+
+15.1 水平扩展实现
+有两个问题需要解决：1.用户请求派发到任意SpringBoot应用（通过 Nginx解决） 2.会话管理
+单个SpringBoot应用的会话由 Tomcat来管理，会话信息放在 Tomcat存放在一起，多个SpringBoot应用则由不同的处理方案
+会话管理有两种解决方案：
+1.复制会话：Web服务器支持Session复制，一台变更立刻复制到其他集群服务器上
+2.集中式会话：共享一个会话，一般可以使用 Redis服务器来存放会话
+
+15.2 Nginx的安装和配置
