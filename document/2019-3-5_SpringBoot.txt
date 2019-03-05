@@ -1,0 +1,68 @@
+15.2 Nginx的安装和配置 
+
+15.2.1 安装 Nginx
+在 Linux环境下，程序目录 /usr/nginx/，配置文件目录：/etc/nginx/nginx.conf，日志文件目录：/var/log/nginx/ 目录
+
+常用命令：nginx：启动。 nginx -s stop：快速停止。 nginx -s quit：停止服务器，但要等到请求处理完毕后关闭。 nginx -s reload：重新加载配置文件。
+
+log目录中常用的三个文件： access.log 记录用户请求信息和响应。error.log 记录Nginx运行的错误日志。 nginx.pid 包含了Nginx的进程号。
+
+15.2.2 配置 Nginx
+配置文件在 conf/nginx.conf 下，包含多个指令块，主要关注 http块 和 location 块。
+http块：嵌入多个 Server，配置代理，缓存，日志等功能和第三方模块
+location块：配置请求的路由，以及各种页面的处理情况
+upstream块：负载均衡配置，然后可以将 location 块地址指向 upstream 定义的名称。
+
+Http块通用格式：
+http{
+	server{
+		location / {
+			...
+		}
+	}
+}
+
+如果 负载均衡设置为 ip_hash 轮询方式，则总是会被反向到指定的服务器上，从而不用 Session分布式了。弊端是如果服务器宕机或重启，则会话丢失。
+
+15.3 Spring Session
+15.3.1 Spring Session 介绍
+
+默认情况下SpringBoot使用 Tomcat服务器的 Session实现，通过 Tomcat 提供的：class org.apache.catalina.session.StandardSessionFacade 进行实现。
+
+通过 application.properties 文件修改 Session 的管理方式：
+spring.session.store-type=redis
+选项：Redis，JDBC，Hazelcast，None(禁用功能)
+
+还需要引入 org.springframework.session
+                  spring-session-data-redis
+
+                  org.springframework.boot
+                  spring-boot-starter-data-redis
+
+配置 Redis信息：
+spring.redis.host=39.105.102.17
+spring.redis.port=6379
+#spring.redis.password=Redis!123
+
+加上注解：@EnableRedisHttpSession
+
+使用后，Session 通过 class org.springframework.session.web.http.SessionRepositoryFilter$SessionRepositoryRequestWrapper$HttpSessionWrapper 进行实现
+
+15.3.2 使用 Redis
+查看 Redis使用后的 值存储信息：
+39.105.102.17:6379> keys spring:session:*
+1) "spring:session:sessions:7d217016-dfdd-4cfb-9988-40fbfe596888"
+2) "spring:session:sessions:expires:7d217016-dfdd-4cfb-9988-40fbfe596888"
+3) "spring:session:expirations:1551779640000"
+
+39.105.102.17:6379> hgetall "spring:session:sessions:7d217016-dfdd-4cfb-9988-40fbfe596888"
+1) "sessionAttr:user"
+2) "\xac\xed\x00\x05t\x00\tdiyaguang"
+3) "creationTime"
+4) "\xac\xed\x00\x05sr\x00\x0ejava.lang.Long;\x8b\xe4\x90\xcc\x8f#\xdf\x02\x00\x01J\x00\x05valuexr\x00\x10java.lang.Number\x86\xac\x95\x1d\x0b\x94\xe0\x8b\x02\x00\x00xp\x00\x00\x01iM)\xf5\x94"
+5) "maxInactiveInterval"
+6) "\xac\xed\x00\x05sr\x00\x11java.lang.Integer\x12\xe2\xa0\xa4\xf7\x81\x878\x02\x00\x01I\x00\x05valuexr\x00\x10java.lang.Number\x86\xac\x95\x1d\x0b\x94\xe0\x8b\x02\x00\x00xp\x00\x00\a\b"
+7) "lastAccessedTime"
+8) "\xac\xed\x00\x05sr\x00\x0ejava.lang.Long;\x8b\xe4\x90\xcc\x8f#\xdf\x02\x00\x01J\x00\x05valuexr\x00\x10java.lang.Number\x86\xac\x95\x1d\x0b\x94\xe0\x8b\x02\x00\x00xp\x00\x00\x01iM)\xf6\\"
+
+
