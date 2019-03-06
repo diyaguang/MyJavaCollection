@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="45a1b8c8-b61b-4e29-b8ea-78041836af5d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/controller/SpringSessionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/TestspringbootApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/TestspringbootApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/TestspringbootApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot/target/classes/com/dygstudio/testspringboot/TestspringbootApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../document/2019-3-4_SpringBoot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../document/2019-3-4_SpringBoot.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../document/2019-3-5_SpringBoot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../document/2019-3-5_SpringBoot.txt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -44,7 +37,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/testspringboot/src/main/resources/application.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="256">
+            <state relative-caret-position="513">
               <caret line="27" selection-start-line="27" selection-end-line="29" selection-end-column="32" />
             </state>
           </provider>
@@ -53,7 +46,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/testspringboot/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
+            <state relative-caret-position="1520">
               <caret line="80" column="54" selection-start-line="80" selection-start-column="24" selection-end-line="80" selection-end-column="54" />
             </state>
           </provider>
@@ -161,7 +154,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -195,29 +187,11 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="testspringboot" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="testspringboot" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="testspringboot" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="testspringboot" type="462c0819:PsiDirectoryNode" />
-              <item name="TestspringbootApplication" type="1a9f42e2:ClassTreeNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -294,16 +268,17 @@
       <workItem from="1551404556353" duration="6978000" />
       <workItem from="1551686642624" duration="5708000" />
       <workItem from="1551770729115" duration="7257000" />
+      <workItem from="1551839737702" duration="693000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="114598000" />
+    <option name="totallyTimeSpent" value="115291000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" x="662" y="73" width="493" height="926" id="Project" order="0" visible="true" weight="0.2625133" />
+      <window_info active="true" content_ui="combo" x="662" y="73" width="493" height="926" id="Project" order="0" visible="true" weight="0.26517573" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -327,7 +302,6 @@
       <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="14" show_stripe_button="false" />
       <window_info anchor="bottom" id="Docker" order="15" show_stripe_button="false" />
-      <window_info anchor="right" auto_hide="true" id="Coverage" side_tool="true" type="SLIDING" weight="0.32960597" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -339,6 +313,7 @@
       <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info anchor="right" id="Bean Validation" order="9" />
       <window_info anchor="right" id="Maven" order="10" />
+      <window_info anchor="right" auto_hide="true" id="Coverage" order="11" side_tool="true" type="SLIDING" weight="0.32960597" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -621,24 +596,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot/pom.xml">
+    <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/TestspringbootApplication.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="80" column="54" selection-start-line="80" selection-start-column="24" selection-end-line="80" selection-end-column="54" />
+        <state relative-caret-position="342">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/testspringboot/src/main/resources/application.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
+        <state relative-caret-position="513">
           <caret line="27" selection-start-line="27" selection-end-line="29" selection-end-column="32" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/TestspringbootApplication.java">
+    <entry file="file://$PROJECT_DIR$/testspringboot/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+        <state relative-caret-position="1520">
+          <caret line="80" column="54" selection-start-line="80" selection-start-column="24" selection-end-line="80" selection-end-column="54" />
         </state>
       </provider>
     </entry>

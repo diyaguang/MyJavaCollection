@@ -1,0 +1,7 @@
+15.3.3 Nginx+Redis
+（略）
+
+第十六章 Spring Boot 和 Zookeeper
+Zookeeper 分布式协调器，本身也是分布式的，保证高可用，分布式必备的基础服务。
+
+16.1 Zookeeper

@@ -32,6 +32,7 @@ http{
 通过 application.properties 文件修改 Session 的管理方式：
 spring.session.store-type=redis
 选项：Redis，JDBC，Hazelcast，None(禁用功能)
+如果使用 JDBC 方式，会在数据库创建 SPRING_SESSION，SPRING_SESSION_ATTRIBUTES 两个表来存放信息
 
 还需要引入 org.springframework.session
                   spring-session-data-redis
@@ -65,4 +66,13 @@ spring.redis.port=6379
 7) "lastAccessedTime"
 8) "\xac\xed\x00\x05sr\x00\x0ejava.lang.Long;\x8b\xe4\x90\xcc\x8f#\xdf\x02\x00\x01J\x00\x05valuexr\x00\x10java.lang.Number\x86\xac\x95\x1d\x0b\x94\xe0\x8b\x02\x00\x00xp\x00\x00\x01iM)\xf6\\"
 
+说明：使用  keys spring:session:* 查询Session相关的存储信息。.
+Redis 使用 Hash数据结构来存储。使用 hgetall 可以查看Hash 结构中的保存的 value ： hgetall "spring:session:sessions:7d217016-dfdd-4cfb-9988-40fbfe596888"
+使用 hmget 命令 指定Key（字段）来查询指定 key的 value：hmget "spring:session:sessions:9dc77fdb-1d6a-4660-bdb8-672ece83343e" sessionAttr:user
 
+SpringBoot 默认会创建很多的 Key值：
+sessionAttr（以sessionAttr:为前缀的会话信息 ），creationTime，maxInactiveInterval，lastAccessedTime（上次完成时间）
+
+原理：Spring的 Redis操作并不是每次都通过 Session类获取会话信息或保存时都通过 Redis操作，会尝试先从 HashMap读取值，写入时也是先保存到 HashMap中，否则才嗲用 HMGET 或 HMSET 操作 Redis，如果需要直接操作 Redis，则可配置 spring.session.redis.flushMode=IMMEDIATE 配置为 直接使用 Redis
+
+另外还有一个 Redis Key：spring:session:sessions:expires:7d217016-dfdd-4cfb-9988-40fbfe596888   表示，Redis会话过期并没有直接使用在 session:session:key 变量上，而是专门用在 session:sessions:ex[pires:key 上，当次Key过期后，会自动清除对应的会话信息。可以使用 ttl 查看会话过期时间。默认 会话过期时间 1800 秒（30分钟）。
