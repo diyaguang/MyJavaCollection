@@ -1,0 +1,219 @@
+16.1.4 领导选取演示
+Spring中，使用 Curator来完成领导选举的工作。
+1.一般建立一个节点，然后每个侯选者，在该节点中创建带有序列的子节点，然后就可以查询该节点下的候选者了。
+2.选举过程中，用自己的节点名 同 指定目录下的所有节点进行比较，如果自己的序列号就是最小的序列号，那么自己就是领导者节点。
+3.其他节点还需要 watch 领导节点，即序列号最小的节点，如果领导节点被删除或退出，则所有或选择都会收到消息，再次进行选举过程。
+问题：节点变化同时通知大量的侯选者再次进行选举会对 zk 有性能影响，一般改进的方式是每个后选择仅监听比自己序列号晓得那个后选择，这样，如果领导节点被删除，则序列号较大的后选择能收到领导节点的变化事件，只有这一个节点完成选举过程，确认自己是领导节点。
+
+16.1.5 分布式锁演示
+原理：利用节点的唯一性，如果创建节点成功，则认为自己获得了锁，可以进行业务操作，如果创建失败，则监听此节点，等待节点被删除。业务完成后，删除此节点，其他客户端将收到 watch事件，再次创建该节点，成功则意味再次获得这个锁。
+节点被删除，则会广播监听事件，并且所有侯选者都会争相创建节点，性能较差。这种实现方法，不能随时查看有多少客户端在等待这个锁，以及到底哪个客户端获得了这个锁。
+
+16.1.6 服务注册演示
+原理：zk可以实现服务的注册和服务发现
+1.首先创建一个服务节点 
+create /service data
+create /service/credit data
+2.对服务提供者，创建一个临时序列节点，并设置节点数据为自己服务的 URL 
+create -s -e /service/credit/s- 192.168.0.1:8080
+3.调用服务的客户端，读取 .service/credit/ 的所有节点，随机选择一个，读取节点数据所提供的服务地址.
+获取节点数据时，同时设置 watch标记，一旦节点被删除，则客户端能收到通知，客户端再次从 /service/credit 中获得可用的服务
+ls /service /credit
+get /service/credit/s-0000000001 watch
+
+
+16.2 SpringBoot 集成 ZooKeeper
+Curator 是 Apache提供的一个访问 zk 的工具包，封装了低级别操作，同时也提供一些高级服务（分布式锁，领导选取）
+特性：自动重连，提供简单的API来操作zk节点，实现领导选取，分布式锁，分布式读写锁，共享信号量，栅栏和双重，分布式计数器，分布式队列和分布式优先级队列，服务注册和发现。
+
+16.2.1 集成 Curator
+引入 Curator相关的依赖  org.apache.curator      curator-recipes     2.12.0
+注意版本之间的对应关系。
+
+创建一个 Configuration 类，需要返回 CuratorFramework 的实例对象Bean。
+在其代码中设置 RetryPolicy重连策略，和 zkUrk，通过这两个参数，来构造 CuratorFramework 对象，然后调用该对象的 start 开始连接 ZooKeeper。
+@Configuration
+public class ZookeeperConf{
+	@Value("${zkUrl})
+	private String zkUrl;
+	@Bean
+	public CuratorFramework getCuratorFramework(){
+		RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000,3);
+		CuratorFramework client = CuratorFrameworkFactory.newClient(zkUrl,retryPolicy);
+		client.start();
+		return client;
+	}
+}
+
+16.2.2 Curator API
+Curator API 是链式调用峰哥，遇到 forPath接口就触发 ZooKeeper 嗲用
+client.create().forPath("/head",new byte[0]);
+client.create().withMode(CreateMode.EPHEMERAL_SEQUENTIAL).forPath("/head/child",new byte[0]);
+
+相关命令：
+create：创建节点，withMode设置类型，如果节点存在，则抛出 NodeExistsException
+delete：删除节点，如果不存在抛出 NoNodeException，如果是非空节点，抛出 NotEmptyException
+checkExists：检查节点是否存在，不存在返回 null，存在返回 Stat对象，可以加上 watch 方法来监听节点变化
+getData：获取节点，返回 byte[]，可以添加 watch方法
+setData：设置节点数据
+getChildren：得到节点的子节点，返回一个节点路径列表，可以添加 watch方法
+
+监听：收到 Curator通知，添加一个 CuratorListener 来监听通知
+client.getCuratorListenable().addListener(new CuratorListener(){
+	public void eventReceived(CuratorFramework client,CuratorEvent event) throws Exception {
+		CuratorEventType type = event.gettype();
+		if(type == CuratorEventType.WATCHED){
+			WatchedEvent we = event.getWatchedEvent();
+			EventType et = we.getType();
+			log.info(et+":"+we.getPath());
+			client.checkExists().watched().forPath(we.getPath());
+		}
+	}
+}
+事件的种类有多种：WATCHED/CREATE/DELETE/EXISTS
+
+Curator  API 支持异步执行，通过在调用链式方法中加入 backgroud()实现，异步的结果也将通过 CuratorListener通知。
+zk得到监听消息后，客户端还必须再设置一次监听，才能收到后面的节点变化事件。
+
+16.3 实现分布式锁（略，知道原理即可）
+要确保锁的释放，acquive / release
+
+Curator 提供了 interProcessMutex 来实现分布式锁，用 acquire方法获取锁，release释放锁，release方法需要放在 finally代码块中，确保锁能正确释放。
+
+@Autowired
+CuratorFramework zkClient;  引入 Curator对象
+
+我们需要在 方法上加锁，确保同一个时刻，只能有一个 Spring Boot 应用能执行相关的操作，其他应用处于等待状态
+
+InterProcessMutex lock = new InterProcessMutex(zkClient,path);    //创建分布式锁对象
+if(lock.acquire(10,TimeUnit.HOURS)){     //获得锁
+	.....  
+	finally{
+		lock.release();   //必须确保释放锁
+	}
+}
+操作步骤：
+1.首先确定分布式锁的路径  String path = lockPath+"/"+type;
+Curator会按照前面所述的算法，在此节点下创建一系列临时序列节点，并选择序列最小的节点为锁的拥有者。
+2.InterProcessMutex 构造了一个分布式锁，调用这个对象的 acquire 来获取锁操作，并传入一个等待时间，如果获得这个锁即可执行业务操作
+3.必须在 finally 中释放该锁
+
+16.4 服务注册
+Curator 提供了一个服务注册于发现的封装库，需要在 pom中添加依赖 
+org.apache.curator
+curator-x-discovery
+2.12.0
+
+16.4.1 通过 ServiceDiscovery 注册服务
+核心代码在于 ServiceInstanceBuilder 构造一个服务描述，ServiceDiscovery 来注册服务
+两个对象来完成服务的注册过程
+
+ServiceInstanceBuilder<Map> service = ServiceInstance.builder();
+service.address("192.168.1.100");
+service.port(8080);
+service.name("book");
+Map config = new HashMap();
+config.put("url","/api/v3/book");
+service.payload(config);
+
+ServiceInstance<Map> instance = service.build();
+ServiceDiscovery<Map> serviceDiscovery = ServiceDiscoveryBuilder.builder(Map.class).client(client).serializer(new JsonInstanceSerializer<Map>(Map.class)).basePath("/service").build();
+serviceDiscovery.registerService(instance);
+serviceDiscovery.start();
+其中 ServiceInstanceBuilder是一服务描述的类，设置了address，port，name。Curator会根据这个名字创建 zk节点
+ServiceDiscoveryBuilder 用于创建 ServiceDiscovery类，用于注册服务。client，serializer，basePath
+
+16.4.2 获取服务
+使用 ServiceDiscovery.queryForInstances() 来获取操作
+ServiceDiscovery<Map> serviceDiscovery = ServiceDiscoveryBuilder.builder(Map.class).client(client).serializer(new JsonInstanceSerializer<Map>(Map.class)).basePath("/service").build();
+serviceDiscovery.start();
+Collection<ServiceInstance<Map>> all = serviceDiscovery.queryForInstances(ServiceName);
+if(all.size()==0)
+	return null;
+else{
+	ServiceInstance<Map> service = new ArrayList<ServiceInstance<Map>>(all).get(0);
+	service.getAddress();
+	service.getPayload();
+	return service;
+}
+
+16.5 领导选取
+(略，知道原理即可)
+使用 Curator，无需关林zk的领导节点的选取算法，通过 LeaderSelector 即可实现领导的选取，
+LeaderSelectorListenerAdapter listener = new LeaderSelectorListenerAdapter(){
+	public void takeLeadership(CuratorFramework client) throws Exception{
+		log.info("get leadership");
+	}
+};
+
+LeaderSelector selector = new LeaderSelector(client,"/schedule",listener);
+selector.autoRequeue();
+selector.start();
+
+
+第十七章 监控 Spring Boot 应用
+SpringBoot 使用 Actuator 功能完成监控，通过 HTTP，JMX，远程脚本SSH，来查看 SpringBoot应用的配置，指标，健康程度等信息。
+可以监控的内容有
+SpringBoot的配置相信你
+SpringBoot配置的 Bean信息
+最近请求的 HTTP信息
+数据源，NoSQL等数据状态
+在线查看日志内容，在线日志配置修改
+所有 @RequestMapping 注解的URL路径
+自动装配信息汇总
+打印虚拟机的线程栈
+Dump内存
+应用的各种指标汇总
+自定义监控指标
+
+17.1 安装 Acutator
+在 pom中引入先关的依赖
+
+org.springframework.boot
+spring-boot-starter-actuator
+
+SpringBoot默认并不开启所有监控，需要在 application.properties 文件中进行配置
+endpoints.default.web.enabled=true
+
+考虑到系统监控涉及系统安全，最好修改配置文件，设置系统监控的访问端口，将这个端口放到防火墙之后，保证不能非法访问 SpringBoot的 Acutator功能
+mamagement.port=8081
+
+启动后，通过 http://127.0.0.1:8081/application/health 来访问监控信息。
+
+health信息默认输出了磁盘空间的健康诊断信息
+可以通过该 application.properties 文件，修改监控所对应的目录：management.context-path=/manage
+
+17.2 HTTP 跟踪
+SpringBoot 提供了 trace跟踪功能，查看最近的 HTTP请求和响应
+在浏览器输入：http://localhost:8081/application/trace  会输出 HTTP访问信息.
+
+trace是通过 InMemoryTracerepository 类来实现的，默认保留最后 100 条访问数据，可以自己配置 InMemoryTraceRepository 或者实现 TraceRepository 接口
+
+17.3 日志查看 (详情，略)
+允许查看日志配置，允许修改日志登记配置，还可以在线查看日志内容
+在浏览器输入：http://localhost:8081/application/loggers
+
+17.4 线程栈信息 (详情，略)
+通过 dump来获取某一刻虚拟机线程栈信息，线程栈表示某一时刻虚拟机正在做的事情
+在浏览器输入：http://localhost:8081/application/dump
+
+17.5 内存信息(详情，略)
+在浏览器输入：http://localhost:8081/application/heapdump
+
+17.6 查看URL映射
+通过所有注解 @RequestMapping 设置的 URL映射，通过此来查看URL对应的 Controller
+在浏览器输入：http://localhost:8081/application/mappings
+
+17.7 查看 Spring 容器管理的 Bean
+beans 输出所有 Spring 管理的 Bean
+在浏览器输入：http://localhost:8081/application/beans
+
+17.8 其他监控
+health：查看所有应用的健康状态。
+metrics：显示 SpringBoot的性能指标
+env：显示 SpringBoot的环境变量
+configprops：所有 @ConfigurationProperties 注解的配置信息
+autoconfig：显示所有自动装配类的报告，以及什么原因导致自动装配成功或不成功
+
+17.9 编写自己的监控信息
+（略）
