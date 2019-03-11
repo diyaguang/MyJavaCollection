@@ -9,3 +9,11 @@ my:
   max: ${random.int(10)}
   value: ${random.value}
   greeting: hi,i'm ${my.name}
+
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://39.105.102.17:3306/SpringBootTest?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 96777

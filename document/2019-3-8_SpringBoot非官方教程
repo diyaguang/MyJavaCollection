@@ -35,6 +35,39 @@
 
  在应用类或 application类砂锅，加上 @EnableConfigurationProperties({ConfigBean.class}) 注解
 
+3.自定义配置文件
+创建 自定义配置文件，例如 my.properties
+com.dygstudio.name=dygstudio
+com.dygstudio.age=36
+
+编写一个 JavaBean类，使用如下注解
+@Configuration
+@PropertySource(value="classpath:my.properties")
+@ConfigurationProperties(prefix = "com.dygstudio")
+
+在使用的类上加上 @EnableConfigurationProperties({ConfigBean.class,User.class})  //在实际使用中，这个注解可以不写
+@Autowired
+MyConfigBean myConfigBean;
+@RequestMapping(value = "/myConfig")
+public String testMyConfig(){
+    return myConfigBean.getName() +">>>>>"+myConfigBean.getAge();
+
+4.多环境配置文件
+使用格式 application-{profile}.properties
+
+在application.yml 中配置：
+spring:
+    profiles:
+        active: dev
+
+这样启动后，就shying application-dev.properties 配置文件了
+
+
+第三章 SpringBoot 用 JdbcTemplates 访问 MySQL
+
+
+
+
 
 
 
