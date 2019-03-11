@@ -65,6 +65,17 @@ spring:
 
 第三章 SpringBoot 用 JdbcTemplates 访问 MySQL
 
+第四章 SpringBoot 整合 JPA
+
+第五章 SpringBoot 整合 beatlsql（略，参看之前的教程）
+
+第六章 SpringBoot 整合 myBatis
+
+第七章 SpringBoot 开启声明式事务
+
+ 
+
+
 
 
 
