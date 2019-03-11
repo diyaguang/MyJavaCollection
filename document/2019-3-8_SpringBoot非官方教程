@@ -1,0 +1,44 @@
+第一篇 构建一个个 SpringBoot工程
+
+简化开发，开启各种自动装配，优先于配置的惯例
+创建项目后，在其目录下使用 mvn clean , mvn package 命令来执行编译打包，生成对应 war 或 jar 文件使用。
+
+在项目字段中使用 @LocalServerPort  注解，等同与在字段上使用 @Value("${local.server.port}")  表示获取配置文件中指定的项值。
+
+可以在 启动文件上加入如下代码，查看程序启动生成Bean的信息：
+@Bean
+    public CommandLineRunner commandLineRunner(ApplicationContext ctx){
+        return args -> {
+            System.out.println("Let's inspect the beans provided by Spring Boot:");
+            String[] beanNames = ctx.getBeanDefinitionNames();
+            Arrays.sort(beanNames);
+            for(String beanName:beanNames){
+                System.out.println(beanName);
+            }
+        };
+    }
+
+
+第二篇 Spring Boot 配置文件详解
+
+1.自定义属性
+@Value("${属性名}")  这样的获取方式，例 @Value("${my.name}")
+
+2.将配置文件的属性赋给实体类
+在配置文件中，配置前缀，放入配置数据
+在配置文件中，可使用 ${random} 这个对象，用来在配置文件中的值的预处理
+首先我们创建一个 Bean
+使用注解 @ConfigurationProperties(prefix="my")
+              @Component  //这个注解可写，可不写
+
+ 另外 org.springframework.boot    spring-boot-configuration-processor   这个 POM依赖，可引可不引
+
+ 在应用类或 application类砂锅，加上 @EnableConfigurationProperties({ConfigBean.class}) 注解
+
+
+
+
+
+
+
+

@@ -3,6 +3,7 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/testspringboot" />
+    <file type="web" url="file://$PROJECT_DIR$/testspringboot2" />
   </component>
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
@@ -12,6 +13,7 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/testspringboot/pom.xml" />
+        <option value="$PROJECT_DIR$/testspringboot2/pom.xml" />
       </list>
     </option>
   </component>
