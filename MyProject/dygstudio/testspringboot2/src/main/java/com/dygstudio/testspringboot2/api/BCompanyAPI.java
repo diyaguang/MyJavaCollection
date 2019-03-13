@@ -38,7 +38,7 @@ public class BCompanyAPI {
         return companyNew.toString();
     }
 
-    @RequestMapping(value = "/{id}",method = RequestMethod.POST)
+    @RequestMapping(value = "/",method = RequestMethod.POST)
     public String postCompany(@RequestParam(value = "id",required = true) String id,@RequestParam(value = "name") String name){
         BCompany company = new BCompany();
         company.setId(id);

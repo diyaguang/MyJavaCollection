@@ -73,6 +73,24 @@ spring:
 
 第七章 SpringBoot 开启声明式事务
 
+第八章 SpringBoot 整合 mongodb（略）
+
+第九章 SpringBoot 整合 Redis
+
+第十章 用 Spring Restdocs 创建 API 文档（略）
+
+第十一章 SpringBoot 集成 swagger2 构建
+
+第十二章 SpringBoot 集成 apidoc （略） 非常的漂亮
+
+第十三章 SpringBoot 集成 spring cache
+
+第十四章 在 SpringBoot 中使用 redis 实现消息队列
+
+
+
+
+
  
 
 

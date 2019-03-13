@@ -13,7 +13,7 @@ my:
 
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://39.105.102.17:3306/SpringBootTest?useUnicode=true&characterEncoding=UTF-8
     username: root
     password: 96777
@@ -23,6 +23,18 @@ spring:
       ddl-auto: update
     show-sql: true
 
+  redis:
+    host: 39.105.102.17
+    port: 6379
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 500
+        min-idle: 0
+
+
 mybatis:
   mapper-locations: classpath*:mybatis/*Mapper.xml
   type-aliases-package: com.dygstudio.testspringboot2.entity.mybatis
+  #config-location: classpath:mybatis/mybatis-config.xml
