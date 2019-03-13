@@ -2,27 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="45a1b8c8-b61b-4e29-b8ea-78041836af5d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/api/SWebSiteInfoAPI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisHelp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueContainer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueReceiver.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/Swagger2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/dao/SWebSiteInfoDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/entity/mybatis/SWebSiteInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/SWebSiteInfoService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/impl/SWebSiteInfoServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/resources/mybatis/SWebSiteInfoMapper.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/resources/mybatis/mybatis-config.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RabbitMQListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RabbitMQReceiver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/ScheduledTasks.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/StorageException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/StorageFileNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/StorageProperties.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/controller/FileUploadController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/StorageService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/impl/FileSystemStorageService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testspringboot2/src/main/resources/templates/uploadForm.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testspringboot2/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot2/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/Testspringboot2Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/Testspringboot2Application.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/api/BCompanyAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/api/BCompanyAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/controller/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/controller/HelloController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/api/BMyInfoAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/api/BMyInfoAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueContainer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueReceiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/BMyInfoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/impl/BMyInfoService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testspringboot2/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot2/src/main/resources/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testspringboot2/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot2/target/classes/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testspringboot2/target/classes/com/dygstudio/testspringboot2/Testspringboot2Application.class" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot2/target/classes/com/dygstudio/testspringboot2/Testspringboot2Application.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testspringboot2/target/classes/com/dygstudio/testspringboot2/api/BCompanyAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot2/target/classes/com/dygstudio/testspringboot2/api/BCompanyAPI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testspringboot2/target/classes/com/dygstudio/testspringboot2/api/BMyInfoAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot2/target/classes/com/dygstudio/testspringboot2/api/BMyInfoAPI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testspringboot2/target/classes/com/dygstudio/testspringboot2/config/RedisMessageQueueContainer.class" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot2/target/classes/com/dygstudio/testspringboot2/config/RedisMessageQueueContainer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testspringboot2/target/classes/com/dygstudio/testspringboot2/config/RedisMessageQueueReceiver.class" beforeDir="false" afterPath="$PROJECT_DIR$/testspringboot2/target/classes/com/dygstudio/testspringboot2/config/RedisMessageQueueReceiver.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testspringboot2/target/classes/com/dygstudio/testspringboot2/service/BMyInfoService.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../document/2019-3-8_SpringBoot非官方教程" beforeDir="false" afterPath="$PROJECT_DIR$/../../document/2019-3-8_SpringBoot非官方教程" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -45,53 +48,13 @@
   <component name="CoverageViewManager">
     <option name="myElementSize" value="248" />
   </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="-252319376">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="1" />
-          <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="1" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="CLASS" value="1" />
-          <entry key="HTML" value="1" />
-          <entry key="JAVA" value="103" />
-          <entry key="Properties" value="3" />
-          <entry key="XML" value="13" />
-          <entry key="YAML" value="5" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="JAVA" value="3052" />
-          <entry key="XML" value="253" />
-          <entry key="YAML" value="215" />
-        </counts>
-      </usages-collector>
-    </session>
-  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueReceiver.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="395">
-              <caret line="44" selection-start-line="44" selection-end-line="44" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/controller/HelloController.java">
+        <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/Testspringboot2Application.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="433">
-              <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
+            <state relative-caret-position="233">
+              <caret line="44" column="35" lean-forward="true" selection-start-line="44" selection-start-column="35" selection-end-line="44" selection-end-column="35" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -100,13 +63,75 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisHelp.java">
+        <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/ScheduledTasks.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="26" column="28" selection-start-line="26" selection-start-column="28" selection-end-line="26" selection-end-column="28" />
+            <state relative-caret-position="399">
+              <caret line="21" column="6" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#547#548#0" expanded="true" />
+                <element signature="e#573#574#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/controller/FileUploadController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="538">
+              <caret line="44" column="19" selection-start-line="44" selection-start-column="19" selection-end-line="44" selection-end-column="19" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/resources/my.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="19">
+              <caret line="1" column="19" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/resources/application.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="518">
+              <caret line="30" column="21" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/impl/FileSystemStorageService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="237">
+              <caret line="59" column="148" selection-start-line="59" selection-start-column="148" selection-end-line="59" selection-end-column="148" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/ServletInitializer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="76">
+              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/resources/templates/uploadForm.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="228">
+              <caret line="12" column="73" selection-start-line="12" selection-start-column="73" selection-end-line="12" selection-end-column="73" />
             </state>
           </provider>
         </entry>
@@ -118,6 +143,7 @@
       <list>
         <option value="spring-beans.schema" />
         <option value="Interface" />
+        <option value="HTML File" />
         <option value="Class" />
       </list>
     </option>
@@ -128,17 +154,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/config/MyRedisChannelListener.java" />
-        <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/config/RedisConfig.java" />
-        <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/entity/Book.java" />
-        <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/controller/RestClientController.java" />
-        <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/entity/BookEs.java" />
-        <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/controller/BookEsController.java" />
-        <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/dao/BookEsDao.java" />
-        <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/config/RedisCacheManagerCustomizer.java" />
-        <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/config/TwoLevelCacheManager.java" />
-        <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/controller/SpringSessionController.java" />
-        <option value="$PROJECT_DIR$/testspringboot/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/testspringboot/pom.xml" />
         <option value="$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/TestspringbootApplication.java" />
         <option value="$PROJECT_DIR$/testspringboot2/src/main/resources/application.properties" />
@@ -170,23 +185,28 @@
         <option value="$PROJECT_DIR$/testspringboot2/src/main/resources/mybatis-config.xml" />
         <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/dao/SWebSiteInfoDao.java" />
         <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisHelp.java" />
-        <option value="$PROJECT_DIR$/testspringboot2/src/main/resources/application.yml" />
         <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/Swagger2.java" />
         <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/api/SWebSiteInfoAPI.java" />
-        <option value="$PROJECT_DIR$/testspringboot2/pom.xml" />
-        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/Testspringboot2Application.java" />
         <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueListener.java" />
-        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueContainer.java" />
         <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/controller/HelloController.java" />
+        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueContainer.java" />
         <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueReceiver.java" />
+        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RabbitMQReceiver.java" />
+        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RabbitMQListener.java" />
+        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/impl/BMyInfoService.java" />
+        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/StorageException.java" />
+        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/StorageService.java" />
+        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/StorageFileNotFoundException.java" />
+        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/impl/FileSystemSotrageService.java" />
+        <option value="$PROJECT_DIR$/testspringboot2/pom.xml" />
+        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/StorageProperties.java" />
+        <option value="$PROJECT_DIR$/testspringboot2/src/main/resources/templates/uploadForm.html" />
+        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/controller/FileUploadController.java" />
+        <option value="$PROJECT_DIR$/testspringboot2/src/main/resources/application.yml" />
+        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/ScheduledTasks.java" />
+        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/Testspringboot2Application.java" />
       </list>
     </option>
-  </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -201,9 +221,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="23" />
-    <option name="width" value="1680" />
-    <option name="height" value="976" />
+    <option name="x" value="-7" />
+    <option name="width" value="974" />
+    <option name="height" value="1047" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -233,8 +253,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -275,6 +295,27 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
+              <item name="testspringboot2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
+              <item name="testspringboot2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
               <item name="testspringboot2" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -284,16 +325,8 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="testspringboot2" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="testspringboot2" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="testspringboot2" type="462c0819:PsiDirectoryNode" />
               <item name="config" type="462c0819:PsiDirectoryNode" />
             </path>
@@ -304,8 +337,58 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
               <item name="testspringboot2" type="462c0819:PsiDirectoryNode" />
               <item name="controller" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
+              <item name="testspringboot2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
+              <item name="testspringboot2" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
+              <item name="testspringboot2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
+              <item name="testspringboot2" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
+              <item name="impl" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
+              <item name="testspringboot2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
+              <item name="testspringboot2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
+              <item name="testspringboot2" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -314,6 +397,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
@@ -321,11 +405,14 @@
     <property name="ToolWindowCoverage.ShowToolbar" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1552385002210" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1552470497659" />
     <property name="jdk.selected.JAVA_MODULE" value="1.8" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="fileTemplates" />
   </component>
   <component name="RecentsManager">
@@ -409,16 +496,18 @@
       <workItem from="1552269365300" duration="6288000" />
       <workItem from="1552283333802" duration="11777000" />
       <workItem from="1552353169307" duration="15579000" />
+      <workItem from="1552439676356" duration="7840000" />
+      <workItem from="1552459233718" duration="10416000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="162261000" />
+    <option name="totallyTimeSpent" value="180517000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1680" height="976" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" x="662" y="73" width="493" height="926" id="Project" order="0" visible="true" weight="0.22588523" />
+      <window_info content_ui="combo" x="662" y="73" width="493" height="926" id="Project" order="0" visible="true" weight="0.24707136" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -442,7 +531,7 @@
       <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="14" show_stripe_button="false" />
       <window_info anchor="bottom" id="Docker" order="15" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Run Dashboard" order="16" visible="true" weight="0.3280543" />
+      <window_info active="true" anchor="bottom" id="Run Dashboard" order="16" visible="true" weight="0.32721382" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -460,152 +549,22 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
-  </component>
   <component name="VcsManagerConfiguration">
     <option name="SHOW_DIRTY_RECURSIVELY" value="true" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/controller/FileUploadController.java</url>
+          <line>37</line>
+          <properties />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/entity/BMyInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/BMyInfoService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="438">
-          <caret line="26" column="5" lean-forward="true" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/impl/SAccountServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/SAccountService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="16" column="37" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="37" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/api/SAccountAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="785">
-          <caret line="50" column="38" selection-start-line="50" selection-start-column="38" selection-end-line="50" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/api/BCompanyAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="571">
-          <caret line="41" column="97" selection-start-line="41" selection-start-column="85" selection-end-line="41" selection-end-column="97" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/dao/BCompanyDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/SWebSiteInfoService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/impl/SWebSiteInfoServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/dao/SWebSiteInfoDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/ServletInitializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/resources/mybatis/mybatis-config.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="8" column="16" lean-forward="true" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/resources/mybatis/SWebSiteInfoMapper.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" column="68" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/controller/LucyController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/resources/my.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1" column="19" lean-forward="true" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/resources/application.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="27" column="14" lean-forward="true" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/testspringboot2/src/test/java/com/dygstudio/testspringboot2/Testspringboot2ApplicationTests.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="38">
@@ -613,16 +572,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/api/SWebSiteInfoAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
-          <caret line="52" column="5" lean-forward="true" selection-start-line="52" selection-start-column="5" selection-end-line="52" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/api/SWebSiteInfoAPI.java" />
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -748,26 +698,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/Testspringboot2Application.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="608">
-          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/testspringboot/src/main/resources/statics/swagger3/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-417" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="619">
-          <caret line="99" column="17" lean-forward="true" selection-start-line="99" selection-start-column="17" selection-end-line="99" selection-end-column="17" />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/testspringboot/src/main/java/com/dygstudio/testspringboot/config/RedisCacheManagerCustomizer.java">
@@ -805,10 +738,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/Swagger2.java">
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/Swagger2.java" />
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisHelp.java" />
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueContainer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+        <state relative-caret-position="418">
+          <caret line="33" column="5" selection-start-line="33" selection-start-column="5" selection-end-line="33" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/controller/HelloController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="401">
+          <caret line="29" column="46" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -817,48 +759,173 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="17" column="1" lean-forward="true" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueContainer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="23" column="1" lean-forward="true" selection-start-line="23" selection-start-column="1" selection-end-line="23" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="190">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueReceiver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="44" selection-start-line="44" selection-end-line="44" />
+        <state relative-caret-position="484">
+          <caret line="36" selection-start-line="36" selection-end-line="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/dao/impl/SAccountDaoImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RabbitMQReceiver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="17" column="26" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisHelp.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/amqp/spring-rabbit/2.1.3.RELEASE/spring-rabbit-2.1.3.RELEASE.jar!/org/springframework/amqp/rabbit/annotation/Queue.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="26" column="28" selection-start-line="26" selection-start-column="28" selection-end-line="26" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/controller/HelloController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="433">
+        <state relative-caret-position="551">
           <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RabbitMQListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/StorageException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding>
+            <element signature="e#250#251#0" expanded="true" />
+            <element signature="e#280#281#0" expanded="true" />
+            <element signature="e#344#345#0" expanded="true" />
+            <element signature="e#381#382#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/StorageService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" column="34" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/impl/BMyInfoService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/StorageFileNotFoundException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+          <folding>
+            <element signature="e#274#275#0" expanded="true" />
+            <element signature="e#304#305#0" expanded="true" />
+            <element signature="e#380#381#0" expanded="true" />
+            <element signature="e#417#418#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="409">
+          <caret line="109" column="39" selection-start-line="109" selection-start-column="39" selection-end-line="109" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/StorageProperties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" column="3" selection-start-line="10" selection-start-column="3" selection-end-line="10" selection-end-column="3" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/resources/templates/uploadForm.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="12" column="73" selection-start-line="12" selection-start-column="73" selection-end-line="12" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/ServletInitializer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/impl/FileSystemStorageService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="237">
+          <caret line="59" column="148" selection-start-line="59" selection-start-column="148" selection-end-line="59" selection-end-column="148" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/controller/FileUploadController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="538">
+          <caret line="44" column="19" selection-start-line="44" selection-start-column="19" selection-end-line="44" selection-end-column="19" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/resources/my.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" column="19" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/resources/application.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="518">
+          <caret line="30" column="21" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/ScheduledTasks.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="21" column="6" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#547#548#0" expanded="true" />
+            <element signature="e#573#574#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/Testspringboot2Application.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="44" column="35" lean-forward="true" selection-start-line="44" selection-start-column="35" selection-end-line="44" selection-end-column="35" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -868,9 +935,83 @@
   </component>
   <component name="masterDetails">
     <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>testspringboot2:war</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Spring</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>testspringboot2</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
       <state key="ProjectJDKs.UI">
         <settings>
           <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>Maven: antlr:antlr:2.7.7</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

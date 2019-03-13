@@ -1,0 +1,77 @@
+{
+  "groups": [
+    {
+      "name": "com.dygstudio",
+      "type": "com.dygstudio.testspringboot2.entity.MyConfigBean",
+      "sourceType": "com.dygstudio.testspringboot2.entity.MyConfigBean"
+    },
+    {
+      "name": "my",
+      "type": "com.dygstudio.testspringboot2.entity.ConfigBean",
+      "sourceType": "com.dygstudio.testspringboot2.entity.ConfigBean"
+    },
+    {
+      "name": "storage",
+      "type": "com.dygstudio.testspringboot2.config.StorageProperties",
+      "sourceType": "com.dygstudio.testspringboot2.config.StorageProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.dygstudio.age",
+      "type": "java.lang.Integer",
+      "sourceType": "com.dygstudio.testspringboot2.entity.MyConfigBean",
+      "defaultValue": 0
+    },
+    {
+      "name": "com.dygstudio.name",
+      "type": "java.lang.String",
+      "sourceType": "com.dygstudio.testspringboot2.entity.MyConfigBean"
+    },
+    {
+      "name": "my.age",
+      "type": "java.lang.Integer",
+      "sourceType": "com.dygstudio.testspringboot2.entity.ConfigBean",
+      "defaultValue": 0
+    },
+    {
+      "name": "my.greeting",
+      "type": "java.lang.String",
+      "sourceType": "com.dygstudio.testspringboot2.entity.ConfigBean"
+    },
+    {
+      "name": "my.max",
+      "type": "java.lang.Integer",
+      "sourceType": "com.dygstudio.testspringboot2.entity.ConfigBean",
+      "defaultValue": 0
+    },
+    {
+      "name": "my.name",
+      "type": "java.lang.String",
+      "sourceType": "com.dygstudio.testspringboot2.entity.ConfigBean"
+    },
+    {
+      "name": "my.number",
+      "type": "java.lang.Integer",
+      "sourceType": "com.dygstudio.testspringboot2.entity.ConfigBean",
+      "defaultValue": 0
+    },
+    {
+      "name": "my.uuid",
+      "type": "java.lang.String",
+      "sourceType": "com.dygstudio.testspringboot2.entity.ConfigBean"
+    },
+    {
+      "name": "my.value",
+      "type": "java.lang.String",
+      "sourceType": "com.dygstudio.testspringboot2.entity.ConfigBean"
+    },
+    {
+      "name": "storage.location",
+      "type": "java.lang.String",
+      "sourceType": "com.dygstudio.testspringboot2.config.StorageProperties",
+      "defaultValue": "upload-dir"
+    }
+  ],
+  "hints": []
+}

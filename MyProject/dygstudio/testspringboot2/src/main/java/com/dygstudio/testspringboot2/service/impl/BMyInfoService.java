@@ -1,4 +1,4 @@
-package com.dygstudio.testspringboot2.service;
+package com.dygstudio.testspringboot2.service.impl;
 
 import com.dygstudio.testspringboot2.dao.BMyInfoDao;
 import com.dygstudio.testspringboot2.entity.BMyInfo;

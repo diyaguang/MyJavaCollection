@@ -87,20 +87,10 @@ spring:
 
 第十四章 在 SpringBoot 中使用 redis 实现消息队列
 
+第十五章 SpringBoot 整合 RabbitMQ
 
+第十六章 用 restTemplate 消费服务
 
+第十七章 上传文件（丫的就截取了一段，从网上补全的代码）
 
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
+第十八章 定时任务 Scheduling Tasks

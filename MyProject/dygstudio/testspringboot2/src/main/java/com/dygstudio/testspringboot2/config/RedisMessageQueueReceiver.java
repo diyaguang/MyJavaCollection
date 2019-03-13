@@ -33,14 +33,4 @@ public class RedisMessageQueueReceiver {
         LOGGER.info("Received <"+ message +">");
         latch.countDown();
     }
-
-    @Bean
-    RedisMessageQueueReceiver receiver(CountDownLatch latch){
-        return new RedisMessageQueueReceiver(latch);
-    }
-    @Bean
-    CountDownLatch latch(){
-        return new CountDownLatch(1);
-    }
-
 }

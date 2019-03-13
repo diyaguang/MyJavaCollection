@@ -7,6 +7,8 @@ import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 
+import java.util.concurrent.CountDownLatch;
+
 /**
  * @author: diyaguang
  * @date: 2019/03/12 5:42 PM
@@ -20,5 +22,14 @@ public class RedisMessageQueueContainer {
         container.setConnectionFactory(connectionFactory);
         container.addMessageListener(listenerAdapter,new PatternTopic("chat"));
         return container;
+    }
+
+    @Bean
+    RedisMessageQueueReceiver receiver(CountDownLatch latch){
+        return new RedisMessageQueueReceiver(latch);
+    }
+    @Bean
+    CountDownLatch latch(){
+        return new CountDownLatch(1);
     }
 }
