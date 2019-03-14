@@ -6,10 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="com.dygstudio" />
         <module name="dygstudio" />
         <module name="testspringboot" />
         <module name="testspringboot2" />
+        <module name="TestThread" />
       </profile>
     </annotationProcessing>
   </component>

@@ -13,6 +13,7 @@
     <artifactId>testspringboot2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
+
     <name>testspringboot2</name>
 
     <description>Demo project for Spring Boot</description>
