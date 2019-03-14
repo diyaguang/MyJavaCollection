@@ -94,3 +94,65 @@ spring:
 第十七章 上传文件（丫的就截取了一段，从网上补全的代码）
 
 第十八章 定时任务 Scheduling Tasks
+
+第十九章 验证表单信息
+
+第二十章 处理表单提交
+在 Controller中，
+@PostMapping("/greeting")
+public String greetingSubmit(@ModelAttribute Greeting greeting){
+    return "result";
+}
+就是提交时，表单为一个对象，提交时字段值自动绑定，然后作为一个对象提交给后台处理
+Html页面：
+<form action="#" th:action="@{/greeting}" th:object="${greeting}" method="post">
+    <input type="text" th:field="*{id}"/>
+    <input type="text" th:field="*{content}"/>
+这样页面提交后的内容就作为 greeting对象，Post给后台
+
+第二十一章 Springboot 集成 JMS （略）
+
+第二十三章 异步方法
+1.引入相关的依赖：
+com.fasterxml.jackson.core
+jackson-databind
+引入 jackson 序列化的 对应类库，（JSON）
+
+2.创建接收数据的实体 
+
+3.使用 RestTemplate 来进行 访问。在指定的方法上标记 @Async 注解，表示这是异步方法。
+@Async
+public Future<User> findUser(String user) throw InterruptedException{
+    ........
+    return new AsyncResult<>(results);
+}
+
+4.开启异步任务支持
+@EnableAsync 注解方法 Application 启动项目上，来开启对异步任务的支持，并且要继承 AsyncConfigurerSupport类
+
+@SpringBootApplication
+@EnableAsync
+public class Application extends AsyncConfigurerSupport{
+    @Override
+    public Executor getAsyncExecutor(){
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();   //创建线程池
+        executor.setCorePoolSize(2);
+        executor.setMaxPoolSize(2);
+        executor.setQueueCapacity(500);
+        executor.setThreadNamePrefix("GithubLookup-");
+        executor.initialize();
+        return executor;
+    }
+}
+
+5.测试代码
+@Component
+public class AppRunner implements CommandLineRunner{
+    
+}
+
+第二十四章 Springboot 整合 docker （略）
+
+第二十五章 2小时学会 SpringBoot（略）
+
+

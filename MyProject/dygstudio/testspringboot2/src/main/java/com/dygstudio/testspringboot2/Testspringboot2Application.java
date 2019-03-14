@@ -54,5 +54,4 @@ public class Testspringboot2Application {
 
         };
     }
-
 }
