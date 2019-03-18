@@ -18,7 +18,10 @@ public class Main {
         //testThreadB();
         //testThreadC();
         //testThreadInfo();
-        testThreadLocal();
+        //testThreadLocal();
+        //testThreadException();
+        //testCountThread();
+        testReentrantCount();
     }
 
     public static void testThreadA(){
@@ -72,5 +75,48 @@ public class Main {
         t1.start();
         t2.start();
         t3.start();
+    }
+
+    public static void testThreadException(){
+        ThreadExceptionTest test = new ThreadExceptionTest();
+        Thread testThread = new Thread(test);
+        testThread.setUncaughtExceptionHandler(new ExceptionHandlerThread());
+        testThread.start();
+    }
+
+    public static void testCountThread(){
+        Count count = new Count();
+        for(int i=0;i<5;i++){
+            CountThread countThread = new CountThread(count);
+            countThread.start();
+        }
+        try {
+            Thread.sleep(100l);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        System.out.println("5 people do the work, the final value:"+count.num);
+    }
+
+    public static void testReentrantCount(){
+        //final ReentrantCount ct = new ReentrantCount();
+        final ReentrantCount2 ct = new ReentrantCount2(new Object(),new Object());
+        for(int i=0;i<2;i++){
+            new Thread(){
+                @Override
+                public void run(){
+                    ct.get();
+                }
+            }.start();
+        }
+
+        for(int i=0;i<2;i++){
+            new Thread(){
+                @Override
+                public void run(){
+                    ct.put();
+                }
+            }.start();
+        }
     }
 }
