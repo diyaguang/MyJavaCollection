@@ -100,7 +100,8 @@ public class Main {
 
     public static void testReentrantCount(){
         //final ReentrantCount ct = new ReentrantCount();
-        final ReentrantCount2 ct = new ReentrantCount2(new Object(),new Object());
+        final ReentrantCount3 ct = new ReentrantCount3();
+        //final ReentrantCount2 ct = new ReentrantCount2(new Object(),new Object());
         for(int i=0;i<2;i++){
             new Thread(){
                 @Override
