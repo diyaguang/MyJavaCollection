@@ -1,0 +1,97 @@
+麦田在线，经纪人同步 业务
+
+总的第一步 
+
+Quuartz.Server.DataSync.BrokerDataSource 读取经纪人的相关数据（数据，头像，信息卡）
+类型：1.数据，2.头像，3.信息卡
+Key：1.DataSync_Broker，2.DataSync_BrokerAvatar，3.DataSync_BrokerIDCard
+
+第一种，同步数据：
+操作1：Update mt_per_online_tbl 的 state=1 条件，type=1，state=0
+操作2：select type=1 state=0 的数据
+操作3：获得 “per_id” 为 list 集合数据，放入到 Redis中，根据 key
+操作4：update mt_per_online_tbl 的 state=2 条件，type=1，state=1
+
+2.头像：同上，type=2
+
+3.信息卡：同上，type3
+
+
+详细业务整理：
+Broker数据，先从同步开始，之后是显示规则等内容
+
+同步 Job：Quartz.Server.2010.DataSync.BrokerDataSync
+需要 在线库连接串，公盘人事库lianjiechuan
+
+一，获取同步数据
+从Redis中读取，Key：DataSync_Broker 在 Redis 中采用 list结构存储要同步的值。
+
+二，同步库
+#69  先查在线库中是否有该经纪人数据，如果有，更新。如果没有，则添加。
+
+更新：
+操作1.先从公盘数据库汇中获取经纪人信息。
+		 从 mt_per_tbl，Agent_Department_tbl，mt_post_tbl，Agent_Department_tbl，mt_shop_tbl 表中获取数据。
+操作2：根据获取到的 数据，生成更新在线库的SQL语句
+操作3：执行SQL语句
+操作4：更新经纪人的 大区，小区，门店信息
+		更新经纪人表的 storeid，BIGAREAID，AREAID，的值
+		更新 B_CUSTOMER_FAV_BROKER（粉丝状态）
+		更新 B_BROKERTRIP（形成播报时间）
+		更新 经纪人表的 BROKERLEVEL=0 （星级，去掉了）
+		添加 RankTask 任务（去掉了）
+
+新增：
+操作1：先从 公盘库，获取经纪人信息，同更新时获取的数据
+操作2：根据获取到的数据，生成 Insert 在线库的 SQL语句
+操作3：执行SQL语句
+操作4：更新经纪人的大区，小区，门店信息（同更新）
+操作5：添加执行经纪人 Rank 的任务 （去掉了）
+
+三，添加 任务中心 RankTask （去掉了）
+
+四，写入经纪人的 Redis #87
+操作1.调用 jsonEntityHelper 中的 RedisSetBroker(code) 来更新 Redis 信息
+	获取 在线经纪人信息的条件：职位条件（使用经纪人，分店经理，经纪人租赁助理，区域总监，区域经理，房产顾问，租赁专员，见习店经理）
+	而且 BrokerId不是：423,45189,45309,45690,4551,45385,45628,45539,45688,888888,666666
+	获取经纪人信息，放入实体，离职状态直接从 Status 中获取，不再由 isopen，isclose 状态来决定
+	获取信息卡，获取服务商圈，经纪人评论，获取二维码，获取熟悉的小区，二手房/租房 带看总和，获取头像，获取特长
+	数据放入到 Key： U_S_[BROKERID] 的 Redis 中
+
+操作2.更新经纪人交易数据
+	RedisBrokerSaleData(brokerID);
+	获取相关数据，判断真房源开关，同样有队人的 职位和排除 一些BrokerID的 语句
+	粉丝数量，委托，待售，价格区间，面积区间，待租，租房价格区间，租房面积区间，二手房成交（房源方+客户方，房源方：卖二手房的，客户方：买二手房的），租房成交（从租房历史表中获取的），成交价格区间，成交面积区间，星级（业务经理，区域总监，区域经理，直接是五星级）
+
+	获取到的这些数据，放入到 Key：U_S_S_[BrokerId] 的 Redis中。
+
+操作3.写入经纪人的 Lucene信息
+
+五，经纪人离职时，删除此人的房评 Lucene 数据
+	删除这个人的 二手房 Lucene
+	删除这个人的 租房 Lucene
+
+
+第二种，同步头像
+业务整理，Broker经纪人头像，使用 公盘人事库，在线库
+
+一，获取同步的头像数据
+	从 Redis中读取，Key：DataSync_BrokerAvator
+	在Redis中，采用 list结构存储要同步的值
+
+二，同步库
+	先查是否在在线库中有这个经纪人，没有，则返回 失败，如果有，则同步
+	同步：
+	操作一：先从 公盘库获得头像图片地址，从 mt_per_tbl 表中，photo22 字段
+	操作二：更新在线 b_broker表的 photo字段，地址写入
+	操作三：裁剪经纪人头像并更新 housesourcePicture 表中数据
+		1.组装图片处理的 URL，调用，对头像进行裁剪
+		2.删除原有的 b_houseSourcePicture表中的头像数据  sourceid，pictype=3
+		   插入新的头像数据到 b_houseSourcePicture 表中  sourceid，pictype=3
+三，同步经纪人 Redis（头像地址是放在经纪人主信息 Redis中的）
+	注：这里是有问题的，每次裁剪后，都把经纪人的 Redis整个刷新一遍
+
+四，同步经纪人 Lucene
+	规则：在职 isopen=1，非冻结 isclose=1 非冻结，有头像，有双证 pictype=7
+	查询后，写入 Lucene 中
+	

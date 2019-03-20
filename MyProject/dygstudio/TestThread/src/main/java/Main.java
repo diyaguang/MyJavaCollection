@@ -120,4 +120,16 @@ public class Main {
             }.start();
         }
     }
+
+    public static void TestReentrantReadWriteLock(){
+        final RenntrantReadWriteLockTest ct = new RenntrantReadWriteLockTest();
+        for(int i=0;i<2;i++){
+            new Thread(){
+                public void run(){
+                    //ct.getTotalBalance()
+                }
+            }.start();
+        }
+
+    }
 }

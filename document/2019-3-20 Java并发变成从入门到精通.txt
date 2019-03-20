@@ -1,0 +1,92 @@
+3.5 显示锁 Lock 和 ReentrantLock
+
+3.6 显示锁 ReadWriteLock 和 ReentrantReadWriteLock
+ReadWriteLock是个接口，包含了 readLock和 writeLock 两个方法，适用于大量读操作
+接口内部使用 原生的 Lock 来对资源加锁操作。
+
+注：不能同时存在读写线程
+
+ReentrantReadWriteLock 是 ReadWriteLock 的实现类，使用后，读线程是共享的，写线程是互斥的。
+说明：非公平锁，在写获得锁后，将推迟其他线程的读或写操作。锁是可以降级的，写锁降为读锁。锁是不能升级的。支持在获取锁期间被中断。写入锁提供条件变量的支持，读取锁不支持环境变量，会抛出 UnsupportedOperationException 异常。
+
+读-读不互斥，读-写互斥，写-写互斥
+
+几个相关概念：
+锁公平性：非公平模式（默认的），读锁和写锁获取顺序不确定，吞吐量会很高。
+公平模式：线程会以队列方式获得锁，当前线程释放后，等待时间最长的线程将获得锁。
+
+锁重入：重入，可以重新进入。一个线程获得某个锁后，还可以继续获取该锁。允许一个线程多次获取同一个锁。一个线程获取多少次锁，就必须释放多少次锁。对于内置锁也是使用的。每次进入和离开 代码块，就是一次完整的锁获取和释放。
+
+锁降级：从写锁变成读锁，ReentrantReadWriteLock支持锁降级；
+锁升级：从读锁变成写锁，ReentrantReadWriteLock是不支持的。
+
+与 ReentrantLock 的区别，ReentrantReadWriteLock是 ReentrantLock的复杂扩展，适合复杂的业务控制场景。可以实现在一个方法中读写分离锁机制。而 ReentrantLock只能加解锁这一种机制。
+
+3.7 显示锁 StampedLock
+相关概念：
+悲观锁：假定会发生并发冲突，屏蔽一些可能违反数据完整性的操作
+读取悲观锁：在读取之前，判断一下数据有没有正在被更新
+乐观锁：假定不会发生并发冲突，只在提交操作时检查是否违反数据完整性
+读取乐观锁：在读取之前，不需要来判断数据的一致性，只管读取就可以了
+
+StampedLock锁，实现了乐观锁策略，乐观锁完全不会阻塞线程。
+ReentrantReadWriteLock 是使用 悲观锁的策略，读写之间是冲突的，读锁会完全阻塞写锁。而 StampedLock 则不会。
+
+写锁：
+创建 StampedLock 对象后，调用 writeLock() 会返回一个 stamp 标志值，然后在解锁 unlockWrite()时，也填写这个 标志值。
+读锁：
+使用这个锁，的 任何一个 try... （tryOptimisticRead）读方法，也会返回一个stamp标志，作为获取的凭证。
+读取到数据后，要使用 lockObject.validate(stamp) 来判断在读的过程中，是否发生过修改。传入读锁时的 stamp标志作为参数。
+如果修改了，则 lockObject.readLock() 升级锁级别，升级为悲观锁，同样返回 stamp 标志，然后再次读取，并返回，解锁时同样使用 stamp标签。
+这样就能保证数据读取的准确性。
+
+public class Point {
+    private double x, y;//内部定义表示坐标点
+    private final StampedLock s1 = new StampedLock();//定义了StampedLock锁,
+
+    void move(double deltaX, double deltaY) {
+        long stamp = s1.writeLock();//这里的含义和distanceFormOrigin方法中 s1.readLock()是类似的
+        try {
+            x += deltaX;
+            y += deltaY;
+        } finally {
+            s1.unlockWrite(stamp);//退出临界区,释放写锁
+        }
+    }
+
+    double distanceFormOrigin() {//只读方法
+        long stamp = s1.tryOptimisticRead();  //试图尝试一次乐观读 返回一个类似于时间戳的邮戳整数stamp 这个stamp就可以作为这一个所获取的凭证
+        double currentX = x, currentY = y;//读取x和y的值,这时候我们并不确定x和y是否是一致的
+        if (!s1.validate(stamp)) {//判断这个stamp是否在读过程发生期间被修改过,如果stamp没有被修改过,责任无这次读取时有效的,因此就可以直接return了,反之,如果stamp是不可用的,则意味着在读取的过程中,可能被其他线程改写了数据,因此,有可能出现脏读,如果如果出现这种情况,我们可以像CAS操作那样在一个死循环中一直使用乐观锁,知道成功为止
+            stamp = s1.readLock();//也可以升级锁的级别,这里我们升级乐观锁的级别,将乐观锁变为悲观锁, 如果当前对象正在被修改,则读锁的申请可能导致线程挂起.
+            try {
+                currentX = x;
+                currentY = y;
+            } finally {
+                s1.unlockRead(stamp);//退出临界区,释放读锁
+            }
+        }
+        return Math.sqrt(currentX * currentX + currentY * currentY);
+    }
+}
+
+书上说法理解：就是说使用状态来进行操作，通过锁返回的 stamp 作为状态标志。tryXXXX 的方法可能返回0表示获取锁失败，释放锁或判断锁都需要 stamp作为状态的标志参数，状态不符合，就失败。
+写方法：writeLock，独占访问，返回一个 stamp，用于 unlockWrite 释放锁。 还有一个 tryWriteLock 所有乐观读，都认为是失败的。
+读方法：readLock，非独占访问而阻塞等待，返回一个标志，用于 unlockRead 释放锁
+乐观读：在锁当前没有以写模式持有时，方法 tryOptimisticRead 返回一个非0的标志，然后通过 validate 判断读期间是否有修改，这是一种乐观的读。
+
+总结：几种锁的对比
+Synchronized 在 JVM层面上的，异常时，会自动释放锁定。只有少量竞争时使用，Synchronized的锁是针对一个对象的。
+ReentrantLock，ReentrantReadWriteLock，StampedLock 都是代码块层的锁定，必须保证 释放锁 。
+ReentrantLock 是通用的锁实现
+ReentrantReadWriteLock，对Lock 进行了扩展，引入了 read，write
+StampedLock，在Lock基础上，实现了乐观锁和悲观锁，在读越来越多的业务场景上。较为复杂，容易引起死锁等问题。
+
+3.8 什么是死锁
+
+
+
+
+
+
+
