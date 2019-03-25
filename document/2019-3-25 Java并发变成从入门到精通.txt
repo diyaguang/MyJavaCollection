@@ -1,0 +1,116 @@
+5.8 链表传输队列 LinkedTransferQueue
+传输：消费者中断，放入空元素，生产者向空元素中放入数据，然后中断。
+由链表结构，无界传输的阻塞队列。具有先进先出结构 FIFO，在公平模式下无界的。
+双重数据结构：保留/完成，Transfer方法提供了线程之间直接交换对象的捷径方法。
+TransferQueue是接口，LinkedTransferQueue 是实现类。
+常用方法：transfer，tryTransfer（不阻塞的操作），hasWaitingConsumer，getWaitingConsumerCount，size，addAll，removeAll，retainAll，containsAll，equals，toArray
+说明：
+1.当消费者 >=1 在等待获取元素时，都会立刻转交，这属于线程之间的元素交换。这时元素并没有进入队列。
+2.队列已有元素的情况下，transfer将需要等待前面数据被消费掉，直到传递的元素被消费者线程取走为止。
+3.transfer方法，工作者线程可能会被阻塞到生产者的元素被消费掉为止。
+4.size方法，需要迭代，可能不太准确。
+
+5.9 同步计数器 CountDownLatch
+倒计数门闩，Latch（门闩），在完成一组正在执行的进程之前，允许其他线程一直等待。给定一个初始值的计数器，使用 countDown方法递减计数器，当达到零后，释放所有等待的线程。
+常用方法：CountDownLatch，await，countDown，getCount
+使用场景：适用于需要等待某个条件达到后才继续后面的事情。
+
+5.10 抽象队列化同步器 AbstractQueued Synchronizer（略）
+
+5.11 同步计数器 Semaphore
+许可集合，分批进入，排队一样。
+维护了一个信号量的许可集合，在没有许可前，会阻塞每一个 acquire，使用 release 添加许可，释放一个正在阻塞的获取者。
+主要方法：Semaphore，acquire，availablePermits，drainPermits，getQueueLength，hasQueuedThreads，isFair，reducePermits，release，tryAcquire
+在创建初始对象时，可以使用 fair参数，表示是否使用公平的设置（fair是否公平：true公平，false非公平（默认），公平性是是否先进来的先释放，默认是否的）
+原理：有点像线程池的意思，拿到信号量的线程在可以运行。
+
+5.12 同步计数器 CyclicBarrier
+同步一组线程，到指定的障点后，在同步向后执行。可以用于 分布式计算。计算多线程运行，将结果最后进行合并的场景。
+称为循环栅栏，循环屏障。允许一组线程相互等待，直到达到某个公共屏障点，然后所有的这组线程再同步向后执行。
+内部利用 ReentrantLock 做线程安全锁，实现线程安全等待。
+主要方法：CyclicBarrier，await，getNumberWaiting，getParties，isBroken，reset
+
+CyclicBarrier与CountDownLatch的区别：
+CountDownlatch：一个或多个线程，等待另外N个线程完成某个事情后，才能执行。
+CyclicBarrier：N个线程相互等待，任何一个线程完成之前，所有线程都必须等待。
+
+
+第六章 线程池
+
+6.1 什么是线程池
+池化资源：利用已有对象来服务，是需要解决的关键问题。创建和销毁是很浪费资源的。
+java.util.concurrent.Executors 常用的线程池工具类，可以方便的创建线程池。提供了一些静态工厂，生成常用的线程池。
+newSingleThreadExecutor：创建一个单线程的线程池
+newFixedThreadPool：创建固定大小的线程池
+newCachedthreadPool：创建一个可缓存的线程池
+
+6.2 newSingleThreadExecutor 的使用
+单线程的线程池，只有一个线程工作。如果线程异常了，则会有新的线程替代。线程保证所有任务的执行顺序按照任务的提交顺序执行。
+原理：根据 threadPoolExecutor 创建一个 LinkedBlockingQueue的一个大小的线程池，采用默认的异常策略。
+
+6.3 newCachedThreadPool 的使用
+创建一个缓存池大小可以根据需要伸缩的线程池。调用 execute将重用以前构造的线程。如果没有可用的线程，则创建一个新的线程到池中。并终止那些在60s内都没有被使用的线程。
+原理：使用 ThreadPoolExecutor创建一个0线程池，来一个线程就创建一个 SynchronousQueue<Runnable> 线程对象来处理。
+
+6.4 newFixedThreadPool 的使用
+创建固定数量线程数的线程池，以共享的无界队列方式来运行线程。多数线程都会处于任务的活动状态。如果所有线程处于活动状态时提交了任务，在有可用线程出来前，则在队列中等待。异常导致的线程终止，将产生一个新的线程继续执行内容。某个线程在显示的关闭之前，都将在线程池中一直存在。
+原理：内部创建了一个 指定大小的 LinkedBlockingQueue 的线程池。
+
+6.5 线程池的好处
+（内容，略）
+
+6.6 线程池的工作机制及其原理
+核心的两个队列：
+1.线程等待池：线程队列 BlockingQueue
+2.任务处理池：正在工作的 Thread列表
+
+线程池的核心参数：
+核心池大小（corePoolSize）：固定大小，稳定峰值，线程数大小不会释放的。
+最大处理线程池数（maximumPoolSize）：当线程池中的线程超过 corePoolSize，小于 maximumPoolSize 时，会自动创建与回收线程池里面的线程的资源（这个就像线程池的一种补救措施，任务量突然过大时的一种操作。临时操作，使用过后会被回收的）。
+
+6.7 自定义线程池与 ExecutorService
+自定义线程池需要用到 ThreadFactory
+
+1.常用类库介绍：
+Executor：顶级线程池接口，是一个执行线程的工具
+Executors：是线程工厂类，可以创建很多线程池。
+ExecutorService：真正线程池接口，继承 Executor接口，声明了 submit，invokeAll，invokeAny，shutDown 等方法
+AbstractExecutorService：实现了 ExecutorService 接口，基本实现了其中声明的所有方法。
+ThreadPoolExecutor：实现了 ExecutorService 的默认实现，继承了 AbstractExecutorService。
+ScheduledExecutorService：定制/定时 任务接口
+ScheduledThreadPoolExecutor：继承了ScheduledExecutorService接口，实现定制/定时 任务的类
+
+2.利用 ThreadFactory创建线程
+线程工厂接口，可以通过工厂直接创建线程。接口中只有 Thread newThread(Runnable r); 方法，接收一个 Runnable对象，并将其封装到 thread对象中。
+Java提供了 默认线程工厂类（DefaultThreadFactory）。
+
+3.理解 RejectedExecutionHandler
+当线程池饱和，任务队列满，从而丢弃处理，这个接口用来处理被丢弃的线程的异常处理接口。
+public interface RejectedExecutionHandler{
+	void rejectedExecution(Runnable r,ThreadPoolExecutor executor);
+}
+JDK中，提供了四种方式来处理任务拒绝策略：
+(1).AbortPolicy：直接抛出异常
+(2).CallerRunsPolicy：只用调用者所在线程来运行任务
+(3).DiscardOldestPolicy：丢弃队列里最近的一个任务，并执行当前任务
+(4).DiscardPolicy：不处理，丢弃掉
+
+4.ThreadPoolExecutor 详解
+ 最主要的构造函数：
+ public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,BlockingQueue<Runnable> workQueue,ThreadFactory threadFactory,RejectedExecutionHandler handler);
+ 参数说明：
+ corePoolSize：核心参数，线程池大小。默认线程池创建后，是0线程。当开始有任务后，创建线程，直到 corePoolSize为止。可以好似哟功能 prestartAllCoreThreads 或 prestartCoreThread 方法来预初始化线程。
+maximumPoolSize：线程池最大线程数，最多能创建多少个线程。线程使用完后，比corePoolSize多的线程可能会被释放掉。
+keepAliveTime：线程没有任务后，最多保持多久会终止。大于 corePoolSize的，空闲时间如果达到这个值会被释放。，如果调用了 allowCorethreadTimeOut 方法，则不管corePoolSize的大小，到达空闲时间的，都会被释放。
+TimeUnit：keepAliveTime单位
+BlockingQueue：一个阻塞队列，存储等待执行的任务。一般是 ArrayBlockingQueue，LinkedBlockingQueue，SynchronousQueue
+threadFactory：线程工厂，用来创建主线程，默认是 Executors.defaultThreadFactory
+RejectedExecutionHandler：当拒绝处理任务时的策略。ThreadPoolExecutor.AbortPolicy（默认的），DiscardPolicy，DiscardOldestPolicy，CallerRunsPolicy
+
+5.自定义实现一个简单的 Web请求线程池
+（略）
+
+6.8 线程池在工作中的错误使用
+1.线程池是使用在合理的单例模式下使用的，不要放到 services方法里创建，这样会创建一大堆线程池。
+2.线程池数量设置很大，请求过载。等待的线程也可能会消耗很大的系统资源，引起资源匮乏。
+3.注意死锁问题

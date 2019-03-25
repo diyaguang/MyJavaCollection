@@ -69,7 +69,7 @@
 					<li><a class="scrollto" href="#experiences-section">工作历程</a></li>
 					<li><a class="scrollto" href="#eudcation-section">教育经历</a></li>
 					<li><a class="scrollto" href="#skills-section">专业技能</a></li>
-					<li><a class="scrollto" href="#testimonials-section">证书</a></li>
+					<li><a class="scrollto" href="#testimonials-section">评价</a></li>
 					<li><a class="scrollto" href="#portfolio-section">个人展示</a></li>
 					<li><a class="scrollto" href="#contact-section">联系</a></li>
 				</ul><!--//page-nav-->
@@ -185,12 +185,10 @@
 			
 		</div><!--//row-->
 	</section><!--//section-->
-	
-	
 	<section id="skills-section" class="skills-section section text-center">
-		<h2 class="section-title">Professional Skills</h2>
+		<h2 class="section-title">专业技能</h2>
 		<div class="top-skills">
-			<h3 class="subtitle">Top Skills</h3>
+			<h3 class="subtitle">顶尖技能</h3>
 			<div class="row">
 				<div class="item col-xs-12 col-sm-4">
 					<div class="item-inner">
@@ -232,7 +230,7 @@
 		</div><!--//top-skills-->
 		
 		<div class="other-skills">
-			<h3 class="subtitle">Other Skills</h3>
+			<h3 class="subtitle">其他技能</h3>
 			<div class="misc-skills">
 				<span class="skill-tag">HTML5</span>
 				<span class="skill-tag">CSS3</span>
@@ -249,9 +247,8 @@
 		</div><!--//other-skills-->
 		
 	</section><!--//skills-section-->
-	
 	<section id="testimonials-section" class="testimonials-section section">
-		<h2 class="section-title">Testimonials</h2>
+		<h2 class="section-title">评价</h2>
 		
 		<div id="testimonials-carousel" class="testimonials-carousel carousel slide" data-interval="8000">
 			
@@ -302,10 +299,8 @@
 		</div><!--//testimonials-carousel-->
 		
 	</section><!--//section-->
-	
-	
 	<section id="portfolio-section" class="portfolio-section section">
-		<h2 class="section-title">Portfolio</h2>
+		<h2 class="section-title">个人展示</h2>
 		<ul id="filters" class="filters clearfix">
 			<li class="type active" data-filter="*">All</li>
 			<li class="type" data-filter=".backend">Back-end</li>
@@ -422,7 +417,6 @@
 		</div><!--//item-wrapper-->
 		
 	</section><!--//section-->
-	
 	<section id="contact-section" class="contact-section section">
 		<h2 class="section-title">取得联系</h2>
 		<div class="intro">
@@ -449,7 +443,6 @@
 		</div><!--//intro-->
 
 	</section><!--//section-->
-	
 </div><!--//wrapper-->
 
 <footer class="footer text-center">

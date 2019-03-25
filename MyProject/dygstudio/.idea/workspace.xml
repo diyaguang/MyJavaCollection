@@ -1,17 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/TestThread/src/main/java/Main.java" line="72" />
+    <bookmark url="file://$PROJECT_DIR$/TestThread/src/main/java/Main.java" line="77" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45a1b8c8-b61b-4e29-b8ea-78041836af5d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/RenntrantReadWriteLockTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/controller/HomeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my/src/main/resources/templates/index.btl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/CountDownLatchTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/CyclicBarrierTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/NewSinglethreadExecutorTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/SemaphoreTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/DictInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/EducationInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/EvaluationInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/MyInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/ShowInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/SkillsInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/WorkInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestThread/TestThread.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/TestThread/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/Main$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/Main$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/Main$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/Main$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/Main$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/Main$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TestThread/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/my/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/RenntrantReadWriteLockTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/RenntrantReadWriteLockTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my/src/main/resources/templates/index.btl" beforeDir="false" afterPath="$PROJECT_DIR$/my/src/main/resources/templates/index.btl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my/target/classes/templates/index.btl" beforeDir="false" afterPath="$PROJECT_DIR$/my/target/classes/templates/index.btl" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -30,19 +45,56 @@
     <option name="PARALLEL_COMPILATION" value="true" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/dygstudio$ThreadMain.ic" NAME="ThreadMain Coverage Results" MODIFIED="1552892343370" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/dygstudio$TestspringbootApplication.ic" NAME="TestspringbootApplication Coverage Results" MODIFIED="1551776640619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/dygstudio$ThreadMain.ic" NAME="ThreadMain Coverage Results" MODIFIED="1552892343370" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
   <component name="CoverageViewManager">
     <option name="myElementSize" value="284" />
   </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-252319376">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="2" />
+          <entry key="project.open.time.5" value="1" />
+          <entry key="project.open.time.6" value="1" />
+          <entry key="project.open.time.7" value="1" />
+          <entry key="project.opened" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="HTML" value="1" />
+          <entry key="JAVA" value="13" />
+          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="Properties" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="HTML" value="26" />
+          <entry key="JAVA" value="3709" />
+          <entry key="PLAIN_TEXT" value="8" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/controller/HomeController.java">
+        <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/CountDownLatchTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="19" column="39" selection-start-line="19" selection-start-column="39" selection-end-line="19" selection-end-column="39" />
+            <state relative-caret-position="40">
+              <caret line="4" column="3" lean-forward="true" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="63">
+              <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -50,26 +102,39 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/my/pom.xml">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/NewSinglethreadExecutorTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="58" column="31" selection-start-line="58" selection-start-column="31" selection-end-line="58" selection-end-column="31" />
+            <state relative-caret-position="270">
+              <caret line="24" column="17" lean-forward="true" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#473#629#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/my/src/main/resources/templates/index.btl">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/SemaphoreTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="353">
-              <caret line="53" column="43" lean-forward="true" selection-start-line="53" selection-start-column="43" selection-end-line="53" selection-end-column="43" />
+            <state relative-caret-position="76">
+              <caret line="4" column="3" lean-forward="true" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
               <folding>
-                <element signature="n#style#0;n#div#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="e#6813#6818#0" expanded="true" />
-                <element signature="e#9746#9751#0" expanded="true" />
-                <element signature="e#10886#10891#0" expanded="true" />
-                <element signature="e#21059#21065#0" expanded="true" />
+                <element signature="e#389#545#0" expanded="true" />
+                <element signature="e#544#545#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/CyclicBarrierTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-82">
+              <caret line="19" column="47" lean-forward="true" selection-start-line="19" selection-start-column="47" selection-end-line="19" selection-end-column="47" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -93,19 +158,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/entity/MyInfo.java" />
-        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/entity/BMyInfo.java" />
-        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/dao/BMyInfoDao.java" />
-        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/BMyInfoService.java" />
-        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/api/BMyInfoAPI.java" />
-        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/entity/mybatis/SWebSiteInfo.java" />
-        <option value="$PROJECT_DIR$/testspringboot2/src/main/resources/static/mapper.xml" />
-        <option value="$PROJECT_DIR$/testspringboot2/src/main/resources/static/SWebSiteInfoMapper.xml" />
-        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/SWebSiteInfoService.java" />
-        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/impl/SWebSiteInfoServiceImpl.java" />
-        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/api/BCompanyAPI.java" />
-        <option value="$PROJECT_DIR$/testspringboot2/src/main/resources/mybatis-config.xml" />
-        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/dao/SWebSiteInfoDao.java" />
         <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisHelp.java" />
         <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/Swagger2.java" />
         <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/api/SWebSiteInfoAPI.java" />
@@ -140,12 +192,31 @@
         <option value="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ReentrantCount2.java" />
         <option value="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ReentrantCount3.java" />
         <option value="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/RenntrantReadWriteLockTest.java" />
-        <option value="$PROJECT_DIR$/TestThread/src/main/java/Main.java" />
         <option value="$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/controller/HomeController.java" />
         <option value="$PROJECT_DIR$/my/pom.xml" />
         <option value="$PROJECT_DIR$/my/src/main/resources/templates/index.btl" />
+        <option value="$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/MyInfo.java" />
+        <option value="$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/EvaluationInfo.java" />
+        <option value="$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/Dict.java" />
+        <option value="$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/DictFile.java" />
+        <option value="$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/DictInfo.java" />
+        <option value="$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/WorkInfo.java" />
+        <option value="$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/EducationInfo.java" />
+        <option value="$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/ShowInfo.java" />
+        <option value="$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/SkillsInfo.java" />
+        <option value="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/CountDownLatchTest.java" />
+        <option value="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/SemaphoreTest.java" />
+        <option value="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/CyclicBarrierTest.java" />
+        <option value="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/NewSinglethreadExecutorTest.java" />
+        <option value="$PROJECT_DIR$/TestThread/src/main/java/Main.java" />
       </list>
     </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -175,7 +246,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -186,119 +256,25 @@
             <path>
               <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
               <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="my" type="462c0819:PsiDirectoryNode" />
+              <item name="TestThread" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
               <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="my" type="462c0819:PsiDirectoryNode" />
+              <item name="TestThread" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
               <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="my" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="my" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="my" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="my" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="my" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="my" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="my" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="my" type="462c0819:PsiDirectoryNode" />
-              <item name="controller" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="my" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="my" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="my" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="testspringboot" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="testspringboot" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="testspringboot" type="462c0819:PsiDirectoryNode" />
+              <item name="TestThread" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
               <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="testspringboot" type="462c0819:PsiDirectoryNode" />
+              <item name="TestThread" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
@@ -306,58 +282,18 @@
             <path>
               <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
               <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="testspringboot" type="462c0819:PsiDirectoryNode" />
+              <item name="TestThread" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="testspringboot" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="testspringboot" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="testspringboot" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="testspringboot" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="testspringboot" type="462c0819:PsiDirectoryNode" />
-              <item name="controller" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="testspringboot" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="thread" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -369,7 +305,7 @@
     <property name="ToolWindowCoverage.ShowToolbar" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553075268701" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553493406926" />
     <property name="jdk.selected.JAVA_MODULE" value="1.8" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -406,7 +342,7 @@
     </option>
     <option name="contentProportion" value="0.20310558" />
   </component>
-  <component name="RunManager" selected="Spring Boot.MyApplication">
+  <component name="RunManager" selected="Application.ThreadMain">
     <configuration name="ThreadMain" type="Application" factoryName="Application">
       <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
@@ -491,16 +427,20 @@
       <workItem from="1552958249213" duration="4636000" />
       <workItem from="1553052101178" duration="28000" />
       <workItem from="1553052304805" duration="11617000" />
+      <workItem from="1553091911733" duration="420000" />
+      <workItem from="1553130950444" duration="3402000" />
+      <workItem from="1553217184607" duration="10077000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="229753000" />
+    <option name="totallyTimeSpent" value="243652000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="0" y="23" width="1680" height="976" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" x="662" y="73" width="493" height="926" id="Project" order="0" visible="true" weight="0.20500532" />
+      <window_info active="true" content_ui="combo" x="662" y="73" width="493" height="926" id="Project" order="0" visible="true" weight="0.21245421" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -510,21 +450,21 @@
       <window_info id="Web" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32953367" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3412527" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.34049773" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Spring" order="7" weight="0.32937366" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32937366" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.32721382" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" weight="0.32918552" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.32692307" />
       <window_info anchor="bottom" id="Problems" order="11" weight="0.32937366" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" />
       <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="14" show_stripe_button="false" />
       <window_info anchor="bottom" id="Docker" order="15" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Run Dashboard" order="16" visible="true" weight="0.3261339" />
+      <window_info anchor="bottom" id="Run Dashboard" order="16" weight="0.32579187" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -542,6 +482,9 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="SHOW_DIRTY_RECURSIVELY" value="true" />
   </component>
@@ -558,78 +501,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisHelp.java" />
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueContainer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="33" column="5" selection-start-line="33" selection-start-column="5" selection-end-line="33" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/controller/HelloController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="401">
-          <caret line="29" column="46" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RedisMessageQueueReceiver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="36" selection-start-line="36" selection-end-line="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/dao/impl/SAccountDaoImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="22" column="13" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RabbitMQReceiver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="17" column="26" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/amqp/spring-rabbit/2.1.3.RELEASE/spring-rabbit-2.1.3.RELEASE.jar!/org/springframework/amqp/rabbit/annotation/Queue.class" />
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RabbitMQListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/StorageException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/StorageService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="10" column="34" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/impl/BMyInfoService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/StorageFileNotFoundException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -655,9 +526,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="21" column="6" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -675,9 +543,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="779">
           <caret line="59" column="148" selection-start-line="59" selection-start-column="148" selection-end-line="59" selection-end-column="148" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -738,11 +603,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="247">
           <caret line="13" column="22" lean-forward="true" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
-          <folding>
-            <element signature="e#246#247#0" expanded="true" />
-            <element signature="e#279#280#0" expanded="true" />
-            <element signature="e#330#331#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -771,10 +631,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="190">
           <caret line="10" column="47" selection-start-line="10" selection-start-column="47" selection-end-line="10" selection-end-column="47" />
-          <folding>
-            <element signature="e#220#221#0" expanded="true" />
-            <element signature="e#274#275#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -820,36 +676,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/lang/Thread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="745" column="16" selection-start-line="745" selection-start-column="16" selection-end-line="745" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/lang/Thread.java" />
     <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/RenntrantReadWriteLockTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="380">
           <caret line="20" column="26" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="120" column="9" selection-start-line="120" selection-start-column="9" selection-end-line="120" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3838#3974#0" expanded="true" />
-            <element signature="e#3973#3974#0" expanded="true" />
-            <element signature="e#4037#4173#0" expanded="true" />
-            <element signature="e#4172#4173#0" expanded="true" />
-            <element signature="e#4379#4500#1" expanded="true" />
-            <element signature="e#4499#4500#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -896,16 +727,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/controller/HomeController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="19" column="39" selection-start-line="19" selection-start-column="39" selection-end-line="19" selection-end-column="39" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/my/src/main/resources/static/assets/plugins/font-awesome/css/font-awesome.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="437">
@@ -915,21 +736,134 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/my/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
+        <state relative-caret-position="457">
           <caret line="58" column="31" selection-start-line="58" selection-start-column="31" selection-end-line="58" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/controller/HomeController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="19" column="39" selection-start-line="19" selection-start-column="39" selection-end-line="19" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/my/src/main/resources/templates/index.btl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="53" column="43" lean-forward="true" selection-start-line="53" selection-start-column="43" selection-end-line="53" selection-end-column="43" />
+        <state relative-caret-position="298">
+          <caret line="419" column="53" selection-start-line="419" selection-start-column="53" selection-end-line="419" selection-end-column="53" />
           <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#6813#6818#0" expanded="true" />
-            <element signature="e#9746#9751#0" expanded="true" />
-            <element signature="e#10886#10891#0" expanded="true" />
-            <element signature="e#21059#21065#0" expanded="true" />
+            <element signature="n#section#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#section#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#section#2;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#section#3;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#section#4;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#section#5;n#div#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/DictInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/EducationInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="15" column="15" selection-start-line="15" selection-start-column="15" selection-end-line="15" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/EvaluationInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/WorkInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="13" column="24" selection-start-line="13" selection-start-column="24" selection-end-line="13" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/SkillsInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="12" column="39" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/ShowInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="13" column="25" selection-start-line="13" selection-start-column="25" selection-end-line="13" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my/src/main/java/com/dygstudio/my/entity/MyInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="456">
+          <caret line="24" column="39" lean-forward="true" selection-start-line="24" selection-start-column="39" selection-end-line="24" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/CountDownLatchTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="40">
+          <caret line="4" column="3" lean-forward="true" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/SemaphoreTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" column="3" lean-forward="true" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
+          <folding>
+            <element signature="e#389#545#0" expanded="true" />
+            <element signature="e#544#545#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/CyclicBarrierTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-82">
+          <caret line="19" column="47" lean-forward="true" selection-start-line="19" selection-start-column="47" selection-end-line="19" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="63">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/NewSinglethreadExecutorTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="24" column="17" lean-forward="true" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#473#629#0" expanded="true" />
           </folding>
         </state>
       </provider>

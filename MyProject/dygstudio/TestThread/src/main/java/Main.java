@@ -2,6 +2,7 @@ import com.dygstudio.testthread.thread.*;
 import sun.util.resources.th.CalendarData_th;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -21,7 +22,11 @@ public class Main {
         //testThreadLocal();
         //testThreadException();
         //testCountThread();
-        testReentrantCount();
+        //testReentrantCount();
+        //CountDownLatchTest.test();
+        //SemaphoreTest.test();
+        //CyclicBarrierTest.test();
+        NewSinglethreadExecutorTest.test();
     }
 
     public static void testThreadA(){
