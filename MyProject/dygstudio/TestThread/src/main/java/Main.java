@@ -15,18 +15,26 @@ import java.util.concurrent.FutureTask;
 public class Main {
     public static void main(String[] args){
 
-        //testThreadA();
-        //testThreadB();
-        //testThreadC();
-        //testThreadInfo();
-        //testThreadLocal();
-        //testThreadException();
-        //testCountThread();
-        //testReentrantCount();
-        //CountDownLatchTest.test();
-        //SemaphoreTest.test();
-        //CyclicBarrierTest.test();
-        NewSinglethreadExecutorTest.test();
+        try {
+            //testThreadA();
+            //testThreadB();
+            //testThreadC();
+            //testThreadInfo();
+            //testThreadLocal();
+            //testThreadException();
+            //testCountThread();
+            //testReentrantCount();
+            //CountDownLatchTest.test();
+            //SemaphoreTest.test();
+            //CyclicBarrierTest.test();
+            //NewSinglethreadExecutorTest.test();
+            //FutureTaskTest.test();
+            //ForkJoinTaskTest.test();
+            ForkJoinTaskTest2.test();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     public static void testThreadA(){

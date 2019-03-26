@@ -1,0 +1,107 @@
+第七章 JDK7 新增的 Fork/Join
+
+7.1 认识 Future任务机制和 FutureTask
+在线程操作中，如果需要返回结果，则需要实现 Callable接口。
+Future接口，对具体的 Runnable或Callable任务的执行结果进行取消、查询是否完成、获取结果。使用 get获取结果，直到返回结果前都会阻塞线程。
+主要方法：cancel，isCancelled，isDone，get，get(timeout,unit)   主要功能：判断任务是否完成，能够中断任务，能够获取任务执行结果。
+
+FutureTask是 Future的唯一实现类
+ public class FutureTask<V> implements RunnableFuture<V>
+ public interface RunnableFutrure<V> extends Runnable,Future<V>{
+ 	void run();
+ }
+FutureTask 既可以作为 Runnable线程被执行，又可以作为 Future得到 Callable的返回值.
+FutureTask的两个构造函数：
+public FutureTask(Callable<V> callable)  一旦运行就执行给定的 Callable
+public FutureTask(Runnable runnable,V result)  一旦运行就执行给定的 Runnable，并安排成功时，get返回给定的结果
+
+使用场景：分布式计算
+
+7.2 什么是 Fork/Join 框架
+Java7提供的，用于并行执行任务的框架。Fork把一个大任务分割成若干个小任务，然后通过 Join合并子任务执行结果。这个任务可以逐级分解的。不光是就一级。
+说明：Recursive（递归），compute（计算）
+多线程 ForkJoinPool：把一个任务分成多个小任务，小任务是放到多个处理器核心上并行执行，执行完后，将执行结果合并起来。
+创建 ForkJoinPool 后，通过 submit(ForkJoinTask<T> task) 或 invoke(ForkJoinTask<T> task) 方法来执行指定任务。
+ForkJoinTask 代表一个可以并行、合并的任务。这是一个抽象类，具体实现类有：RecusiveAction（没有返回值），RecusiveTask（有返回值）
+ForkJoinTask 与一般任务的主要区别在于 需要实现 compute方法，每个子任务在调用 fork方法时，又会进入 compute方法，join 方法会等待子任务执行完成并得到其结果。
+在ForkJoinPool类的对象中执行的任务大支可以分为两类，一类通过execute、invoke或submit提交的任务；另一类是ForkJoinTask类的对象在执行过程中产生的子任务，并通过fork方法来运行。
+一般的做法是表示整个问题的ForkJoinTask类的对象用第一类型是提交，而在执行过程中产生的子任务并不需要进行处理，ForkJoinPool类对象会负责子任务的执行。
+
+ForkJoinPool有如下三个方法启动线程：
+使用ForkJoinPool的submit(ForkJoinTask task) 或 invoke(ForkJoinTask task) 方法来执行指定任务。其中ForkJoinTask代表一个可以并行、合并的任务。
+
+7.3 认识 Fork/Join 的 JDK里面的家族
+ForkJoinTask 是实现 Future的另一种有返回结果的实现方法，有两个主要方法：
+fork：决定了 ForkJoinTask 的异步执行，创建新的任务
+join：负责计算完成后返回结果，允许一个任务等待另一个任务执行完成。
+
+ResursiveAction：继承 ForkJoinTask，用于没有返回结果的任务
+ResursiveTask：继承 ForkJoinTask，用于有返回结果的任务
+ForkJoinPool：实现Executor接口的线程池。
+
+ForkJoinPool三个方法来调度子任务：
+execute：异步执行指定任务
+invoke/invokeAll：执行指定的任务，等待完成，返回结果
+submit：异步执行指定任务，立即返回一个 Future对象
+
+使用：Fork/Join 
+ForkJoinTask：通常需要先创一个 ForkJoin任务，在任务中执行 fork，join操作。一般不直接继承 ForkJoinTask类，需要继承他的子类，然后重载 compute 方法。
+ForkJoinPool：ForkJoinTask需要通过 ForkJoinPool来执行，任务分割出的子任务会添加到当前工作线程维护的双端队列汇总，进入列队头部。当一个工作线程的队列里暂时没有任务时，会随机从其他工作线程的队列尾部获取一个任务。 
+
+7.4 Fork/Join 框架的实现原理
+ForkJoinPool是一个比较特殊的线程池框架，专用于不断分解成子任务（Fork，分叉），在不断进行汇总得到最终结果（Join，结合）的计算过程。
+使用了称为“工作窃取”(work-stealing) 算法
+原理：使得空闲线程能够主动分担从别的线程分解出来的子任务，从而让所有的线程都尽可能处于饱满的工作状态，提高执行效率。分解的子任务互不依赖，减少线程间的竞争，放到不同的队列里。不同的线程去执行，线程和队列一一对应，完成队列任务的线程帮助其他线程去处理，这时就会访问同一队列，为了减少窃取任务线程和被窃取任务线程之间的竞争，一般会使用双端队列，被窃取从头部获得任务，窃取任务从尾部获取任务执行。
+缺点：默写情况下还是存在竞争的，会消耗更多的系统资源。
+
+7.5 异常处理机制和办法
+ForkJoinTask提供了 isCompletedAbnormally 方法来检查任务是否已经抛出异常或已经被取消了，并且通过 ForkJoinTask 的 getException 方法获取异常。
+返回的对象为 Throwable，如果任务被取消了，则返回 CancellationException，如果没有完成或没有抛出异常则返回 null
+
+7.6 Fork/Join 模式优缺点及其实际应用场景
+利用多核平台的计算能力，实现并发程序的任务拆分。并行分发策略，仅仅关注如何划分任务和组合之间的结果。拆分对象时，不要把内存撑满。
+对于树形结构类型的数据的处理和遍历非常合适。
+
+
+第三部分 实际的使用、监控与拓展
+
+第8章 线程、线程池在互联网项目开发中的应用
+
+8.1 Servlet线程的设计
+Servlet 会将每个请求，创建一个新的线程，建立一个 socket连接来处理用户请求。
+共分为三个阶段：init（初始化，只被调用一次），service（响应客户请求阶段），destroy（终止阶段，服务器关闭）。
+只有 service方法可以处理用户请求，每一个用户的请求都会创建一个 ServletRequest的一个新对象，ServletRequest是线程安全的。只能在一个线程中被访问，且只在 service方法中是有效的。
+
+8.2 线程池如何合理设计和配置
+需要知道 server的最大可响应的并发量是多少？极限并发量是多少？
+最大并发量：根据请求的大小和CPU的运行机制和执行时间，算出大概的最大并发量。
+极限并发量：通过日志监控，参看请求页面，参数。做压力测试，得出抗压能力。
+通过设置线程池的参数 corePoolSize，maximumPoolSize 来设置合理的大小
+
+8.3 Tomcat中线程池如何合理设置
+ 在 conf/server.xml 中可以修改线程池的配置
+ 1.增加配置：
+  <Executor name="tomcatThreadPool" namePrefix="catalina-exec-" maxThreads="200" minSpareThreads="25" maxIdleTime="60000"> 最大线程200，最小空闲线程25，线程最大空闲时间 60s
+ 2.修改配置
+ <Connector executor="tomcatThreadPool" port="80" protocol="HTTP/1.1" .....>  在 executor中配置自定义好的线程的配置
+Executor 参数说明：
+className：线程池的实现类，自定义的类要实现 org.apache.catalina.Executor接口。
+name：线程池的名字，server.xml可以定义多个线程池
+threadPriority：线程的优先级，默认5
+daemon：是否是守护线程，默认 true
+namePrefix：线程的名字前缀
+maxThreads：线程池最大的线程数量，默认200
+minSpareThreads：线程池的永远活动的线程的数量，默认25
+maxIdleTime：minSpareThreads到maxThreads之前的线程最长活动时间，默认 60000ms
+maxQueueSize：线程队列的最大值
+
+原理：Tomcat中的Executor接口 继承了 Java中的 Executor接口，Tomcat中默认使用 StandardThreadExecutor 实现类
+局限性：最多只能发挥一台物理机器的最大性能，达不到物理机器的极限。
+
+8.4 Nginx线程池
+
+
+
+
+
+
