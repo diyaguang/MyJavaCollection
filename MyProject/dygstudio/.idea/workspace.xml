@@ -5,40 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45a1b8c8-b61b-4e29-b8ea-78041836af5d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ForkJoinTaskTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ForkJoinTaskTest2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/FutureTaskTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/Main$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/Main$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/Main$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/Main$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/Main$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/Main$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/Count.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/Count.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/CountDownLatchTest$Worker.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/CountDownLatchTest$Worker.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/CountDownLatchTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/CountDownLatchTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/CountThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/CountThread.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/CyclicBarrierTest$BillTask.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/CyclicBarrierTest$BillTask.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/CyclicBarrierTest$TotalTask.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/CyclicBarrierTest$TotalTask.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/CyclicBarrierTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/CyclicBarrierTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ExceptionHandlerThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ExceptionHandlerThread.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/NewSinglethreadExecutorTest$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/NewSinglethreadExecutorTest$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/NewSinglethreadExecutorTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/NewSinglethreadExecutorTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ReentrantCount.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ReentrantCount.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ReentrantCount2.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ReentrantCount2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ReentrantCount3.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ReentrantCount3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/RenntrantReadWriteLockTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/RenntrantReadWriteLockTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/SemaphoreTest$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/SemaphoreTest$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/SemaphoreTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/SemaphoreTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ThreadA.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ThreadA.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ThreadB.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ThreadB.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ThreadC.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ThreadC.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ThreadExceptionTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ThreadExceptionTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ThreadInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ThreadInfo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ThreadLocalTest$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ThreadLocalTest$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ThreadLocalTest$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ThreadLocalTest$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ThreadLocalTest$TestClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ThreadLocalTest$TestClient.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ThreadLocalTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/com/dygstudio/testthread/thread/ThreadLocalTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../document/2019-3-26 Java并发变成从入门到精通.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../document/2019-3-26 Java并发变成从入门到精通.txt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -68,8 +36,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ForkJoinTaskTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="40" column="32" lean-forward="true" selection-start-line="40" selection-start-column="32" selection-end-line="40" selection-end-column="32" />
+            <state relative-caret-position="703">
+              <caret line="40" column="32" selection-start-line="40" selection-start-column="32" selection-end-line="40" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -80,12 +48,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ForkJoinTaskTest2.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="689">
-              <caret line="46" column="32" lean-forward="true" selection-start-line="46" selection-start-column="32" selection-end-line="46" selection-end-column="32" />
+            <state relative-caret-position="461">
+              <caret line="34" column="36" lean-forward="true" selection-start-line="34" selection-start-column="36" selection-end-line="34" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#449#450#0" expanded="true" />
-                <element signature="e#480#481#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -94,7 +60,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="513">
+            <state relative-caret-position="494">
               <caret line="32" column="37" selection-start-line="32" selection-start-column="37" selection-end-line="32" selection-end-column="37" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -187,7 +153,7 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="1310" />
     <option name="y" value="70" />
     <option name="width" value="1680" />
@@ -355,16 +321,18 @@
       <workItem from="1553217184607" duration="10077000" />
       <workItem from="1553505223558" duration="910000" />
       <workItem from="1553563027549" duration="11774000" />
+      <workItem from="1553654014721" duration="1706000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="256336000" />
+    <option name="totallyTimeSpent" value="258042000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1358" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" x="662" y="73" width="493" height="926" id="Project" order="0" visible="true" weight="0.21671991" />
+      <window_info active="true" content_ui="combo" x="662" y="73" width="493" height="926" id="Project" order="0" visible="true" weight="0.21884984" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -768,10 +736,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/util/concurrent/ForkJoinTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="824" column="60" selection-start-line="824" selection-start-column="60" selection-end-line="824" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ForkJoinTaskTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="40" column="32" lean-forward="true" selection-start-line="40" selection-start-column="32" selection-end-line="40" selection-end-column="32" />
+        <state relative-caret-position="703">
+          <caret line="40" column="32" selection-start-line="40" selection-start-column="32" selection-end-line="40" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -780,7 +755,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
+        <state relative-caret-position="494">
           <caret line="32" column="37" selection-start-line="32" selection-start-column="37" selection-end-line="32" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -788,21 +763,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/util/concurrent/ForkJoinTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="824" column="60" selection-start-line="824" selection-start-column="60" selection-end-line="824" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ForkJoinTaskTest2.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="689">
-          <caret line="46" column="32" lean-forward="true" selection-start-line="46" selection-start-column="32" selection-end-line="46" selection-end-column="32" />
+        <state relative-caret-position="461">
+          <caret line="34" column="36" lean-forward="true" selection-start-line="34" selection-start-column="36" selection-end-line="34" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#449#450#0" expanded="true" />
-            <element signature="e#480#481#0" expanded="true" />
           </folding>
         </state>
       </provider>

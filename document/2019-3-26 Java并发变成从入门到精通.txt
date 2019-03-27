@@ -97,11 +97,3 @@ maxQueueSize：线程队列的最大值
 
 原理：Tomcat中的Executor接口 继承了 Java中的 Executor接口，Tomcat中默认使用 StandardThreadExecutor 实现类
 局限性：最多只能发挥一台物理机器的最大性能，达不到物理机器的极限。
-
-8.4 Nginx线程池
-
-
-
-
-
-
