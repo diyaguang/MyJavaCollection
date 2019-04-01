@@ -1,0 +1,35 @@
+jenkins持续集成
+
+官网：https://jenkins.io/
+
+
+wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -
+
+echo deb http://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list
+
+sudo apt-get update
+
+#sudo apt-get install jenkins
+
+sudo apt-get install jenkins=2.138.1
+
+sudo systemctl start jenkins
+
+sudo systemctl status jenkins
+
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+自定义管理员信息：admin/admin
+
+
+
+
+
+默认端口是8080，有时候由于端口占用需要修改如下：
+1，检查 /etc/init.d/jenkins 脚本，修改 do_start 函数的 check_tcp_port 命令，端口号从 8080 换成 8082：
+2，修改 /etc/default/jenkins 文件，将端口 8080 改成 8082
+
+作者：黑鼠_DEAN
+链接：https://www.jianshu.com/p/845f267aec52
+来源：简书
+简书著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。
