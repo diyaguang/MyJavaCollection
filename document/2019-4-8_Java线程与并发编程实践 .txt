@@ -1,0 +1,60 @@
+第四章 额外的线程能力
+
+4.1 线程组
+代表了一组线程，也可以包含其他线程组，形成了一棵树，除了初始线程，每个线程组都有一个父线程组。
+可以对线程组中的所有线程执行统一的操作。使用 ThreadGroup 对象。
+线程组是非线程安全的，更主要是线程执行过程中，在异常处理方面可以利用 线程组。
+（图）
+Java线程发生异常时，寻找 UncaughtExceptionHandler实例，由线程的 setUncaughtExceptionHandler方法来设置，找到后，线程就会执行 uncaughtException方法。如果未找到，则寻找关联的 ThreadGroup对象上的 uncaughtException 方法。如果有则调用，没有则查找其 setDefaultUncaughtExceptionHandler 是否被设置，设置过则调用，否则检查 Throwable参数，来输出异常信息。执行 Throwable栈的 printStackTrace 信息。
+使用：
+Thread.UncaughtExceptionHandler uceh;   //定义异常捕获对象
+uceh = new Thread.UncaughtExceptionHandler(){   
+	@Override
+	public void uncaughtException(Thread t,Throwable e){ ... ... }。 //实现异常捕获处理方法
+}
+thd.setUncaughtExceptionHandler(uceh);   //绑定异常处理方法
+
+4.2 线程局部变量
+使用 ThreadLocal 对象，代表了一个线程局部变量，每个线程提供了单独的存储槽（storage slot），还有被泛型定义的 ThreadLocal<T> 
+常用方法：get（如果没有值，则调用一次initialValue），initialValue（初始化方法，默认值null），remove，set
+使用：private static volatile ThreadLocal<String> userId = new ThreadLocal<String>();
+说明：使用 volatile定义属性，如果在多处理器/多核机器上，被多条线程访问，需要使用 volatile关键字，来代替 final使用。
+
+可以在子线程中使用父线程中的局部变量，使用 InheritableThreadLocal 对象，是 ThredLocal的子类。
+主要使用 childValue 方法，在子线程创建时，用父线程的值计算子线程的初始值。此方法会在子线程启动之前被父线程调用，若没有被重写则返回参数 parentValue，否则为期望值。
+private static final InheritableThreadLocal<Integer> intVal = new InheritableThreadLocal<Integer>();
+intVal.set(new Integer(10));
+子线程中，可以访问父线程的值 ，intVal.get();
+
+4.3 定时器框架
+Java 1.3 引入的 Timer，TimerTask。一个是定时器，一个是定时器任务。也称为“任务执行线程”，因为单词的执行或规律性重复执行。
+TimerTask task = new TimeTask(){   //定义 定时任务
+	@Override
+	public void run(){
+		xxx.xxx
+	}
+}
+Timer timer = new Timer();   //定义定时器
+timer.schedule(task,2000);   //绑定任务
+说明：TimerTask定义一般定义一个匿名子类，重写 run方法，用来执行。
+
+4.3.1 深入 Timer
+适用于大规模的并发调度定时任务，常用方法：
+Timer
+Timer(boolean isDaemon)
+Timer(String name)
+Timer(String name,Boolean isDaemon)
+cancel()：终止定时器，丢弃所有定时器任务，不会干涉正在执行的定时器任务。
+purge()：从定时器中移除所有取消的定时器任务，并返回影响的条数。
+schedule(TimerTask task,Date time)：在某个时间点，调度任务任务执行。如果time是过去时间，则立即执行。
+schedule(TimerTask task,Date firstTime,long period)：调度与 firstTime开始，period间隔执行
+schedule(TimerTask task,long delay)：调度于 当前执行，delay延迟时间后执行
+shcedule(TimerTask task,long delay,long period)
+shceduleAtFixedRate(TimerTask task,Date firstTime,long period)：以固定间隔重复指定，大约 period毫秒后间隔执行。
+scheduleAtFixedRate(TimerTask task,long delay,long period)
+
+4.3.2 深入 TimerTask
+所有的定时任务都继承抽象类 TimerTask，实现了 Runnable接口，需要重写 run 方法。
+所有的定时任务，都应该很快完成。可以从定时任务被重写的 run 方法中调用以下方法：
+cancel()
+scheduledExecutionTime()：返回此定时任务最近时间被调用执行的时间。通常用来确定任务执行是否有足够时间来保证执行。

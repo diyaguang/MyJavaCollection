@@ -1,0 +1,61 @@
+第二部分 并发工具类
+
+第五章 并发工具类和 Executor框架 P101
+
+5.1 并发工具类简介
+缺点：低级的并发原语，太多依赖 synchronized原语带来的性能问题，开发者需要高级的线程结构。
+Java5 引入了并发工具类，强大，易于扩展，高性能线程工具类组成的框架。包含了线程池和阻塞队列。
+java.util.concurrent 并发编程当中使用的工具类
+java.util.concurrent.atomic 在单个变量上进行无锁且线程安全操作的工具类
+java.util.concurrent.locks 在条件上获取锁和执行等待的工具类
+
+5.2 探索 Executor
+任务是实现了 Runnable 或 Callable 接口的对象，使用 executor 代替了底层的线程操作执行任务，直接或间接的实现了 Executor接口
+Executor 声明了单独的 execute方法，用来在某个时间点执行 runnable的任务。
+说明：如果 executor 正在关闭且不想接受新任务是，RejectedExecutionException会被抛出来。
+使用：
+Executor executor = ....
+executor.execute(new RunnableTask());
+Executor 的缺点：
+Executor只能执行 Runnable接口没有返回结果的操作，没有提供一种方式来追踪可运行任务的运行过程，无法执行一组可运行任务，没有为应用程序提供一种方式来关闭一个 executor
+
+使用 ExecutorService 接口可以解决上面的问题，扩展了 Executor接口，是个典型的线程池。
+其常用方法：
+awaitTermination：阻塞主线程，等待线程池中任务完成，可选超时时间参数，可中断，executor终止，返回 true，否则 false
+invokeAll：执行任务集合中的所有 callable任务，执行结束后，返回一个 Future集合，持有任务执行的状态和结果，中断会抛出异常，并且未完成的任务也会被取消，也有超时版本。
+T invokeAny：执行task集合，只要有任务完成，就返回其结果。未完成的任务会被取消，也有超时版本。
+isShutdown：当其 executor已经终止时，返回 true，否则 false
+isTerminated：所有任务都终止了，返回 true，否则 false
+shutdown：将线程池状态设置为 shutdown，停止接收外部 submit任务，内部正在执行会等待执行完毕
+shutdownNow：将线程池状态设置为 stop，先停止外部提交的任务，忽略等待的任务，尝试中断正在跑的任务，返回为执行的任务
+submit：提交一个 callable任务来执行，返回一个 任务结果的 Future实例。返回的实例调用 get方法获取执行后返回的结果。还有一个 执行 runnable的版本，也返回 future，只是get后 返回 null。还有一个 执行 runnable，result 参数的版本，执行完毕后，返回 result参数值。
+说明： 
+TimeUnit代表时间单位，有 DAYS，HOURS，MICROSECONDS，MILLISECONDS，MINUTESNANOSECONDS，SECONDS 枚举标识
+Runnable的 run 方法，既不能返回值，也不能抛出受检异常。Callable 的 call 方法既可以抛出受检异常也可以有返回值。
+
+Future接口，代表异步计算的结果，到未来某个时刻才有效。是泛型的 Future<T>，提供了取消任务，返回任务结果，判断任务的常用操作。
+cancel：尝试取消任务执行，取消返回 true，否则 false（任务已经完成或停止，或无法终止）。取消后任务不再执行，参数用来决定是否应该中断运行。
+get：等待此任务完成后返回结果。被取消后执行这个方法，会线程被中断后执行，都会返回异常。这个方法有超时时间参数版本。
+isCancelled：判断任务是否被取消
+isDone：判断当前任务是否完成，在正常的中断，异常，取消的场景下都会返回 true
+
+使用：
+ExecutorService executor = ....
+Future<String[]> taskFuture = executor.submit(new Callable<String[]>(){
+	@Override
+	public String[] call(){ ... ...}
+});
+String entries = taskFuture.get();
+
+ScheduledExecutorService 继承了 ExecutorService接口，代表了一种能够让你调度任务运行一次或指定延迟时间之后运行或周期性执行的 exectuor 任务。
+
+Executors工具类返回多种 ExecutorServer或 ScheduledExecutorService 的实现类，这个类中有很多的竟态方法，可以完成：
+创建并返回一个 ExecutorService实例，使用常用的配置项设置
+创建并返回一个 ScheduledExecutorService实例，使用常用的配置项设置
+创建并返回一个 包装过的 ExecutorService实例 或 ScheduledExecutorService实例
+创建并返回一个 ThreadFactory的实例，创建新的线程对象
+创刊并返回一个 类闭包的 Callable实例
+在 executor停止之前，任何线程因为执行中的失败而终止，还需要执行后续任务，则一条新的线程会取代其位置。线程池中的线程会一直存在直到 executor被显示的关闭。
+executor完成之后，关闭是十分重要的，否则应用程序可能不会终止，通过调用 shutdownNow() 来完成这一工作。
+原理：通过调用 Executors 来创建线程池实例对象，执行Callable接口对象实例，接收返回的 Future实例。主线程会一直判断 isDone方法是否返回 true，只线程调用 get来获取结果。执行完毕后，关闭 executor。
+注：executor完成之后一定要关闭的，否则程序可能不会终止，可以通过调用 shutdownNow来完成这个工作。
