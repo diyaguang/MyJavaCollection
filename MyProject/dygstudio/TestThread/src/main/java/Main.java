@@ -30,7 +30,9 @@ public class Main {
             //NewSinglethreadExecutorTest.test();
             //FutureTaskTest.test();
             //ForkJoinTaskTest.test();
-            ForkJoinTaskTest2.test();
+            //ForkJoinTaskTest2.test();
+            //CountDownLatchTest2.test();
+            ExchangerTest.test();
         }catch (Exception e){
             e.printStackTrace();
         }

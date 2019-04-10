@@ -1,0 +1,48 @@
+第六章 同步器
+
+Java使用 synchronized关键字对临界区进行线程同步访问，但是单一控制，并发工具类听了高级的同步器。有 倒计时门闩（countdown latch），同步器屏障（cyclic barrier），交换器（exchanger），信号量（semaphore），同步器（phaser）
+
+6.1 倒计时门闩
+使用场景：导致一条或多条线程在门口等待，直到另一条线程打开门，线程才得以继续运行。由一个计数变量和两个操作组成的。需要计数器变为0，采用递减的操作。
+CountDownLatch类实现，初始化时指定计数器值。
+常用方法：await，countDown，getCount，toString
+初始化： final CountDownLatch doneSignal = new CountDownLatch(NTHREADS);
+原理：调用 doneSignal.await 的线程会处于计数等待状态，等待 计数器变为0为止。调用 doneSignal.countDown 来递减操作。
+
+6.2 同步屏障
+定义一个屏障对象，初始化屏障计数数值。允许一组线程彼此等待。直到都到达公共的屏障点。这个屏障点重置之后是可以重复使用的。
+使用场景：对于数量固定并且相互之间必须不时等待彼此的多线程应用程序。
+使用 CyclicBarrier对象来实现，构造函数还有个 CyclicBarrier(int parties,Runnable barrierAction) 版本，当都到达屏障对象后，执行 barrierAction方法，其中 barrierAction是一个 runnable 对象。
+常用方法：
+await：强制调用线程一直等待直到所有的 parties都已经在同步屏障上调用了 await方法。一旦有线程在等待时被终端，其他所有在等待中的线程豆会抛出 BrokenBarrierException并且同步屏障也会被设置为 打破状态。
+getNumberWaiting：返回当前在同步屏障上等待的线程数目
+isBroken：当一条或多条线程由于在同步屏障创建或上次重置之后，中断或超时从而打破同步屏障，或因为一场导致 barrier action失败时，返回 true，否则 false
+reset：把同步屏障重置到原始状态，如果此时任意的线程等待在这个同步屏障上，会排除 BrokenBarrierException 异常。
+
+6.3 交换器对象
+提供了一个线程彼此之间能够交换对象的同步点，每条线程都会往这个交换器的 exchange 方法传入一些对象，匹配伙伴线程，同时接收伙伴线程中的对象作为返回值。
+使用 Exchanger<V> 对象来实现交换器。
+常用方法：exchange(V x)：在这个交互点上，等待其他线程到达。之后将所给对象传入其中，接受其他线程的对象作为返回。如果其他线程已经在交换点上等待，为了线程调度它会从中恢复并且会接收调用线程所传入的对象。当前线程会立即返回，接收其他线程传入交换器中的对象。 还有个超时版本：exchange(V x, long timeout, TimeUnit unit)
+说明： 线程对象通过 exchange实例，的 exchange方法来传递对象数据，放入自己的数据，等待其他线程的数据，得到后就返回继续执行。
+
+6.4 信号量
+维护一组许可证，限制资源访问的线程数。没有许可证后，会阻塞线程。直到有可用的许可证为止。
+值可以被递增1的信号量称为计数信号量
+值只能是0或1 的信号量称为互斥信号量
+使用 Semaphone 对象实现了同步器，使用 构造函数 Semaphore(int permits) 来初始化，可以加入 boolean  fair 参数，设置公平策略。
+
+6.5 信号量和公平策略
+不公平策略：信号量不会保证线程获取许可证的顺序，使用抢占式的。
+公平策略：采用 FIFO策略，按照调用顺序依次发放许可证
+ 常用方法：
+ acquire：从信号量中获取一个许可证，否则一直阻塞，可以有一个 int permits 参数，表示获取多个许可证。
+ acquireUninterruptibly：获取一个许可证，没有阻塞，这个线程不允许被中断。可以有一个 int permits 参数，表示获取多个许可证。
+ availablePermits：返回当前可用的许可证数量
+ getQueueLength：返回等待获取许可证的大致线程数
+ hasQueuedThreads：查询是否存在等待获取许可证的线程
+ isFair：返回是否公平性设置
+ release：释放一个许可证，返回给信号量，可以有一个 int permits 参数，表示返回多个许可证。
+ toString：返回标识该信号量及其状态的字符串
+ tryAcquire：尝试获取一个许可，如果获取不到，返回 false，可以有一个 int permits 参数，表示获取多个许可证。还有一个 timeout 超时时间的参数。
+
+
