@@ -1,0 +1,29 @@
+6.6 Phaser
+更加有弹性的同步屏障（阶段同步屏障），有两个重要的值：phase 和 party。 其中phase是阶段，初始为0，所有线程完成，phase+1，进入下一个阶段，party表示其管理的线程数。
+onAdvance() 方法经常被重载，每一个阶段完成，都会进入这个方法，当这个方法返回 true时，表示 phaser结束。
+只有每个线程都执行了 arriveAndAwaitAdvance方法后，才能进入下一个阶段，否则阻塞等待。
+在线程中执行 phase.register 来注册到同步器中，这时 party+1
+phaser不必对它的方法进行异常处理，置于休眠的线程不会响应中断事件，不会抛出 interruptedException异常
+
+常用方法：
+Phaser(int parties)：构建方法
+register：往这个 phaser中添加一条尚未抵达的线程，同时返回 phase值作为抵达分类使用，这个值称为抵达 phase值
+arriveAndAwaitAdvance：记录达到并等待 phaser 前进，会返回 phase值
+arriveAndDeregister：方法抵达 phaser，同时从中注销而不会等待其他线程到达，减少未来 phase上需要前进的线程数量。
+arrive：通知 phase对象一个参与者已经完成了当前阶段，但不应该等待其他参与者都完成当前阶段，必须小心使用，不会与其他线程同步。
+awaitAdvance(int phase)：如果传入的阶段参数与当前阶段一致，方法会将当前线程至于休眠，直到这个阶段的所有参与者都运行完成。如果传入参数的阶段与当前阶段不一致，这个方法立即返回。
+awaitAdvanceInterruptibly(int phase)：与 awaitAdvance相同，不同在于 该访问将会响应线程中断，抛出 interruptedException异常。
+buldRegister(int parties)：将制定数目的参与者注册到 phaser中，所有新参与者都将被当成没有执行完本阶段的线程。
+
+第七章 锁框架
+locks 提供了包含多种接口和类的框架，针对条件进行加锁和等待。
+同步及低级别的锁：
+方法或代码块上标记 synchronized关键字，JVM通过指令 monitors，monitorenter，monitorexit 来支持操作。
+每个Java对象都和一个监听器关联，监听器是互斥的构造，阻止多条线程同时在临界区中进行并发操作。在线程可以进入临界区之前，需要锁住监听器。否则一直会阻塞。
+处理原理：锁住一个监听器，存在主存中的共享变量的值会被读取到对应的拷贝中，然后存储在线程的工作内存中，离开临界区，线程会释放监听器，共享变量的值会写回主存。这个动作能保证线程使用这些变量最近的值并且不会污染这些值。这个操作称为可见性。 volatile关键字仅仅解决可见性
+
+7.1 锁
+使用接口 Lock提供比监听器更加有弹性的锁操作。
+lock：获取锁
+lockInterruptibly：除非调用线程被中断，否则获取锁，锁不可用会一直等待。
+newCondition：返回一个新的绑定到当前锁实例上的 Condition实例
