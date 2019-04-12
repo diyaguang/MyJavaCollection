@@ -34,7 +34,8 @@ public class Main {
             //CountDownLatchTest2.test();
             //PhaserTest.test();
             //ExchangerTest.test();
-            ConditionTest.test();
+            //ConditionTest.test();
+            ReentrantCount4.test();
         }catch (Exception e){
             e.printStackTrace();
         }

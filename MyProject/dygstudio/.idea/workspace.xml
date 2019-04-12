@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/TestThread/src/main/java/Main.java" line="94" />
+    <bookmark url="file://$PROJECT_DIR$/TestThread/src/main/java/Main.java" line="95" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45a1b8c8-b61b-4e29-b8ea-78041836af5d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ConditionTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ReentrantCount4.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TestThread/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/Main$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/Main$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/Main$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/Main$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/Main$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/Main$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TestThread/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../document/2019-4-11_Java线程与并发编程实践 .txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../document/2019-4-11_Java线程与并发编程实践 .txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testspringboot/target/classes/META-INF/testspringboot.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/testspringboot2/target/classes/META-INF/testspringboot2.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../document/2019-4-12_Java线程与并发编程实践 .txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../document/2019-4-12_Java线程与并发编程实践 .txt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -37,13 +37,17 @@
   <component name="CoverageViewManager">
     <option name="myElementSize" value="284" />
   </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="testRunner" value="GRADLE" />
+    <option name="delegatedBuild" value="true" />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-268">
-              <caret line="36" column="33" selection-start-line="36" selection-start-column="33" selection-end-line="36" selection-end-column="33" />
+            <state relative-caret-position="337">
+              <caret line="45" column="40" lean-forward="true" selection-start-line="45" selection-start-column="40" selection-end-line="45" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -52,14 +56,14 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ConditionTest.java">
+        <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ReentrantCount4.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="38" column="21" lean-forward="true" selection-start-line="38" selection-start-column="21" selection-end-line="38" selection-end-column="21" />
+            <state relative-caret-position="46">
+              <caret line="13" column="28" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#626#627#0" expanded="true" />
-                <element signature="e#652#653#0" expanded="true" />
+                <element signature="e#586#587#0" expanded="true" />
+                <element signature="e#633#634#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -83,7 +87,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RabbitMQReceiver.java" />
         <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/RabbitMQListener.java" />
         <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/service/impl/BMyInfoService.java" />
         <option value="$PROJECT_DIR$/testspringboot2/src/main/java/com/dygstudio/testspringboot2/config/StorageException.java" />
@@ -132,8 +135,9 @@
         <option value="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/CyclicBarrierTest.java" />
         <option value="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ExchangerTest.java" />
         <option value="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/PhaserTest.java" />
-        <option value="$PROJECT_DIR$/TestThread/src/main/java/Main.java" />
         <option value="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ConditionTest.java" />
+        <option value="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ReentrantCount4.java" />
+        <option value="$PROJECT_DIR$/TestThread/src/main/java/Main.java" />
       </list>
     </option>
   </component>
@@ -150,10 +154,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1358" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+    <option name="x" value="138" />
+    <option name="y" value="97" />
+    <option name="width" value="1860" />
+    <option name="height" value="957" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -166,18 +170,12 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
               <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="my" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
@@ -251,6 +249,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -260,6 +259,7 @@
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
     <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="ToolWindowCoverage.ShowToolbar" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
@@ -271,7 +271,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -393,16 +393,18 @@
       <workItem from="1553654014721" duration="3733000" />
       <workItem from="1554861166175" duration="22785000" />
       <workItem from="1555034161584" duration="8116000" />
+      <workItem from="1555060863333" duration="2263000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="290970000" />
+    <option name="totallyTimeSpent" value="293233000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1358" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="0" y="23" width="1920" height="1004" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" x="662" y="73" width="493" height="926" id="Project" order="0" visible="true" weight="0.22310969" />
+      <window_info content_ui="combo" x="662" y="73" width="493" height="926" id="Project" order="0" visible="true" weight="0.22523962" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -412,7 +414,7 @@
       <window_info id="Web" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32953367" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3401728" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3399123" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -420,13 +422,13 @@
       <window_info anchor="bottom" id="Spring" order="7" weight="0.32937366" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32937366" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" weight="0.32918552" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.32692307" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.3267544" />
       <window_info anchor="bottom" id="Problems" order="11" weight="0.32937366" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" />
       <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="14" show_stripe_button="false" />
       <window_info anchor="bottom" id="Docker" order="15" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run Dashboard" order="16" weight="0.29589632" />
+      <window_info anchor="bottom" id="Run Dashboard" order="16" weight="0.29495615" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -466,13 +468,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/resources/application.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/testspringboot2/src/main/resources/my.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="19">
@@ -702,27 +697,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/util/concurrent/ForkJoinTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="824" column="60" selection-start-line="824" selection-start-column="60" selection-end-line="824" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/util/concurrent/ForkJoinTask.java" />
     <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ForkJoinTaskTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="703">
           <caret line="40" column="32" selection-start-line="40" selection-start-column="32" selection-end-line="40" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ForkJoinTaskTest2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="627">
-          <caret line="40" column="14" selection-start-line="40" selection-start-column="14" selection-end-line="40" selection-end-column="14" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -810,13 +789,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ReentrantCount.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="532">
-          <caret line="28" column="32" lean-forward="true" selection-start-line="28" selection-start-column="32" selection-end-line="28" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ReentrantCount2.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
@@ -838,10 +810,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/Main.java">
+    <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ForkJoinTaskTest2.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-268">
-          <caret line="36" column="33" selection-start-line="36" selection-start-column="33" selection-end-line="36" selection-end-column="33" />
+        <state relative-caret-position="429">
+          <caret line="36" column="61" selection-start-line="36" selection-start-column="61" selection-end-line="36" selection-end-column="61" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -850,12 +822,39 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ConditionTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="38" column="21" lean-forward="true" selection-start-line="38" selection-start-column="21" selection-end-line="38" selection-end-column="21" />
+        <state relative-caret-position="152">
+          <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#626#627#0" expanded="true" />
-            <element signature="e#652#653#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ReentrantCount.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="456">
+          <caret line="24" column="56" lean-forward="true" selection-start-line="24" selection-start-column="56" selection-end-line="24" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="337">
+          <caret line="45" column="40" lean-forward="true" selection-start-line="45" selection-start-column="40" selection-end-line="45" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ReentrantCount4.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="13" column="28" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#586#587#0" expanded="true" />
+            <element signature="e#633#634#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -871,7 +870,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
