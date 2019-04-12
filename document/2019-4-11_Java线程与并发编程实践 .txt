@@ -15,15 +15,3 @@ awaitAdvance(int phase)：如果传入的阶段参数与当前阶段一致，方
 awaitAdvanceInterruptibly(int phase)：与 awaitAdvance相同，不同在于 该访问将会响应线程中断，抛出 interruptedException异常。
 buldRegister(int parties)：将制定数目的参与者注册到 phaser中，所有新参与者都将被当成没有执行完本阶段的线程。
 
-第七章 锁框架
-locks 提供了包含多种接口和类的框架，针对条件进行加锁和等待。
-同步及低级别的锁：
-方法或代码块上标记 synchronized关键字，JVM通过指令 monitors，monitorenter，monitorexit 来支持操作。
-每个Java对象都和一个监听器关联，监听器是互斥的构造，阻止多条线程同时在临界区中进行并发操作。在线程可以进入临界区之前，需要锁住监听器。否则一直会阻塞。
-处理原理：锁住一个监听器，存在主存中的共享变量的值会被读取到对应的拷贝中，然后存储在线程的工作内存中，离开临界区，线程会释放监听器，共享变量的值会写回主存。这个动作能保证线程使用这些变量最近的值并且不会污染这些值。这个操作称为可见性。 volatile关键字仅仅解决可见性
-
-7.1 锁
-使用接口 Lock提供比监听器更加有弹性的锁操作。
-lock：获取锁
-lockInterruptibly：除非调用线程被中断，否则获取锁，锁不可用会一直等待。
-newCondition：返回一个新的绑定到当前锁实例上的 Condition实例

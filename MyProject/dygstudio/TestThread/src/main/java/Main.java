@@ -32,8 +32,9 @@ public class Main {
             //ForkJoinTaskTest.test();
             //ForkJoinTaskTest2.test();
             //CountDownLatchTest2.test();
-            PhaserTest.test();
+            //PhaserTest.test();
             //ExchangerTest.test();
+            ConditionTest.test();
         }catch (Exception e){
             e.printStackTrace();
         }
