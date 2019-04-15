@@ -27,10 +27,3 @@ lock：锁对象
 unlock：释放锁对象
 isFair：返回是否公平策略
 isHeldByCurrentThread：在锁被当前线程持有的情况下，返回 true
-
-
-7.3 条件
-
-7.4 读写锁
-
-7.5 重入读写锁

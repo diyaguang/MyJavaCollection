@@ -51,8 +51,8 @@ class CountTask extends RecursiveTask<Integer>{
             CountTask firstTask = new CountTask(start,middle);
             CountTask secondTask = new CountTask(middle+1,end);
             firstTask.fork();  //开始执行
-            secondTask.fork();  //获得第一个子任务的结果，得不到结果，此线程不会往下面执行
-            int firstResult = firstTask.join();
+            secondTask.fork();
+            int firstResult = firstTask.join(); //获得第一个子任务的结果，得不到结果，此线程不会往下面执行
             int secondResult = secondTask.join();
             sum = firstResult+secondResult;
         }

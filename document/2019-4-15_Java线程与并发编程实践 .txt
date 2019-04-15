@@ -1,0 +1,89 @@
+7.3 条件
+通过接口 Condition实现，实现 Object的 wait 和 notify，notifyAll 的效果。让每个对象上具有多重等待集合的作用。
+lock 取代了同步方法、代码块，Condition 取代了 Object 的 wait，notification 方法。
+一个 Condition实例原本会绑定到一个锁上，可以使用 Lock 的 newCondition 方法获取一个针对特定 Lock实例的 Condition实例。
+常用方法：
+await：在接收到信号或中断之前，调用线程一直等待，有个超时版本
+awaitNanos：在接收到信号或中断之前，当前线程一直等待，超时参数。
+awaitUninterruptibly：在接收到信号之前，强制当前线程一直等待。不能被中断
+awaitUntil：在接收到信号或中断或超过指定截止时间之前，强制当前线程一直等待
+signal：唤醒一个等待中的线程
+signalAll：唤醒所有等待中的线程
+
+使用步骤：通过 lock=newReentrantlock 创建一个锁。通过 condition=lock.newCondition 创建一个与之关联的条件，生产者可以通过 Lock getLock 方法访问这个锁
+生产者和消费者相互唤醒，循环使用。
+
+7.4 读写锁
+维护了一个读，一个写 两个锁。适用于对数据结构频繁读，而较少修改的场景。在读时有更好的并发性，写入时互斥访问。使用 ReadWriteLock接口实现
+常用方法：
+readLock：返回读锁
+writelock：返回写锁
+
+7.5 重入读写锁
+使用 ReentrantReadWriteLocl 类来实现。继承了 ReadWriteLock接口，是重入的读写锁。
+构造函数中有个可选的 fair 参数，表示是否是公平锁，默认为 false
+公平策略：公平策略是顺序策略。获取读锁，要等待所有写锁完毕后，才能获取。获取写锁，要等待读线程完毕后，再进行操作。
+常用方法：
+ReentrantReadWriteLock.ReadLock readLock：返回读锁
+ReentrantReadWriteLock.WeriteLock writeLock：返回写锁
+getReadHoldCount：返回被调用线程在这个锁上持有读锁的数量，没有返回0
+getWriteHoldCount：返回被调用线程在这个锁上持有写锁的数量，没有返回0
+
+
+第八章 额外的并发工具类
+
+8.1 并发集合
+普通的集合类，在 java.util下的 都不是线程安全的累。可以使用包装类，在 java.util.Collections 中的同步方法让其变得安全。例如 Collections.synchronizedList() 中，传入一个 ArrayList实例，获得线程安全的 ArrayLsit变体。
+线程安全的集合中的缺点：
+1.遍历一个集合之前，获取锁是很有必要的。集合框架返回了一个快速失败的迭代器，集合在遍历过程中被修改时，迭代器就会抛出异常。
+2.当同步的集合被多条线程频繁访问，性能就成了问题。
+
+并发工具类通过并发集合来解决这些问题，在 java.util.concurrent包中。
+特点：
+1.迭代开始之后，被删除但还没有通过迭代器的 next方法 被返回的元素就不会再被返回了
+2.迭代开始之后，被添加的元素可能会返回也可能不会被返回
+3.在集合迭代的过程中，即使对集合做了改变，也没有任何元素会被返回超过一次。
+
+面向并发的集合类型：
+BlockingQueue：接口，是Queue的子接口，阻塞队列，获取一个元素之前，等待队列成为非空。在存储一个元素之前，等待队列中的空间变为可用。ArrayBlockingQueue，DelayQueue，LinkedBlockingQueue，PriorityBlockingQueue，SynchronousQueue 都直接实现了这个接口。LinkedBlockingDeque，LinkedTransferQueue通过实现 BlockingQueue的子接口间接实现了这个接口。
+ConcurrentMap：接口，是 Map的子接口，声明了额外的 原子的方法 putIfAbsent，remove，replace。ConcurrentHashMap，ConcurrentNavigableMap，ConcurrentSkipListMap都实现了这个接口。
+
+
+8.1.1 使用 BlockingQueue 和 ArrayBlockingQueue
+使用场景：生产者-消费者 应用程序的核心，可以使用 ArrayBlockingQueue作为实例对象，使用其 put，take 方法分别降对象放到阻塞队列中以及将一个对象从其中移除。如果没有空间放置对象了，put方法会被阻塞，如果队列空了，take方法会被阻塞住。
+
+8.1.2 深入学习 ConcurrentHashMap
+其ConcurrentHashMap 在行为上和 HashMap一样，但是是不需要显示同步就可以工作于多线程的上下文。泛型的 ConcurrentHashMap通过提供 V putIfAbsent方法，当键值不存在时，会把 key/value 条目放进 map中。
+
+8.2 原子变量
+Java5 引入了 atomic，提供了 创建高效非阻塞的算法。支持在单个变量上进行无锁及线程安全的操作。
+atomic 中的类，把 volatitle标注的数值，属性，数组元素扩展成也能支持原子的，有条件的更新，这样外部的同步就不再需要了。使用atomic与volatile变量使用原理相同。
+AtomicBoolean, AtomicInteger, AtomicIntegerArray, AtomicLong, AtomicLongArray, AtomicReference, AtomicReferenceArray
+应用场景：原子变量用于实现计数器，序列生成器，以及其他构造。synchronized关键字关联的内置锁会影响性能。
+
+8.2.1 理解原子魔法（略）
+
+8.3 Fork/Join 框架
+并发框架，有特定的 ExecutorService 和线程池构成。任务分解，被 fork出来，在 join之前会一直等待。
+使用任务窃取来最小化线程的争用和开销，线程池中的每条工作线程都有自己的双端工作队列并且会将新任务放到这个队列中，它从队列的头部读取任务，如果队列空的，工作线程就尝试从另一个队列的末尾获取任务。
+Fork/Join 框架由 java.util.concurrent 包中的 ForkJoinPool，ForkJoinTask，ForkJoinWorkerThread，RecursiveAction，RecursiveTask，ContedCompleter类组成。
+
+ForkJoinPool：针对运行中的 ForkJoinTask的 ExecutorService实现，FJ的线程池。
+ForkJoinTask：抽象基类，针对在 ForkJoinPool上下文中的任务。
+ForkJoinWorkerThread：被 ForkJoinPool管理的一个线程，执行 ForkJoinTask
+RecursiveAction：递归的，无结果的 ForkJoinTask
+RecursiveTask：递归的，有结果的 ForkJoinTask
+CountedCompleter：带有完成动作的 ForkJoinTask，在被触发切没有其他滞留的动作时，这个任务会被执行。
+Java文档提供基于 RecursiveAction的任务以及基于 RecursiveTask的任务。
+
+8.4 Completion Service
+用于从已完成任务结果中解耦新的异步任务，使用 CompletionService<V> 实现。V是这个任务返回结果的类型。
+生产者通过调用 某个 submit 方法提交一个任务执行，方法接受一个 callable参数，每个方法都会返回一个 Future<V> 的实例，代表该任务的未完成状态。通过调用 poll方法来轮训这个任务的完成状态或者调用这个阻塞式的 task 方法。消费者通过嗲用 take方法获取一个已经完成的任务，这个方法在任务已经完成之前会一直阻塞。之后返回一个 Future<V> 对象来表示这一完成的任务，调用 Future<V>的 get方法即可获取结果。
+Java7 提供了 ExecutorCompletionService<V> 类，提供 executor用于支持任务执行，当任务完成时，任务会被放到一个可被 task方法访问的队列中。
+使用方式：首先创建一个 executor service 供后续执行任务。之后创建一个 completion Service 用于完成任务。两个计算任务随后被提交到这个 completion service，每个计算任务都会异步执行。调用这个 completion service 的 take 方法 会返回任务的 future对象。future的 get 方法用于获取任务的结果以供后续输出使用。
+
+
+附录A：练习题与答案 （略）
+
+附录B：Swing中的线程（略）
+

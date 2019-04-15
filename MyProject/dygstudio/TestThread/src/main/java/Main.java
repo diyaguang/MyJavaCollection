@@ -35,7 +35,9 @@ public class Main {
             //PhaserTest.test();
             //ExchangerTest.test();
             //ConditionTest.test();
-            ReentrantCount4.test();
+            //ReentrantCount4.test();
+            //ReentrantReadWriteLockTest2.test();
+            CompletionServiceTest.test();
         }catch (Exception e){
             e.printStackTrace();
         }
