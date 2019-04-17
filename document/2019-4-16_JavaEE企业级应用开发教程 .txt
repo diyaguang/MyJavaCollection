@@ -1,0 +1,184 @@
+第一章 Spring基本应用
+
+1.1 Spring 概述
+
+1.1.1 什么是 Spring
+轻量级的开源框架，以 IoC，AOP为内核，使用基本的 JavaBean来完成，取代了EJB的臃肿，低效的开发模式。
+表现层使用 SpringMVC，Struts框架整合功能，业务逻辑层可以管理事务，记录日志。持久层可以整合 MyBatis，Hibernate，JdbcTemplate技术。
+
+1.1.2 Spring框架优点
+简单，可测试和耦合特点。非浸入式设计，方便耦合，简化开发，支持AOP，支持声明式事务管理，方便程序的测试，方便集成各种优秀框架，降低JavaEE API的使用难度。
+
+1.1.3 Spring的体系结构
+Spring框架采用分层架构，20个模块（Core Container，DataAccess/Integration，Web，AOP，Instrumentation，Messaging，Test 等）
+（Test，Beans，Core，Context，SpEL，AOP，Aspects，Instrumentation，Message，Transactions，JDBC，ORM，OXM，JMS，WebSocket，Servlet，Web，Portlet）
+
+1.Core Container（核心容器）：由 Beans，Core，Context，SpEL 模块组成
+Beans模块：提供了 BeanFactory，工厂模式的经典，将管理对象称为 Bean
+Core核心模块：基本组成部分，包括 IoC和DI
+Context上下文模块：访问定义和配置的任何对象没接，ApplicationContext接口是上下文模块的焦点。
+SpEL模块：是3.0新增的，提供了 Spring Expression Language支持，运行时查询和操作对象图的强大的表达式语言。
+
+2.DataAccess/Integration（数据访问、集成）
+JDBC：提供了JDBC的抽象层
+ORM：对流行的对象关系映射API
+OXM：提供了对 一个支持对象/XML映射的抽象的实现，如 JAXB，Castor，XMLBeans，JiBX，XStream等
+JMS：Java消息传递服务
+Transactions：支持对实现特殊接口以及所有POJO类的编程和声明式的实务管理
+
+3.Web
+WebSocket：4.0 新增模块，提供了 WebSocket，SockJS的实现，以及对 STOMP的支持
+Servlet：称为 Spring-webmvc模块，包含了 MVC，REST 的 web应用程序
+Web：基本的Web开发集成特性，如 文件上传，Servlet监听，初始化IoC，Web应用上下文
+Portlet：提供在 Portlet环境中使用MVC实现，类似 Servlet模块
+
+4.其他模块
+AOP：提供了面向切面编程实现，允许定义方法拦截器和切入点，将代码按照功能进行分离，降低耦合度。
+Aspects：提供了与 AspectJ的集成功能，AspectJ是功能强大的切面编程框架
+Instrumentation：提供了类工具的支持和类加载器的实现，在特定的应用服务器中使用
+Messaging：4.0后新增的，提供了对消息传递体系结构和协议的支持。
+Test：提供了对单元测试和集成测试的支持。
+
+1.1.4 Spring的下载及目录机构
+下载地址：http://repo.spring.io/release/org/springframework/spring/
+JAR包分为两个部分
+
+1.Spring 框架包 包含 （docs：Spring的API文档和开发规范）（libs：JAR包和源码）（schema：schema文件，spring的定义和约束）
+libs目录中包含三类（RELEASE.jar结尾的是Spring框架class文件的JAR包，RELEASE-javadoc.jar结尾是SPring框架API文档的压缩包，RELEASE-source.jar结尾的是 Spring框架源文件的压缩包）
+libs目录中有四个基础包
+spring-core-xxxx.RELEASE.jar：包含框架基本的核心工具类，
+spring-beans-xxxx.RELEASE.jar：所有应用都用到的JAR包，包含配置访问，创建管理Bean，以及进行IoC和DI操作的类，
+spring-context-xxxx.RELEASE.jar：提供了在基础IoC功能上的扩展服务，还有许多企业级服务的支持，
+spring-expression-xxxx.RELEASE.jar：定义了Spring的表达式语言
+
+2.第三方依赖包
+Spring核心容器还需要依赖 commons.logging 的 JAR包
+下载地址：http://commons.apache.org/proper/commons-logging/download_logging.cgi
+
+1.2 Spring 的核心容器
+主要功能就是通过核心容器来实现的，框架提供了两种核心容器 BeanFactory，ApplicationContext
+
+1.2.1 BeanFactory
+由 BeanFactory接口定义，基础类型的 IoC容器，提供了完整IoC服务支持。管理Bean的工厂，主要负责初始化各种Bean，并调用他们的生命周期方法。
+接口提供了 几个实现类，XmlBeanFactory 根据XML配置文件中的定义来装配 Bean
+BeanFactory beanFactory = new XmlBeanFactory(new FileSystemResource("F:/applicationContext.xml"));
+
+1.2.2 ApplicationContext
+是 BeanbFactory的子接口，称为 应用上下文，包含了所有功能，还提供了 国际化，资源访问，事件传播方法的支持。
+创建实例有两种方法：
+
+1.通过 ClassPathXmlApplicationContext：从类路径 classPath 中寻找指定的XML配置文件，找到后装在完成ApplicationContext的实例化。
+ApplicationContext applicationContext = new ColassPathXmlApplicationContext(String configLocation);
+
+2.通过 FileSystemXmlApplicationContext：从指定文件系统路径（绝对路径）中寻找指定的XML配置文件
+ApplicationContext applicationContext = new FileSystemXmlApplicationContext(String configLocation);
+说明：读取Spring配置文件时，FileSystemXmlApplicationContext 不再从类路径中读取配置文件，而是通过参数指定配置文件位置。
+
+说明：使用时一般会使用 ClassPathXmlApplicationContext类来实例化ApplicationContext容器
+在Web项目中，实例化工作会交由Web服务器来完成。Web服务器实例化ApplicationContext容器时，通常会使用基于ContextLoaderListener实现方式，需要在 web.xml中加载配置
+<context-param>
+	<param-name>contextConfigLocation</param-name>
+	<param-value>
+		classpath:spring/applicationContext.xml
+	</param-value>
+</context-param>
+<listener>
+	<listener-class>
+		org.springframework.web.context.ContextLocderListener
+	</listener-class>
+</listener>
+
+创建Spring容器后，就可以获取 Spring容器的Bean，有两种方式：
+1. Object getBean(String name)：根据容器中 Bean的 Id，name 来获取指定 Bean，获得后需要强制类型转换
+2. <T> T getBean(Class<T> requiredType)：根据类型来获取 Bean实例，不需要进行强制类型转换
+
+说明：BeanFactory 和 ApplicationContext 都通过XML配置文件加载 Bean的，二者区别在于 ApplicationContext初始化时自检，这样有利于检查所有依赖属性是否注入。优先使用这种方式。
+
+1.3 Spring入门程序
+参看程序代码 StudySpring
+
+1.4 依赖注入
+
+1.4.1 依赖注入概念
+依赖注入（Dependency Injection 简称DI）与控制反转（IoC）的含义相同，是从两个角度描述的同一个概念。
+当Java对象（调用者）需要调用另一个Java对象（被调用者）时
+使用 Spring框架后，实例对象不再由调用者创建，而是由 Spring容器创建，Spring容器负责控制程序之间的关系，不是由调用者代码控制，这样控制权由应用代码转移到了 Spring容器。控制权发生了反转，这就是Spring的控制反转。
+从Spring容器的角度，Spring容器负责被依赖对象赋值给调用者的成员变量，这相当于为调用者注入了它的依赖的实例，这就是 Spring的依赖注入。
+
+1.4.2 依赖注入的实现方式
+在使用 Spring框架创建对象时，动态地将其所依赖的对象注入 Bean组件中，一种是属性 setter方法注入，另一种是构造方法注入
+1.属性 setter方法注入：指 IoC容器使用 setter方法注入被依赖的实例。通过调用无参数的构造函数或静态工厂方法实例化Bean后，调用该Bean的setter方法实现。
+2.构造方法注入：使用构造方法注入被依赖的实例，调用带参数的构造方法来实现，每个参数代表着一个依赖。
+例：
+<bean id="userDao" class="com.dygstudio.studyspring.ioc.UserDaoImpl"/>
+    <bean id="userService" class="com.dygstudio.studyspring.ioc.UserServiceImpl">
+        <property name="userDao" ref="userDao"/>
+    </bean>
+<property> 是 <bean> 元素的子元素，用于调用 Bean实例中的 setter方法完成属性赋值，从而实现依赖注入。name属性表示Bean实例中的相应属性名，ref用于指定其属性值。
+
+
+第二章 Spring中的Bean
+
+2.1 Bean的配置
+Spring是Bean的工厂，使用时必须对 Spring的配置文件进行配置。Spring容器支持 XML和 Properties两种配置文件，常用XML方式。
+XML配置文件的根元素是 <beans>，包含多个 <bean>子元素，每个bean子元素定义了一个 bean，并进行描述。
+Bean元素常用属性和子元素：
+id：Bean的唯一标识，容器对其配置和管理都通过该属性完成。
+name：同样可以通过name进行管理和配置，name属性可以指定多个名称，用逗号或分号隔开。
+class：指定了 Bean的具体实现，必须完整的全限定名
+scope：设定 Bean的作用域，有 singleton，prototype，request，session，global Session，application，websocket，默认为 singleton
+constuctor-arg：bean元素的子元素，可以使用此元素传入构造参数进行实例化，该元素 index属性指定构造参数的序号（从0开始），type属性指定构造参数的类型，参数值可以通过ref属性或value属性直接指定，也可以通过 ref或value子元素指定。
+property：bean的子元素，调用Bean实例中的 setter方法完成属性赋值，从而完成依赖注入。name属性指定Bean实例中相应的属性名，ref属性或value用于指定参数值。
+value：property，constructor-arg 等元素的属性或子元素，指定对Bean工厂中某个 Bean实例的引用
+list：用于封装List或数组类型的依赖注入
+set：用于封装 Set类型属性的依赖注入
+map：用于封装 Map类型属行的依赖注入
+entry：map元素的子元素，用于设置一个键值对。其 Key属性指定字符串类型的键值，ref或value子元素指定其值，也可以通过 value-ref 或 value属性指定其值。
+一般的定义，使用 id/name 和 class 两个属性即可。如果未指定id或name，则默认使用 class作为id使用。
+
+2.2 Bean的实例化
+有三种方式，构造器实例化，静态工厂方式实例化，实例工厂方式实例化。
+
+2.2.1 构造器实例化
+通过Bean对应类中默认的无参构造方法来实例化 Bean
+<bean id="bean1" class="com.dygstudio.studyspring.instance.constructor.Bean1"/>
+Spring容器通过id为xxxx 的实现类 xxxx 中默认的无参构造方法对 Bean进行实例化。
+
+2.2.2 静态工厂方式实例化
+要求创建一个静态工厂的方法来创建 Bean实例，配置中 Bean 的 class属性所指定的不再是 Bean实例的实现类，而是静态工厂类，同时使用 factory-method属性来指定所创建的静态工厂方法。
+public class MyBean2Factory {
+    public static Bean2 createBean(){
+        return new Bean2();
+    }
+}
+<bean id="bean2" class="com.dygstudio.studyspring.instance.static_factory.MyBean2Factory" factory-method="createBean“/>
+
+2.2.3 实例工厂方式实例化
+不再使用静态方法创建，采用直接创建Bean实例的方式，在配置文件中，需要实例化Bean也不是通过 class属性直接指向的实例化，而是通过 factory-bean 属性指向配置的实例工厂，然后使用 factory-method属性确定使用工厂中的那个方法。
+public class MyBean3Factory {
+    public MyBean3Factory(){
+        System.out.println("bean3 工厂实例化中");
+    }
+    public Bean3 createBean(){
+        return new Bean3();
+    }
+}
+<bean id="myBean3Factory" class="com.dygstudio.studyspring.instance.factory.MyBean3Factory"/>
+<bean id="bean3" factory-bean="myBean3Factory" factory-method="createBean"/>
+
+2.3 Bean的作用域
+
+2.3.1 作用域的种类
+singleton：在Spring容器中将只有一个实例，默认的作用域
+prototype：获取时，容器都将创建一个新的 Bean实例
+request：再一次HTTP请求中，容器返回该Bean的一个实例，不同HTTP请求产生不同的Bean，尽在 HTTPRequest内有效
+session：在一个 HTTP Session中，如果其返回该 Bean的同一个实例，不同 Session不同
+globalSession：在一个全局的 Session中，返回Bean的同一个实例，尽在使用 portlet上下文时有效
+application：每个 ServletContext对象创建一个实例，仅在 Web相关的 ApplicationContext中生效
+websocket：为每个 websocket对象创建一个实例，仅在Web相关的 ApplicationContext中生效
+
+2.3.2 singleton作用域
+在 <bean> 元素的 scope属性来指定。singleton作用域对于无会话状态的Bean来说，最为理想。
+
+2.3.3 prototype作用域
+Spring容器回味每个该 Bean的请求都创建一个新的实例

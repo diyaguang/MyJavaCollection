@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/TestThread/src/main/java/Main.java" line="97" />
+    <bookmark url="file://$PROJECT_DIR$/TestThread/src/main/java/Main.java" line="100" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45a1b8c8-b61b-4e29-b8ea-78041836af5d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/CompletionServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ReentrantReadWriteLockTest2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ForkJoinTaskTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ForkJoinTaskTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/Main$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/Main$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/Main$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/Main$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/Main$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/Main$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestThread/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/TestThread/target/classes/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../document/2019-4-12_Java线程与并发编程实践 .txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../document/2019-4-12_Java线程与并发编程实践 .txt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -44,63 +36,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="40" column="29" lean-forward="true" selection-start-line="40" selection-start-column="29" selection-end-line="40" selection-end-column="29" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/CompletionServiceTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="626">
-              <caret line="45" column="42" selection-start-line="45" selection-start-column="32" selection-end-line="45" selection-end-column="42" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#581#593#0" expanded="true" />
-                <element signature="e#853#854#0" expanded="true" />
-                <element signature="e#892#893#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/FutureTaskTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="19">
-              <caret line="3" column="47" lean-forward="true" selection-start-line="3" selection-start-column="47" selection-end-line="3" selection-end-column="47" />
-              <folding>
-                <element signature="e#478#486#0" expanded="true" />
-                <element signature="e#612#621#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ForkJoinTaskTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="24" column="60" lean-forward="true" selection-start-line="24" selection-start-column="60" selection-end-line="24" selection-end-column="60" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ForkJoinTaskTest2.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="505">
-              <caret line="40" column="14" lean-forward="true" selection-start-line="40" selection-start-column="14" selection-end-line="40" selection-end-column="14" />
+            <state relative-caret-position="304">
+              <caret line="16" column="89" lean-forward="true" selection-start-line="16" selection-start-column="89" selection-end-line="16" selection-end-column="89" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -193,10 +133,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="138" />
-    <option name="y" value="97" />
-    <option name="width" value="1860" />
-    <option name="height" value="957" />
+    <option name="x" value="1358" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -209,7 +149,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -217,105 +156,12 @@
               <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
               <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="TestThread" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="TestThread" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="TestThread" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="TestThread" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="TestThread" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="TestThread" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="TestThread" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="testthread" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="TestThread" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="testthread" type="462c0819:PsiDirectoryNode" />
-              <item name="thread" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="TestThread" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="testthread" type="462c0819:PsiDirectoryNode" />
-              <item name="thread" type="462c0819:PsiDirectoryNode" />
-              <item name="ForkJoinTaskTest.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
-            </path>
-            <path>
-              <item name="dygstudio" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="TestThread" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="dygstudio" type="462c0819:PsiDirectoryNode" />
-              <item name="testthread" type="462c0819:PsiDirectoryNode" />
-              <item name="thread" type="462c0819:PsiDirectoryNode" />
-              <item name="ForkJoinTaskTest2.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -328,7 +174,7 @@
     <property name="ToolWindowCoverage.ShowToolbar" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555053055017" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555471452176" />
     <property name="jdk.selected.JAVA_MODULE" value="1.8" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -460,17 +306,18 @@
       <workItem from="1555034161584" duration="8116000" />
       <workItem from="1555060863333" duration="2263000" />
       <workItem from="1555290759510" duration="10644000" />
+      <workItem from="1555386159848" duration="2886000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="303877000" />
+    <option name="totallyTimeSpent" value="306763000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1920" height="1004" extended-state="6" />
+    <frame x="1358" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" x="662" y="73" width="493" height="926" id="Project" order="0" visible="true" weight="0.22736955" />
+      <window_info active="true" content_ui="combo" x="662" y="73" width="493" height="926" id="Project" order="0" visible="true" weight="0.21778488" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -867,13 +714,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/src.zip!/java/lang/Runnable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="371">
-          <caret line="67" column="25" selection-start-line="67" selection-start-column="25" selection-end-line="67" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/src.zip!/java/lang/Runnable.java" />
     <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ReentrantReadWriteLockTest2.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="122">
@@ -887,42 +728,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="40" column="29" lean-forward="true" selection-start-line="40" selection-start-column="29" selection-end-line="40" selection-end-column="29" />
+        <state relative-caret-position="646">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/CompletionServiceTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="626">
-          <caret line="45" column="42" selection-start-line="45" selection-start-column="32" selection-end-line="45" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#581#593#0" expanded="true" />
-            <element signature="e#853#854#0" expanded="true" />
-            <element signature="e#892#893#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/FutureTaskTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="3" column="47" lean-forward="true" selection-start-line="3" selection-start-column="47" selection-end-line="3" selection-end-column="47" />
-          <folding>
-            <element signature="e#478#486#0" expanded="true" />
-            <element signature="e#612#621#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="57">
+          <caret line="3" column="47" selection-start-line="3" selection-start-column="47" selection-end-line="3" selection-end-column="47" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ForkJoinTaskTest2.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="505">
-          <caret line="40" column="14" lean-forward="true" selection-start-line="40" selection-start-column="14" selection-end-line="40" selection-end-column="14" />
+        <state relative-caret-position="627">
+          <caret line="40" column="14" selection-start-line="40" selection-start-column="14" selection-end-line="40" selection-end-column="14" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -931,8 +755,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/ForkJoinTaskTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="24" column="60" lean-forward="true" selection-start-line="24" selection-start-column="60" selection-end-line="24" selection-end-column="60" />
+        <state relative-caret-position="363">
+          <caret line="33" column="35" lean-forward="true" selection-start-line="33" selection-start-column="35" selection-end-line="33" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TestThread/src/main/java/com/dygstudio/testthread/thread/CompletionServiceTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="16" column="89" lean-forward="true" selection-start-line="16" selection-start-column="89" selection-end-line="16" selection-end-column="89" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
