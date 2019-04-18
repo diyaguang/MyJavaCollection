@@ -1,0 +1,77 @@
+2.4 Bean的生命周期
+Spring容器可以管理 singleton作用域的Bean的声明周期。prototype作用域的Bean，Spring只负责创建，之后交给客户端来管理。
+管理Bean的声明周期，可以在某个Bean生命周期的某些指定时刻完成一些相关操作，一般情况下会在 Bean的 postinitiation（初始化后）和 predestruction（销毁前）执行一些相关的操作。
+Bean的生命周期：
+1.实例化Bean（根据情况调用Bean构造方法或工程方法实例化Bean）
+2.设置属性值（依赖注入完成Bean中所有属性值的配置注入）
+3.调用 Bean NameAware的 setBeanName 方法（如果Bean实现了 BeanNameAware接口，则调用对应的方法，传入当前Bean的id值）
+4.调用 BeanFactoryAware 的 setBeanFactory 方法（如果Bean实现了BeanbFactoryAware接口，则调用对应方法，传入当前工厂实例的引用）
+5.调用 ApplicationContextAware 的 setApplicationContext 方法（如果Bean实现了 ApplicationContextAware接口，则调用对应方法，传入当前ApplicationContext实例的引用）
+6.调用 调用 BeanPostProcessor的预初始化方法（如果BeanbPostProcessor和Bean关联，则Spring将调用该接口的预初始化方法 postProcessBeforeInitialzation对Bean进行加工操作，AOP就是用它实现的）
+7.调用 InitializingBean的 afterPropertiesSet 方法（如果Bean实现了 InitializingBean接口，则Spring将调用 afterPropertiesSet 方法）
+8.调用定制的初始化方法（如果在配置文件中通过 init-method 属性指定了初始化方法，则调用）
+9.调用 BeanPostProcessor的后初始化方法（如果 BeanPostProcessor和Bean关联，则Spring将调用该接口的初始化方法 postProcessAfterInitialization，Bean已经可以被应用系统使用了）
+10-1-1.singleton域 Spring缓存池中准备就绪的Bean（将该Bean放入Spring IoC缓冲池，触发SPring对该Bean的声明周期管理）
+10-1-2.调用 DisposableBean的 destory 方法，调用 destory-method属性配置的销毁方法（如果Bean实现了 DisposableBean接口，则调用 destory将Spring中的Bean销毁，如果在配置文件中指定了 destory-method 属性指定了Bean销毁方法，则Spring将调用该方法进行销毁）
+10-2-1.protorype域 将准备就绪的Bean交给 调用者（将该Bean交给调用者，不再管理）
+
+2.5 Bean的装配方式
+装配方式即Bean的依赖注入方式，支持多种形式的Bean的装配，基于XML的，基于注解（Annotation）和自动装配。
+
+2.5.1 基于XML的装配
+Spring提供了两种基于XML的装配方式：设值注入（Setter Injection）和构造注入（Constructor Injection）。
+Spring会先调用Bean的默认构造方法来实例化Bean对象，然后通过反射方式调用 setter方法来注入属性值。
+其中有两个要求：
+1.Bean类必须提供一个默认的无参数的构造方法
+2.Bean必须为需要注入的属性提供对应的 setter 方法
+在 设值注入中，Spring配置文件中，需要使用 <bean> 元素的子元素<property> 来为每个属性注入值
+在 构造注入中，在配置文件中，需要使用 <bean>元素的子元素 <constructor-arg> 来定义构造方法的参数，可以使用其 value 属性来设置该参数的值。
+在定义 <constructor-arg> 元素是，其属性 index表示其索引，value属性用于设置注入的值，子元素<list> 为Bean对象设置对应的集合属性注入值。
+<bean id="user1" class="com.dygstudio.studyspring.assemble.User">
+        <constructor-arg index="0" value="tom"/>
+        <constructor-arg index="1" value="123456"/>
+        <constructor-arg index="2">
+            <list>
+                <value>"constructorvalue1"</value>
+                <value>"constructorvalue2"</value>
+            </list>
+        </constructor-arg>
+    </bean>
+
+ 2.5.2 基于 Annotation 的装配
+ @Component：描述Spring中的Bean，泛化感念，仅仅表示一个组件，可以作用在任何层次
+ @Repository：用于数据访问层的Bean
+ @Service：用在业务层的Bean
+ @Controller：用在控制层的Bean
+ @Autowired：用于Bean的属性变量，属性setter方法及构造方法进行标注，配置对应的注解处理器完成Bean的自动配置工作，默认按照Bean的类型进行装配
+ @Resource：与Autowired相同，默认按照 bean 的实例名进行装配，有name 和 type属性。type为Bean的实例类型，name为Bean的实例名称。默认先按照name，然后type，都没有则异常。
+ @Qualifier：与Autowired配合使用，将默认的按Bean类型装配修改为按 Bean的实例名称装配，实例名称由 注解的参数指定。
+ 其中 Resource注解相当于配置文件中的 <property name=xxx ref=xxx> 的配置。
+
+ 在配置文件中，需要包含context的约束信息，通过配置 <context:annotation-confg/> 来开启注解处理器。
+ Spring配置文件中的注解方式虽然大大简化了XML中 Bean的配置，但仍然需要在Spring配置文件中一一配置相应的Bean
+ Spring提供了另一种高效的注解配置方式，对包路径下所有Bean文件进行扫描的方式。
+
+  xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- 使用 Context 命名空间，在配置文件中开启相应的注解处理器，如果使用注解，这是必须有的 -->
+    <!-- 虽然使用了 annotation 注解的方式，简化了 引用的相关配置，但是还是需要在 xml 文件中配置相应的 bean实例 -->
+    <context:annotation-config/>
+    <bean id="userDao" class="com.dygstudio.studyspring.annotation.UserDaoImpl"/>
+    <bean id="userService" class="com.dygstudio.studyspring.annotation.UserServiceImpl"/>
+    <bean id="userController" class="com.dygstudio.studyspring.annotation.UserController"/>
+    <!-- 上述代码可以使用 <context:component-scan base-package="Bean所在的包路径" /> 这样的代码对Bean进行扫描不用单个逐一指定了 -->
+
+ 注：Spring使用对指定包中的注解进行扫描前，需要先向项目中导入 Spring AOP包的 jar包。否则会异常。
+
+ 2.5.3 自动装配
+ Spring中配置文件的<bean>元素中，使用 autowire属性，可以通过设置这个属性来自动装配 Bean，将一个Bean自动注入到其他Bean的 Property中
+ autowire属性有5个值：
+ default：<bean> 的上级标签<beans> 的 default-autowire属性值决定多个
+ byName：根据属性的名称自动装配，根据名称查找与属性完全一致的Bean，并将其属性自动装配
+ byType：根据属性的数据类型（Type）自动装配，如果Bean的属性类型，兼容另一个Bean中的属性数据类型，则自动装配
+ constructor：根据构造函数参数的数据类型，进行 byType模式的自动装配
+ no：默认情况自，不使用自动装配，Bean依赖必须通过 ref元素定义
+
+
+第三章 Spring AOP
