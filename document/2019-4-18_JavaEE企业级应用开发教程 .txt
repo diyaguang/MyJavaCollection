@@ -73,5 +73,3 @@ Spring会先调用Bean的默认构造方法来实例化Bean对象，然后通过
  constructor：根据构造函数参数的数据类型，进行 byType模式的自动装配
  no：默认情况自，不使用自动装配，Bean依赖必须通过 ref元素定义
 
-
-第三章 Spring AOP
