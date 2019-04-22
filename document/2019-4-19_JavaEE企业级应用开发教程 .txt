@@ -1,1 +1,72 @@
 第三章 Spring AOP
+该模块提供了 面向切面的编程实现
+
+3.1 Spring AOP简介
+
+3.1.1 什么是 AOP
+面向切面编程（面向方面编程）。AOP采用横向抽取机制，将分散在方法中的重复代码提取出来，在编译或运行时，将代码应用到需要执行的地方。
+目前最流行的 AOP框架，为 SpringAOP 和 AspectJ。SpringAOP通过代理方式向目标织入增强代码。AspectJ是基于Java的AOP框架，从2.0开始，SpringAOP引入了对AspectJ的支持，提供了专门的编译器，在编译时，横向向代码织入。
+
+3.1.2 AOP术语
+Aspect：封装用于横向插入系统功能。需要在配置文件中通过 <bean>元素指定
+Joinpoint：连接点，程序执行过程中的某个阶段点，实际是对象的一个操作，连接点就是指方法的调用
+Pointcut：切入点，切面与流程的交叉点，即需要处理的连接点
+Advice：通知/增强处理，特定的切入点执行的增强处理，在定义好的切入点处所要执行的程序代码。是切面的具体实现。
+Target Object：目标对象，所有被通知的对象，也称为被增强对象。如果采用动态AOP，则该对象就是一个被代理对象。
+Proxy：代理，将通知应用到目标对象之后，被动态创建的对象。
+Weaving：将切面代码插入到目标对象上，从而生成代理对象的过程。
+
+3.2 动态代理
+AOP框架动态生成一个对象，该对象可以作为目标对象使用。可以是JDK动态代理，也可以是 CGLIB代理。
+
+3.2.1 JDK动态代理
+通过 Proxy类来实现，调用 Proxy类的 newProxyInstance方法来创建代理对象，默认会使用 JDK动态代理来实现AOP
+引入Spring相关的 jar报，创建操作接口，定义xxxImpl实现类。定义 切面类，包含多个增强方法。
+public class MyAspect {
+    public void check_Permissions(){
+        System.out.println("模拟检查权限...");
+    }
+    public void log(){
+        System.out.println("模拟记录日志...");
+    }
+}
+创建代理类 JdkProxy，实现 InvocationHandler 接口，并编写代理方法。
+public class JdkProxy implements InvocationHandler {
+ @Override
+    public Object invoke(Object proxy, Method method,Object[] args) throws Throwable{
+其中，JdkProxy实现了 InvocationHandler接口，并实现了接口中的invoke 方法。所有动态代理类所调用的方法都会交由该方法处理。
+创建的代理方法 createProxy 中，使用 Proxy的 newProxyInstance 方法来创建代理对象。
+invoke方法中，目标方法执行的前后，分别执行切面类中的 xxx ，xxx 方法
+
+调用代理对象：
+ JdkProxy jdkProxy = new JdkProxy();
+        UserDao userDao = new UserDaoImpl();
+        UserDao userDao1 = (UserDao)jdkProxy.createProxy(userDao);
+        userDao1.addUser();
+        userDao1.deleteUser();
+实现了接口的代理方法，就是 Spring中的 JDK动态代理
+
+3.2.2 CGLIB dialing
+JDK代理要求必须实现一个或多个接口，如果要对没有实现接口的类进行代理，需要使用 CGLIB代理。
+是一个高性能开源的代码生成包，采用非常底层的字节码技术，对指定的目标类生成一个子类，并对子类进行增强。Spring核心包中已经继承了 CGLIB所需的包。
+创建 代理类，实现 MethodInterceptor接口，并实现其中的 intercept 方法
+public class CglibProxy implements MethodInterceptor {
+    //代理方法
+    public Object createProxy(Object target){
+        Enhancer enhancer = new Enhancer();  //创建一个动态类对象
+        enhancer.setSuperclass(target.getClass());  //确定需要增强的类，设置其父类
+        enhancer.setCallback(this);  //添加回调函数
+        return enhancer.create();  //返回创建的代理类
+    }
+     @Override
+    public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable{
+
+说明：创建了一个动态对象 Enhancer，是CGLIB的核心类，然后调用其 setSpuerclass 方法来确定目标对象，接下来调用 setCallback 方法添加回调函数，其中的 this代表的就是代理类 CglibProxy本身；最后通过 return 语句将创建的代理类对象返回。intercept方法会在程序执行目标方法时被调用。方法运行时会执行切面类中的增强方法。
+调用代理对象：
+ CglibProxy cglibProxy = new CglibProxy();
+        UserDao userDao = new UserDao();
+        UserDao userDao1 = (UserDao)cglibProxy.createProxy(userDao);
+        userDao1.addUser();
+        userDao1.deleteUser();
+
+3.3 基于代理类的 AOP实现
