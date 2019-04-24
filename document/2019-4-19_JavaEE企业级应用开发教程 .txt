@@ -68,5 +68,3 @@ public class CglibProxy implements MethodInterceptor {
         UserDao userDao1 = (UserDao)cglibProxy.createProxy(userDao);
         userDao1.addUser();
         userDao1.deleteUser();
-
-3.3 基于代理类的 AOP实现
