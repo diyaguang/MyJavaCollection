@@ -89,4 +89,15 @@ pointcut：用于指定一个切入点表达式
 pointcut-ref：指定一个已经存在的切入点名称
 method：指定一个方法名，指定将切面Bean中的该方法转化为增强处理
 throwing：该属性只对 after-throwing 元素有效，指定一个形参名，异常通知方法可以通过该形参访问目标方法所抛出的异常
+returning：改属性只对 <after-returning> 元素有效，用于指定一个形参名，后置通知方法可以通过该形参访问目标方法的返回值
+
+使用：
+导入相关JAR包：
+1.spring-aspects-xxxx.RELEASE.jar，aspectjweaver-xxxx.jar（AspectJ框架所提供的规范）
+2.定义切面处理类 MyAspect
+其中定义各种通知，在通知中使用了 JoinPoint接口及其子接口 ProceedingJoinPoint 作为参数来获得目标对象的类名，目标方法名和目标方法参数等。
+环绕通知必须接受一个类型为 ProceedingJoinPoint的参数，返回值也必须是 Object类型，且必须抛出异常。异常通知可以传入 Throwable类型的参数来输出异常信息
+3.配置 ApplicationContext.xml 文件
+在配置中 <aop:after-returning> 与<aop:after> 的区别在于，前者只有在目标方法成功执行后才会织入。后者无论如何都将执行。
+4.编写测试Bean文件
 

@@ -1,0 +1,57 @@
+3.4.2 基于注解的声明式 AspectJ
+注解说明：
+@Aspect：用于定义一个切面
+@Pointcut：定义切入点表达式，这个方法的签名就是一个返回值为 void，且方法体为空的普通方法
+@Before：定义前置通知，value属性用于指定该通知被织入的切入点
+@AfterReturning：定义后置通知，设置 pointcut/value 和returning属性，value属性用于指定该通知被织入的切入点，returning属性值用于表示 Advice方法中可定义与此同名的形参，该形参可用于访问目标方法的返回值
+@Around：环绕通知，value属性用于指定该通知被织入的切入点
+@AfterThrowing：定义异常通知来处理程序中未处理的异常，value属性用于指定该通知被织入的切入点，throwing用于指定一个形参名来表示Advice方法中可定义与此同名的形参，用于访问目标方法抛出的异常
+@After：定义最终 final通知，不管是否异常，该通知都会执行
+@DeclareParents：用于定义引介通知
+
+使用：
+1.创建 切面类 MyAspect，使用 @Aspect，@Component 放在切面类上的注解，用@Pointcut定义切点表达式，其他的使用同上，各种通知都使用 切点注解定义的方法名称为 “切点名”
+2.定义目标类，添加 @Repository注解
+3.定义 applicationContext.xml 文件，添加对 context的映射，加入 <context:component-scan base-package="com.xxx" /> 来扫描指定的包加载对象
+加入 <aop:aspectj-autoproxy /> 来启用基于注解的声明式 AspectJ 支持
+4.编写测试类，加载xml，调用 getBean 来获取目标对象，并调用方法
+
+
+第四章 Spring的数据库开发
+
+4.1 Spring JDBC
+负责数据库资源管理和错误处理
+
+4.1.1 Spring JdbcTemplate 的解析
+Spring框架提供了 JdbcTemplate类，是 JdbcAccessor抽象类，JdbcOperations接口的子类
+抽象类：JdbcAccessor，提供了访问数据库的公共属性
+DataSource：获取数据库连接，具体实现还可以引用对数据库连接的缓冲池和分布式实务的支持
+SQLExceptionTranslator：负责对 SQLException进行转译工作。
+接口：JdbcOperations，提供了 可以使用的操作集合，包括 添加、修改、查询、删除等操作
+
+4.1.2 Spring JDBC的配置
+JDBC模块主要由4个包组成，core，dataSource，object，support
+core：核心功能，包括 Jdbctemplate,SimpleJdbcInsert,SimpleJdbcCall,NamedParameterJdbctemplate类
+dataSource：访问数据源的实用工具类，有多种数据源的实现。
+object：以面向对象方式访问数据库，允许执行查询并将返回结果作为业务对象
+support：包含了 core 和 object 包的支持类。
+
+使用 JDBC就需要对其进行配置，需要配置在 applicationContext.xml 文件中。
+需要在其中配置3个Bean，分别是 dataSource，jdbcTemplate，需要注入类的 Bean
+
+dataSource 的四个必须属性：
+driverClassName：所使用的驱动名称，对应驱动 JAR包中的 Driver类
+url：数据源所在地址
+username：访问数据库的用户名
+password：访问数据库的密码
+
+定义 jdbcTemplate 时，需要将 dataSource注入到 jdbcTemplate 中，也需要将 jdbcTemplate 注入到其他使用 jdbcTemplate的 Bean中，
+
+4.2 Spring JdbcTemplate 的常用方法
+
+4.2.1 execute
+该方法能够完成执行 SQL语句的功能，需要引用对应的 JAR包
+mysql-connector-java-xxxx.jar
+spring-jdbc-xxxx.RELEASE.jar
+spring-tx-xxxx.RELEASE.jar
+
