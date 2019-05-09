@@ -1,0 +1,140 @@
+第六章 初识 MyBatis
+
+6.1 什么是 MyBatis
+前身是 iBatis，使用简单的XML或注解进行配置和原始影射，以面向对象方式来操作持久化对象（Persisent Object，PO）
+
+6.2 MyBatis 的下载和使用
+官网 github.com/mybatis/mybatis-3/releases 下载，在Spring中使用时，只需要饮用 Mybatis的核心包 和 lib目录下的依赖包。
+SpringBoot在使用时，需要添加依赖：
+<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.2.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.1.9</version>
+        </dependency>
+
+      底层数据库要使用不同的数据库驱动JAR包
+
+6.3 Mybatis 的工作原理
+1.读取 MyBatis配置文件 mybatis-config.xml
+2.加载映射文件 Mapper.xml，即SQL映射文件，需要在 mybatis-config.xml 中加载才行，每个配置文件对应数据库中的一张表
+3.构建会话工厂，SqlSessionFactory
+4.创建 SqlSession对象，该对象包含了执行 SQL的所有方法
+5.MyBatis底层定义了一个 Executor接口来操作数据库，会根据 SqlSession传递的参数动态地生成需要执行的SQL语句，同时负责查询缓存的维护
+6.在 Executor接口的执行方法中，包含一个 MappedStatement类型的参数，该参数是对映射信息的封装，用于存储要映射的SQL语句的ID，参数等。Mapper.xml 文件中一个SQL对应一个 MappedStatement对象，SQL的id即是MappedStatement的id
+7.输入参数映射 MappedStatement对象会对用户执行SQL语句的输入参数进行定义，将输出结果映射至 Java对象中，类似于 JDBC编程中对结果的解析处理过程
+
+6.4 MyBatis入门程序
+
+1.在 MyBatis默认使用 log4j 输出日志信息，如果输出SQL语句，需要配置 log4j.properties 文件，将指定内容输出，可以参考 MyBatis使用手册中的 Logging小节，找到范例的配置信息，复制到配置文件中
+
+# Global logging configuration
+log4j.rootLogger=DEBUG, stdout
+#这里是指定 该包下的所有类日志记录级别设置
+log4j.logger.com.dygstudio.my=DEBUG
+# Console output...
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%5p [%t] - %m%n
+
+2.创建持久化对象
+
+3.创建 mapper 包，包含映射文件 xxxMapper.xml  ，也可以在 resources 的目录下创建，在 项目的配置文件中配置 mybatis 指定 Mapper资源目录。
+在这里个映射文件中，<mapper>元素是根元素，包含 namespace属性，指定了唯一的命名空间。一般会用来映射 mapper 接口
+再其中包含各种操作数据库的元素，例如 <select> 等
+在定义的 SQL语句中，#{xx} 用于表示一个占位符，xx表示该占位符待接收参数的名称为 xx
+
+4.在src目录下创建 MyBatis的核心配置文件 mybatis-config.xml  这个文件在 springboot 中是可以不用编写的，并且这个文件的位置也是可以在项目的配置文件汇总指定的。
+可以在该配置文件中，配置数据库 datasource，mapper 的定位映射等信息。
+
+5.调用执行代码
+String resource = "mybatis-config.xml";
+InputStream inputStream = Resources.getResourceAsStream(resource);
+SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+SqlSession sqlSession = sqlSessionFactory.openSession();
+MyInfo myInfo = sqlSession.selectOne("com.dygstudio.my.mapper.MyInfoMapper.getMyInfoById",1);
+sqlSession.close();
+原理：首先通过输入流读取配置文件，构建 SqlSessionFactory对象，然后通过 factory创建了 SqlSession对象，再通过 selectOne 方法执行查询操作。
+程序执行完毕，一定要关闭 SqlSession
+
+在查询中，如果使用模糊查询，可以使用 ${xxxx} 表示拼接SQL的字符串，原样输出。
+注意：⚠️ 如果使用 ${} ，则无法防止 SQL注入问题，如果要防止，可以在映射文件 Mapper.xml 中，在查询的 SQL语句中，使用 MySQL的 concat() 函数进行字符串拼接。 例如：like concat('%',#{value},'%'). 这样的语句。
+
+对于获取集合对象，使用 sqlSession.selectList() 方法
+
+插入元素，使用 Mapper.xml 中的 <insert> 元素，parametertype属性设置对应的实体或类型的名称，#{xxxx} 对应实体中的 xxxx 属性。在 操作中，使用 sqlSession.insert() 方法来执行插入操作，该方法有返回值。使用 sqlSession.commit() 来完成提交。
+
+更新元素，使用 Mapper.xml 中的 <update> 元素，参数和 属性值使用与上相同。在 操作中，使用 sqlSession.update() 方法来执行更新操作，该方法有返回值。使用 sqlSession.commit() 来完成提交。
+
+删除元素，使用 Mapper.xml 中的 <delete> 元素，使用 sqlSession.delete() 方法来执行删除操作。使用 sqlSession.commit() 来完成提交。
+
+
+第七章 MyBatis 的核心配置
+
+7.1 MyBatis 的核心对象
+涉及两个核心对象，SqlSessionFactory，SqlSession
+
+7.1.1 SqlSessionFactory
+单个数据库映射关系经过编译后的内存镜像，主要用来创建 SqlSession。该对象可以通过 SalSessionFactoryBuilder对象来构建，SalSessionFactoryBuilder可以通过XML配置文件或预先定义好的 Configuration实例构建。这个对象是线程安全的，一旦创建，在整个应用程序生命周期中都会存在。
+
+7.1.2 SqlSession
+应用程序与持久层之间执行交互操作的一个单线程对象，作用是执行持久化操作，包含了数据库中所有执行SQL操作的方法，由于其底层封装了JDBC连接，所以可以直接使用其实例来执行已映射的SQL语句。
+每个线程都应该有自己的 SqlSession实例，该实例是不能被共享的。使用时，最好在一次请求或一个方法中，不能放在一个类的静态资源，实例字段或任何类型的管理范围中使用（如 httpSession 等）。使用完 SqlSession 后，要及时的关闭。
+
+SqlSession中常用的方法：
+<T> T selectOne(String statement)
+<T> T selectOne(String statement,Object parameter)
+<E> List<E> selectList(String statement)
+<E> List<E> selectList(String statement,Object parameter)
+<E> List<E> selectList(String statement,Object parameter,RowBounds rowBounds)
+void select(String statement,Object parameter,ResultHandler handler)
+int insert(String statement)
+int insert(String statement,Object parameter)
+int update(String statement)
+int update(String statement,Object parameter)
+int delete(String statement)
+int delete(String statement,Object parameter)
+void commit()
+void rollback()
+void close()
+<T> T getMapper(Class<T> type)：返回 Mapper接口的代理对象，该对象关联了 SalSession对象，可以使用该对象直接调用方法操作数据库。
+Connection getConnection()：获取 JDBC 数据库连接对象的方法。
+
+7.2 配置文件
+
+7.2.1 主要元素
+<configuration>根元素，子元素的顺序是有限制的，不可混乱。
+    <properties>
+    <settings>
+    <typeAliased>
+    <typeHandlers>
+    <objectFactory>
+    <plugins>
+    <environments>
+        <environment>
+            <transactionManager>
+            <dataSource>
+    <databaseIdProvider>
+    <mappers>
+
+7.2.2 <properties> 元素
+配置属性的元素，用于内部的配置，外在化，通过外部配置动态替换内部定义的属性。（就是说引用外部的配置文件）
+<properties resource="db.properties"/>  
+在配置文件中 db.properties 中，jdbc.driver=xxxxxxx , jdbc.url=xxxxxxx , jebc.username=xxxxx
+使用时，<property name="driver" value="${jdbc.driver}">
