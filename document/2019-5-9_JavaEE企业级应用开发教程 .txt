@@ -1,0 +1,254 @@
+7.2.3 <setting> 元素
+用来配置 Mybatis，改变MyBatis运行时的行为，例如开启二级缓存，开启延迟加载等
+cacheEnabled：缓存的全局开关，false
+lazyLoadingEnabled：延迟加载的全局开关，false
+aggressiveLazyLoading：关联对象属性的延迟加载开关，true
+multipleResultSetsEnabled：是否允许单一语句返回多结果集，true
+useColumnLabel：使用列标签代替列名，true
+useGeneratedKeys：允许JDBC支持自动生成主键，false
+autoMappingBehavior：指定 MyBatis 应如何自动映射列到字段或属性，PARTIAL
+defaultExecutorType：配置默认的执行器，SIMPLE
+defaultStatementTimeout：设置超时时间，决定驱动等待数据库响应的秒数，没有设置
+mapUnderscoreToCamelCase：是否开启自动驼峰命名规则，false
+jdbcTypeForNull：当没有为参数提供特定的 JDBC类型时，为空值指定 JDBC类型，OTHER
+
+7.2.4 <typeAliases> 元素
+用于为配置文件中 Java类型设置一个简短的名字，即设置别名
+使用 <typeAliases> <typeAlias> 两个元素，使用别名后，可以在 MyBatis文件的任何位置使用，默认将类名首字母小写后的名称作为别名
+还可以通过自动扫描包的形式自定义别名：<package name="com.xxx.xxx"/>  采用对包的整体的别名配置
+如果在POJO上，有 @Alias(value="xxx") 注解，则以注解为主。
+MyBatis框架默认为许多常见的 Java类型提供了相应的类型别名
+
+7.2.5 <typeHandler> 元素
+将预处理语句中传入的参数从 javaType转化为 jdbcType，或者从数据库取出结果将 jdbcType 转化为 javaType
+MyBatis框架提供了默认的类型处理器
+可以自定义方式封装类型处理器进行扩展
+
+7.2.6 <objectFactory>元素
+每次创建结果对象的新实例时，会使用一个对象工厂的实例来完成。默认使用 ObjectFactory就是实例化目标类，可以通过默认的构造函数实例化，也可以在参数映射存在的时候通过构造方法来实例化。
+可以自定义对象工厂，通过实现 ObjectFactory接口或继承 DefaultObjectFactory类来实现，
+
+7.2.7 <plugins>元素（略）
+
+7.2.8 <environments> 元素
+用于对环境继续宁配置，主要是数据源的配置，事务的配置，可以配置多种数据库。
+<environments>
+	<environment id="xxxx">
+		<transactionManager type="JDBC"/>
+		<dataSource type="POOLED">
+			<property name="driver" value="${jdbc.driver}"/>
+			<property name="url" value="${jdbc.url}"/>
+			<property name="username" value="${jdbc.username}"/>
+			<property name="password" value="${jdbc.password}"/>
+	</environment>
+</environments>
+说明：在MyBatis中可以设置两种类型的事务管理器，分别是 JDBC（直接使用JDBC的提交和回滚设置，依赖于从数据源得到的链接来管理事务的作用域），MANAGED（从来不提交或回滚一个链接，而是让容器来管理事务的整个生命周期）
+对数据源的配置，MyBatis提供了 UNPOOLED，POOLED,JNDI 
+
+7.2.9 <mappers> 元素
+用于指定 Mybatis 映射文件的位置，有四种方式引用：
+1.使用类路径引用  <mapper resource="com/xxx/xxx/mapper/xxxxMapper.xml">
+2.使用本地文件路径引用 <mapper url="file:///D:/xxx/xxx/xxx/xxxxMapper.xml">
+3.使用接口类引入 <mapper class="com.xxx.xxx.mapper.xxxMapper">
+4.使用包名引入 <package name="com.xxx.xxx.mapper">
+
+7.3 映射文件
+
+7.3.1 主要元素
+<mapper>元素时映射文件的根元素，其他元素都是子元素
+	<select> 映射查询语句
+	<insert> 映射插入语句
+	<update> 映射更新语句
+	<delete> 映射删除语句
+	<sql> 用于定义一部分SQL，然后被其他语句引用
+	<cache> 给定命名空间的缓存配置
+	<cache-ref> 其他命名空间缓存配置的引用
+	<resultMap> 描述如何从数据库结果集中来加载对象
+
+7.3.2 <select> 元素
+（resultType）从SQL语句中返回的类型的类的全限定名或别名，返回时使用 resultType或resultMap之一
+（resultMap）表示外部 resultMap 的命名引用 ，返回时使用 resultType或resultMap之一
+（flushCache）是否需要 MyBatis清空之前查询的本地缓存和二级缓存，默认为 false
+（useCache） 控制二级缓存的开启和关闭
+（timeout）设置操作超时时间，会抛出异常
+（statementType）设置 MyBatis使用哪个 JDBC 的 Statement工作，默认值 PREPARED
+（resultSetType）表示结果集的类型
+
+7.3.3 <insert> 元素
+（keyProperty="id" 将插入或更新操作的返回值赋给PO类的某个属性）
+（keyColumn="id" 设置第几列是主键）
+（useGeneratedKeys="false" 使MyBatis使用 JDBC的 getGeneratedKeys 方法获得由数据库内部产生的主键）
+还可以使用 myBatis 提供的 另一种方式来自定义生成主键
+<insert xxxx>
+	<selectKey keyProperty="id" resulType="Integer" order="BEFORE">
+		select if(max(id) is null,1,max(id)+1) as newId from xxx
+	</selectKey>
+	insert xxx xxx xxx
+</insert>
+说明：order属性被设置为 BEFORE 或 AFTER，如果为 BEFORE，那么会先执行 selectKey元素中的配置来设置主键，然后执行插入于江湖，AFTER则相反。
+
+7.3.4 <update> 元素 和 <delete> 元素
+在执行完毕后会返回一个表示影响记录条数的证书
+
+7.3.5 <sql> 元素
+可以用作模板的定义，然后在其他语句中引用这段代码
+<sql id="xxxxxxxxx">id,username,xxx,xxx</sql>
+在使用时： select <include refid="xxxxxxxx"/>
+还有更复杂的操作：
+<sql id="tablename">
+	${prefix}customer
+</sql>
+<sql id="someinclude">
+	from <include refid="${include_target}"/>
+</sql>
+<sql id="customerColumns">
+	id,username,jobs,phone
+</sql>
+<select id="findCustomerById" parameterType="Integer" resultType="com.xxx.xxx.xxx">
+	select <include refid="customerColumns"/>
+	<include refid="someinclude">
+		<property name="prefix" value="t_"/>
+		<property name="include_target" value="tablename"/>
+	</include>
+	where id= #{id}
+</select>
+
+7.3.6 <resultMap> 元素
+表示结果映射集，定义映射规则，级联的更新以及定义类型转化器等。其结构：
+<resultMap type="" id="">  type属性表示需要映射的POJO，id为唯一标识
+	<constructor>  类在实例化时，用来注入结果到构造方法中，未定义无参数的构造方法时，使用这个元素配置
+		<idArg/> ID参数，标记结果作为ID
+		<arg/> 注入到构造方法的一个普通结果
+	</constructor>
+	<id/>  用于表示那个列时主键
+	<result/> 注入到字段或 JavaBean属性的普通结果，表示POJO和数据库普通列的映射关系
+	<association property=""/> 用于 一对一关联
+	<collection property=""/>  用于一对多关联
+	<discriminator javaType="">  使用结果值来决定使用那个结果映射，处理一个单独的数据库查询返回很多不同数据类型结果集的情况
+		<case value=""/>  基于某些值的结果映射
+	</discriminator>
+</resultMap>
+MyBatis在运行时会自动将查询到的数据与需要返回的对象的属性进行匹配赋值（需要表中的列名与对象的属性名完全一致）。表中的列和对象的属性可能不会完全一致，这样MyBatis就不会自动赋值，就可以使用 <resultMap> 元素进行处理
+ <resultMap id="resultMap" type="com.dygstudio.my.entity.MyInfo">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+    </resultMap>
+使用时：
+<select id="xxx" resultMap="resultMap">
+	select xxx xxx from xxx
+</select>
+
+
+第八章 动态 SQL
+
+8.1 动态 SQL中的元素
+MyBatis3采用了功能欠打的基于 OGNL的表达式来完成动态SQL
+
+8.2 <if>元素
+判断语句，实现某些条件的选择
+<select id="xxxx" parameterType="xxxx" >
+	select * from t_customer where 1=1
+	<if test="username != null and username !='' ">
+		and username like concat('%',#{username},'%')
+	</if>
+	<if test="jobs !=null and jobs !='' ">
+		and jobs= #{jobs}
+	</if>
+</select>
+其中 if 对属性进行判断，test属性多用于条件判断语句中。
+
+8.3 <choose>,<when>,<otherwise>元素
+类似于程序代码中的 switch..case..default
+<select id="xxxx" parameterType="xxxx" >
+	select * from t_customer where 1=1
+	<choose>
+		<when  test="username != null and username !='' ">
+		 	and username like concat('%',#{username},'%')
+		</when>
+		<when test="jobs !=null and jobs !='' ">
+			and jobs=#{jobs}
+		</when>
+		<otherwise>
+			and phone is not null
+		</otherwise>
+	</choose>
+</select>
+
+8.4 <where>,<trim> 元素
+在拼接 SQL语句时，又是会 在 where 后加入 1=1 条件，为了后面语句直接写 and xxx 这样的拼接使用。 <where>元素用来处理这样的问题。
+<select id="xxxx" parameterType="xxxx" >
+	select * from t_customer
+	<where>
+		<if test="username != null and username !='' ">
+			and username like concat('%',#{username},'%')
+		</if>
+		<if test="jobs !=null and jobs !='' ">
+			and jobs= #{jobs}
+		</if>
+	</where>
+</select>
+说明：这个使用中，没有加入 where 1=1 的语句，使用 <where> 进行了替换，Mybatis会自动判断组合条件下拼装SQL语句，只有 <where> 元素内条件成立时，才会在拼接 SQL中加入 where 关键字。如果语句后有多余的 and 或 or 语句，也会自动的移除。
+
+还可以使用 <trim>元素来定义需要的功能，
+<select id="xxxx" parameterType="xxxx" >
+	select * from t_customer
+	<trim prefix="where" prefixOverrides="and">
+		<if test="username != null and username !='' ">
+			and username like concat('%',#{username},'%')
+		</if>
+		<if test="jobs !=null and jobs !='' ">
+			and jobs= #{jobs}
+		</if>
+	</trim>
+</select>
+使用 trim 同样对 where 1=1 进行了替换，prefix属性代表语句的前缀，prefixOverrides属性代表时需要去除的那些特殊字符串
+
+8.5 <set> 元素
+用于 更新持久化对象的某些字段，动态包含的SQL语句前输出一个 SET关键字，并在SQL中最后一个多余的逗号除去
+<update id="xxxx" parameterType="xxx.xx.xxx">
+	update xxxxx
+	<set>
+		<if test="username != null and username !='' ">
+			username=#{username},
+		</if>
+		<if test="jobs !=null and jobs !='' ">
+			jobs=#{jobs},
+		</if>
+	</set>
+	where id=#{id}
+</update>
+其中，set元素会动态前置SET关键字，同时也会消除SQL语句中最后一个多余的逗号
+说明：在映射文件中使用 set 和 if 组合进行 update 语句动态SQL组装时，如果 set 元素内包含内容都为空，则出现SQL语法错误。需要保证传入更新字段不能为空
+
+8.6 <foreach>元素
+一种用于数组和集合循环遍历方式，通常用在构建 IN 条件语句时使用
+<select id="xxxx" parameterType="List" >
+	select * from t_customer where id in 
+	<foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+		#{id}
+	</foreach>
+</select>
+使用 foreach对集合进行遍历，并动态SQL组装，item：时循环中当前的元素，index：是当前元素在集合的位置下标，collection：是 list传递过来的参数类型，首字母小写。可以是 array，list，map的key，POJO包装类中的数组或集合类型的属性名。open/close：配置以什么符号将这些集合元素包装起来，separator：配置各个元素的间隔符
+当使用可迭代对象或数组时，index是当前迭代的次数，item的值是本次迭代获取的元素，当使用字典(Map.Entry对象的集合)时，index是key，item是 value
+说明：
+1.如果传入的是单个参数且参数类型是一个数组或者 List的时候，collection属性值分别为 array 和 list，或 collection
+2.如果传入的参数是多个的时候，就需要把他们封装成一个 Map，单参数也可以封装成Map集合，这时候collection属性值就是 Map的key
+3.如果传入的参数是POJO包装类的时候，collection属性值就为该包装类中需要进行遍历的数组或集合的属性名
+
+8.7 <bind>元素
+在进行模糊查询编写SQL语句的时候，使用 ${} 进行字符串拼接，无法防止SQL注入问题。MyBatis使用 <bind>元素来解决。可以通过 OGNL表达式来创建一个上下文变量。
+<select id="xxxx" parameterType="List" >
+	<bind name="pattern_username" value=" '%'+_parameter.getUsername()+‘%’ "/>  <!-- 其中 _parameter.getUsername() 也可以直接传入字段属性名 -->
+	select * from xxxx where username like #{pattern_username}
+</select>
+
+第九章 MyBatis的关联映射
+
+9.1 关联关系概述
+一对一：任意一方引入对方主键作为外键，本类中定义对方类型的对象
+一对多：在多的一方，添加一的一方的主键作为外键，一个A类类型对应多个B类类型，需要在A类中以集合方式引入B类类型的对象，在B类中定义A类类型的属性a
+多对多：产生中间关系表，两张表的主键作为外键，在A类中定义B类类型的集合，在B类中定义A类型的集合。
+
+9.2 一对一 
+使用 <association> 子元素，在 <resultMap> 元素中。
