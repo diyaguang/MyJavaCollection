@@ -1,0 +1,119 @@
+MyBatis配置文件的说明在。http://www.mybatis.org/mybatis-3/zh/getting-started.html 对应的文件中
+
+9.2 一对一 
+使用 <association> 子元素，在 <resultMap> 元素中。
+property：指定映射到的实体类的对象属性，与表字段一一对应
+column：指定表中对应的字段
+javaType：指定映射到实体对象属性的类型
+select：指定引用嵌套查询的子SQL语句，用于关联映射中的嵌套查询
+fetchTYpe：指定在关联查询时是否启用延迟加载，有 lazy 和 eager两个属性值。默认为 lazy
+
+对于一对多的关系可以使用两种配置方式：
+第一种方式：嵌套查询，通过执行另一条SQL映射语句来返回预期的复杂类型
+<association property="card" column="card_id" javaType="com.xx.xxx.po.IdCard" select="xxx.xxx.xxx.Mapper.findCodeById"/>
+第二种方式：嵌套结果，使用嵌套结果映射来处理重复的联合结果的子集
+<association property="card" javaType="com.xxx.xxx.po.IdCard">
+	<id property="id" column="card_id"/>
+	<result property="code" column="code" />
+</association>
+
+在使用时：
+<select id="findPersonById" parameterType="Integer" resultMap="IdCardWithPersonResult">
+	select .... from xxxx where ..
+</select>
+<resultMap type="Person" id="IdCardWithPersonResult">
+	<id property="id" column="id"/>
+	<result property="name" column="name"/>
+	...
+	<association property="card" column="card_id" javaType="IdCard" select="com.xxx.xxx.xxx.findCodeById"/>
+</resultMap>
+
+MyBatis嵌套查询的方式要执行多条 SQL语句，效率较低。更对剑使用嵌套结果方式，进行关联查询。例：
+<select id="findPersonById2" parameterType="Integer" resultMap="IdCardWithPersonResult2">
+	select p.*,idcard.code from xxxx p,xxxx idcard where p.card_id=idcard.id and p.id=#{id}
+</select>
+<resultMap type="Person" id="IdCardWithPersonResult2">
+	<id property="id" column="id"/>
+	<result property="name" column="name"/>
+	......
+	<association property="card" javaType="IdCard">
+		<id property="id" column="card_id"/>
+		<result property="code" column="code" />
+	</association>
+</resultMap>
+
+对于 MyBatis的延迟加载，默认没有开启，需要在 核心配置文件 mybbatis-config.xml 中的<setting> 元素内进行配置
+<settings>
+	<setting name="lazyLoadingEnabled" value="true"/>
+	<setting name="aggressiveLazyLoading" value="false"/> <!-- 将积极加载改为消极加载，按需加载 -->
+</settings>
+在 <association>,<collection> 元素中，默认配置了 fetchtype="lazy" ，fetchType="eager"表示立即加载。
+
+9.3 一对多 
+使用 <collection> 子元素，在 <resultMap> 元素中。其大部分属性与 association相同，多了一个 ofType 属性，与 javaType属性对应。用于指定实体对象中集合类属性所包含的元素类型。
+同样有两种配置方式：
+第一种方式：嵌套查询，通过执行另一条SQL映射语句来返回预期的复杂类型
+<collection property="ordersList" column="id" ofType="com.xx.xxx.po.Orders" select="xxx.xxx.xxx.Mapper.selectOrders"/>
+第二种方式：嵌套结果，使用嵌套结果映射来处理重复的联合结果的子集
+<collection property="ordersList" ofType="com.xxx.xxx.po.Orders">
+	<id property="id" column="orders_id"/>
+	<result property="number" column="number" />
+</collection>
+
+在使用时，尽可采用第二种方式，嵌套结果，在SQL语句中查出所有数据，然后在 collection 中映射集合的方式。
+
+
+9.4 多对多
+通常使用一个中间表来维护，一般就是在用在不同的表中，使用 <collection> 元素进行双方的多对多映射集合
+
+9.5 Map 在 Mybatis 的妙用
+1.向 SQL传递多个查询参数
+在 <select> 元素查询操作中，在 parameterType="java.util.Map" 属性中，可以传入 java.util.Map 类型的参数，用来映射一个Map集合。
+对应SQL语句：select * from t_goods where current_prive between #{min} and #{max} order by current_price limit 0,#{limt}
+其中的 min，max，limt 就是从 Map集合对象中获取对应的参数值，参与到查询中的
+
+2.灵活的 ResultType结果映射
+对应于 主外键关联的情况，例如在主表中，有个对应的外键关联。可以用 Map映射对象。
+可以在 <select> 元素查询操作中，在 resultType="java.util.Map" 中设置为 java.util.Map 类型参数，查询后，默认使用 HashMap进行存储。
+对应 SQL语句：select g.*,c.category_name from t_goods g,t_category c where g.categoryId = c.id
+获得后的数据，以 列 集合的方式放在 map集合中，使用需要对 Map对象进行操作，例：mapItem.get("title") 这样的方式调用
+
+默认使用 HashMap进行存储，其key顺序根据 key的 哈希值进行排序，可能会与 SQL脚本中列的顺序不同。可以使用 java.util.LinkedHashMap 对象来代替。这时Map中列的顺序就与SQL脚本中列的顺序相同了
+
+一般在使用中，单表查询使用实体类，夺标连接或扩展字段使用 LinkedHashMap
+
+9.6 MyBatis 中预防SQL注入
+#{} ： SQL预编译取值，参数化
+${} ：直接字符串替换，如果没有必须，一般不要使用
+在 MySQL中，是不支持 双引号的。
+
+9.7 Mybatis 动态 SQL
+在 Mapper.xml 文件中，配置 SQL语句，如果用到比较操作符（<，>） 等，需要使用 &lt; 或 &gt; 等标进行替换
+具体的 if,choose,when,otherwise,where,foreach  等元素使用，同之前的笔记内容.
+
+9.8 增加 Logback日志来输出 SQL
+在 pom.xml 文件中，引入相关的依赖
+<dependency>
+	<groupId>ch.qos.logback</groupId>
+	<artifactId>logback-classic</artifactId>
+	<version>1.2.3</version>
+</dependency>
+其中与 log4j 同出一个作者，是 其更新的日志框架。只需在代码引入后，就会自动识别，并输出SQL语句 
+
+
+
+第十章 MyBatis与 Spring的整合
+
+10.1 整合环境搭建
+
+10.1.1 准备 所需JAR包
+其中，MyBatis与 Spring整合的中间 JAR，MyBatis社区自己开发了一个用于整合这两个框架的中间件 -- MyBatis-Spring
+数据源所需的 JAR包，可能还有 DBCP 和 连接池的 JAR包，例如：commons-dbcp2-2.1.1.jar    commons-pool2.2.4.2.jar
+
+10.1.2 编写配置文件
+编写 db.properties 文件，主要对数据库的信息的配置文件。
+编写 applicationContext.xml 文件，其中读取 db.properties 配置未见，配置 bean 等信息来配置 spring <context:property-placeholder location="classpath:db.properties"/ > 来读取数据库配置信息，在 xml 中进行引用，编写 sqlSessionFactory 的 bean的配置，注入数据源等信息，注入mybatis-config.xml 文件的地址等信息。
+编写 mybatis-config.xml 文件，设置 typeAliases 和 mappers 元素来进行 mybatis 的配置
+编写 log4j.properties 文件，配置 mybatis用到的日志信息配置
+
+10.2 传统DAO方式开发整合

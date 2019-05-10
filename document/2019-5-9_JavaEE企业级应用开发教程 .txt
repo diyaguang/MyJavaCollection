@@ -43,7 +43,7 @@ MyBatis框架提供了默认的类型处理器
 	</environment>
 </environments>
 说明：在MyBatis中可以设置两种类型的事务管理器，分别是 JDBC（直接使用JDBC的提交和回滚设置，依赖于从数据源得到的链接来管理事务的作用域），MANAGED（从来不提交或回滚一个链接，而是让容器来管理事务的整个生命周期）
-对数据源的配置，MyBatis提供了 UNPOOLED，POOLED,JNDI 
+对数据源的配置，MyBatis提供了 UNPOOLED，POOLED,JNDI，其中 POOLED就是使用连接吃的方式管理。
 
 7.2.9 <mappers> 元素
 用于指定 Mybatis 映射文件的位置，有四种方式引用：
@@ -73,6 +73,7 @@ MyBatis框架提供了默认的类型处理器
 （timeout）设置操作超时时间，会抛出异常
 （statementType）设置 MyBatis使用哪个 JDBC 的 Statement工作，默认值 PREPARED
 （resultSetType）表示结果集的类型
+如果 参数是基本类型或包装对象，则使用 #{value} 带入即可
 
 7.3.3 <insert> 元素
 （keyProperty="id" 将插入或更新操作的返回值赋给PO类的某个属性）
@@ -250,5 +251,3 @@ MyBatis3采用了功能欠打的基于 OGNL的表达式来完成动态SQL
 一对多：在多的一方，添加一的一方的主键作为外键，一个A类类型对应多个B类类型，需要在A类中以集合方式引入B类类型的对象，在B类中定义A类类型的属性a
 多对多：产生中间关系表，两张表的主键作为外键，在A类中定义B类类型的集合，在B类中定义A类型的集合。
 
-9.2 一对一 
-使用 <association> 子元素，在 <resultMap> 元素中。
