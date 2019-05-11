@@ -100,9 +100,69 @@ ${} ：直接字符串替换，如果没有必须，一般不要使用
 </dependency>
 其中与 log4j 同出一个作者，是 其更新的日志框架。只需在代码引入后，就会自动识别，并输出SQL语句 
 
+9.9 分页插件 PageHelper
+使用需要三个步骤：
+1.Maven引入 PageHelper 与 jsqlparser
+<dependency>
+	<groupId>com.github.pagehelper</groupId>
+	<artifactId>pagehelper</artifactId>
+	<version>5.1.8</version>
+</dependency>
+<dependency>
+	<groupId>co.github.jsplparser</groupId>
+	<artifactId>jsplparser</artifactId>
+	<version>0.9.5</version>
+</dependency>
+其中 PageHelper是核心jar包，jsqlparser是SQL语句的解析器
+
+2.在 mybatis-config.xml 中增加 Plugin配置
+在 <configuration> 元素下 配置 <plugins> 配置
+<plugins>
+	<plugin interceptor="com.github.pagehelper.PageInterceptor">
+		<property name="helperDialect" value="mysql"/>
+		<property name="reasonable" value="true"/> <!-- 配置合理化，使用后，pageNum小于0，或pageNum超过总pages时，取第一页或最后一页。默认为 false -->
+	</plugin>
+</plugins>
+
+3. 在代码中使用 pageHelper.startPage() 自动分页
+在 session.selectList() 查询方法前，增加 PageHelper.startpage(pageNum:1,pageSize:10) 这样的测试方法，来增加分页的一些配置。
+
+9.10 Mybatis 二级缓存
+一级缓存默认开启，缓存范围 SqlSession会话，缓存存储在 sqlsession中，但关闭后，缓存就消失了。
+二级缓存，手动开启，属于范围 Mapper's Namespace，查询结果是在 同一个 namespace中共享的，相同的 namespace 可共享。存活的时间更长
+
+MyBatis 默认使用 map来保存一级，二级 缓存。每一个 Mapper 只有一个共享的二级缓存
+
+当在 sqlSession时，使用 sqlSession.commit() 执行后，一级缓存也会被清空。
+二级缓存运行规则：
+1.二级开启后，默认所有查询操作均使用缓存
+2.写操作 commit提交时，对该 namespace缓存强制清空
+3.配置 useCache=false 可以不用缓存
+4.配置 flushCache=true 代表强制清空缓存，可以用在 select 元素上，并且被查询到的数据不会进行缓存。
+
+在 mybatis-config.xml 文件上，在 <settings> 中加入 <setting name="cacheEnabled" value="true">  这样就可以开启二级缓存了
+在 Mapper.xml 中，在 <mapper> 标记下，增加 <cache eviction="LRU" flushInterval="600000" size="512" readOnly="true" />  来在mapper下配置二级缓存
+配置说明：
+eviction 是缓存清除策略，当缓存对象数量达到上限后，自动触发对应算法对缓存对象清除
+1.LRU：最近最少使用的，移除最长时间不被使用的对象
+2.FIFO：先进先出，按顺序移除
+3.SOFT：软引用，移除基于垃圾回收器状态和软引用规则的对象
+4.WEAK：弱引用，更积极地移除基于垃圾回收器状态和弱引用规则的对象。
+flushInterval：代表间隔多长时间自动清空缓存，单位毫秒
+size：缓存存储上限，用于保存对象或集合（1个集合算一个对象）的数量上限
+readOnly：true 表示只读缓存，每次从缓存取出的是缓存对象本身，执行效率较高。
+                  false 表示每次取出的是缓存对象的“副本”，每一次取出的对象都是不同的，安全性较高。默认值
 
 
 第十章 MyBatis与 Spring的整合
+
+
+
+10.-1 Spring+SpringMVC+Mybatis 整合
+SSM：
+
+10.-2 Spring 与 MyBatis整合
+
 
 10.1 整合环境搭建
 
