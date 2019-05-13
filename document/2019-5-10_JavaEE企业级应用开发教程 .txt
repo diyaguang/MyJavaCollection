@@ -153,27 +153,110 @@ size：缓存存储上限，用于保存对象或集合（1个集合算一个对
 readOnly：true 表示只读缓存，每次从缓存取出的是缓存对象本身，执行效率较高。
                   false 表示每次取出的是缓存对象的“副本”，每一次取出的对象都是不同的，安全性较高。默认值
 
+9.11 Spring MVC 项目整合
+1.编写 web.xml 文件
+<packaging> war</packaging>
+2.引入 相关的编译插件
+<build>
+	<plugins>
+		<plugin>
+3.引入相关的依赖
+org.spring.framework     spring-webmvc    5.1.6.RELEASE
+org.fasterxml.jackson.core      jackson-core                      2.9.8
+org.fasterxml.jackson.core      jackson-amtations             2.9.8
+org.fasterxml.jackson.core      jackson-databind.              2.9.8
+org.freemarker                        freemarker                       2.3.28
+org.springframework               spring-context-support     5.1.6.RELEASE
+4.在 pom.xml 中 增加 来配置阿里云的映像
+<repositiories>
+	<repositrory>
+5.在项目目录结构中
+在 src/main 目录下，新建 webapp 目录，用来保存网页与 web相关的配置文件。在 src/main/webapp/ 下创建“WEB-INF”目录，用来存放 web.xml 核心配置文件。
+配置内容：<servlet>    <servlet-Mapping>    <filter>   <filter-mapping>
+6.在 resource 文件夹中，创建“applicationContext.xml” 文件
+启用“注解”形式的扫描对象
+开启 MVC 的注解模式
+配置 freeMarkerView
 
-第十章 MyBatis与 Spring的整合
+9.12 Spring 与 MyBatis的整合
+1.需要在 pom.xml 文件中引入相关的依赖    spring-jdbc, Mybatis, mybatis-spring(整合的关键组件), druid
+2.在 applicationContext 配置数据源 dataSource
+<bean id="dataSource" class="com.alibaba.druid.pool,DruidDataSource"/> 源 SessionFactory对象不再由自己创建，由SpringIOC容器管理
+3.在 applicationContext 配置会话工厂 SqlSessionFactory 使用 bean配置
+要 配置 dataSource属性，
+配置 configLocation属性，value=“classpath:mybatis-config.xml”
+配置 mapperLocation 属性 value="classpath:mappers/*.xml"
+4.在 applicationContext·配置 MapperScanerConfigurer
+配置 MapperScannerConfigurer的 bean，并配置
+<property name="basePackage" value="com.xxx.xxxx"/>
+目录用于 Mybatis 提供的一种新的开发方式，“Mapper接口”，这样配置后，用来扫描指定包下的所有有效的 Mapper接口类。
+
+9.13 Mapper接口开发方式
+Mapper接口开发要素
+1.mappers xml namespace 指向接口，不能随意书写
+2.mapperSQL Id 与接口方法名重合
+3.接口方法参数直接传入到 SQL中，多参数使用 @Param
+4.方法返回值可以使用 List 或 单个对象，Mybatis会自动判断在接口方法中传入多个参数
+使用 Map方式传入，在 Mapper.xml 中 使用 #{xxxx} 来标识
+在 Mapper接口方法的参数上使用 @Param("xxxx") 来标识，可多个参数传递在 Mapper.xml 中，还是使用 Map类型，spring会自动处理
+
+9.14 声明式事务
+1.使用注解方式
+2.使用 @Transactional 注解，用在 Service 上
+3.在 applicationContext 中开启注解式事务
+<bean id="transactionManager" class="org.springframework.jdbc.datasource,DataSourceTranscationManager">
+	<property name="dataSource" ref="dataSource"/>
+</bean>
+<tx:annotation-driven transaction-manager="transactionManager"/>
+4.利用 @Transactional 描述事务
+5.设置 事务传播行为 PROPAGTION_NOT_SUPPORTED 不使用事务
+
+使用时，抛出 RuntimeException 及其子类时，发生回滚。可以通过 @Transactional 的 rollbackFor 属性，设置指定的回滚异常。
+
+9.15 Druid连接池配置
+initialSize=5 初始化连接池时默认创建 x 个连接
+maxActive=20 最大连接量
+minIdle=5 最少的空闲连接数
+maxWait=60000 最大等待时间
+testOnBorom=false 是否在分配连接时，测试连接有效性
+testWhileIdle=true 是否在空闲时，测试连接有效性
+testOnReturn=false 是否在归还连接时，测试有效性
+validationQuery=“select 1” 测试有效性的 SQL语句
+
+Druid默认提供了数据库的监控
+需要设置：
+filters="stat,wall,slf4j"
+filters用于开启监控过滤器，stat是 SQL及Web监控，wall是预防SQL注入攻击，slf4j是日志输出。
+connectionProperties="druid.stat.mergeSql=true;druid.stat.slowSqlMinllis=500;" 
+在 web.xml 文件中，加入 Druid 过滤器
+<filter>
+	<filter-name>DruidWebStateFilter</filter-name>
+	<filter-class>com.alibaba.druid.support.http.webStatFilter</filter-class>
+	<init-param>
+		<param-name>exclusions</param-name>
+		<param-value>*.js,*.css,*.jpg,*.ico,/druid/*</param-value>
+	</init-param>
+</filter>
+<filter-mapping>
+	<filter-name>DruidWebStateFilter</filter-name>
+	<url-pattern>/*</url-pattern>
+</filter-mapping>
+<servlet>
+	<servlet-name>DruidServlet</servlet-name>
+	<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+	<init-param>
+		<param-name>LoginName</param-name>
+		<param-value>admin</param-value>
+	</init-param>
+	<init-param>
+		<param-name>LoginPassword</param-name>
+		<param-value>xxxxx</param-value>
+	</init-param>
+</servlet>
+<servlet-Mapping>
+	<servlet-name>DrudiServlet</servlet-name>
+	<url-pattern>/druid/*</url-pattern>
+</servlet-Mapping>
 
 
 
-10.-1 Spring+SpringMVC+Mybatis 整合
-SSM：
-
-10.-2 Spring 与 MyBatis整合
-
-
-10.1 整合环境搭建
-
-10.1.1 准备 所需JAR包
-其中，MyBatis与 Spring整合的中间 JAR，MyBatis社区自己开发了一个用于整合这两个框架的中间件 -- MyBatis-Spring
-数据源所需的 JAR包，可能还有 DBCP 和 连接池的 JAR包，例如：commons-dbcp2-2.1.1.jar    commons-pool2.2.4.2.jar
-
-10.1.2 编写配置文件
-编写 db.properties 文件，主要对数据库的信息的配置文件。
-编写 applicationContext.xml 文件，其中读取 db.properties 配置未见，配置 bean 等信息来配置 spring <context:property-placeholder location="classpath:db.properties"/ > 来读取数据库配置信息，在 xml 中进行引用，编写 sqlSessionFactory 的 bean的配置，注入数据源等信息，注入mybatis-config.xml 文件的地址等信息。
-编写 mybatis-config.xml 文件，设置 typeAliases 和 mappers 元素来进行 mybatis 的配置
-编写 log4j.properties 文件，配置 mybatis用到的日志信息配置
-
-10.2 传统DAO方式开发整合

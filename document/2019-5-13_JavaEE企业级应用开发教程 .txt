@@ -1,0 +1,63 @@
+第十章 MyBatis与 Spring的整合
+
+10.-1 Spring+SpringMVC+Mybatis 整合
+SSM：
+
+10.-2 Spring 与 MyBatis整合
+
+
+10.1 整合环境搭建
+
+10.1.1 准备 所需JAR包
+其中，MyBatis与 Spring整合的中间 JAR，MyBatis社区自己开发了一个用于整合这两个框架的中间件 -- MyBatis-Spring
+数据源所需的 JAR包，可能还有 DBCP 和 连接池的 JAR包，例如：commons-dbcp2-2.1.1.jar    commons-pool2.2.4.2.jar
+
+10.1.2 编写配置文件
+编写 db.properties 文件，主要对数据库的信息的配置文件。
+编写 applicationContext.xml 文件，其中读取 db.properties 配置未见，配置 bean 等信息来配置 spring <context:property-placeholder location="classpath:db.properties"/ > 来读取数据库配置信息，在 xml 中进行引用，编写 sqlSessionFactory 的 bean的配置，注入数据源等信息，注入mybatis-config.xml 文件的地址等信息。
+编写 mybatis-config.xml 文件，设置 typeAliases 和 mappers 元素来进行 mybatis 的配置
+编写 log4j.properties 文件，配置 mybatis用到的日志信息配置
+
+10.2 传统DAO方式开发整合
+需要编写DAO接口以及接口的实现类，需要向DAO实现类中注入 SqlSessionFactory，然后在方法体内通过 SqlSessionFactory创建 SqlSession，通过使用 mybatis-spring 包中提供的 SqlSessionTemplate 或 SqlSessionDaoSupport 类来实现。
+SqlSessionTemplate：核心类，管理 SqlSession。
+SqlSessionDaoSupport：抽象类，继承了 DaoSupport类，主要用作 DAO的基类来使用。通过 SqlSessionDaoSupport类的 getSqlSession 方法来获取所需的 SqlSession。
+
+其中在实现 xxxDao类中，会继承 SqlSessionDaoSupport类，并实现 xxxDao 接口。SqlSessionDaoSupport有一个 SqlSessionFactory属性需要注入，然后在方法中就可以使用 SqlSession了。
+<bean id="customerDao" class="com.xxx.xxx.impl.CustomerDaoImpl">
+	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+</bean>
+
+10.3 Mapper 接口方式的整合
+
+10.3.1 基于 MapperFactoryBean 的整合
+使用 MapperFactoryBean核心类，根据 Mapper接口生成 Mapper对象的类。可以设置 mapperInterface，SqlSessionFactory，SqlSessionTemplate 等属性，用来配置相关信息。
+Mapper接口编程方式需要程序员编写 Mapper接口，然后由 MyBatis框架根据接口的定义创建接口的动态代理对象。
+1.创建 xxxMapper接口文件，包含定义要操作的方法
+2.创建对应的 xxxMapper.xml 文件
+3.在 MappingConfig.xml文件中指定映射 xxxMapper.xml 文件
+4.在 Spring的配置文件中，配置 Bean
+<bean id="customerMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.xxx.mapper.CustomerManager"/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+
+注意事项：
+1.Mapper接口的名称和对应的 mapper.xml 映射文件的名称必须一致
+2.Mapper.xml 文件中的 namespace 与 Mapper 接口的类路径相同
+3.Mapper接口中的方法名 和 mapper.xml 中定义的每个执行语句的 id 相同
+4.Mapper接口中方法输入参数类型和 Mapper.xml 中定义的每个SQL的 parameterType 的类型相同
+5.Mapper 接口方法的输出参数要和 Mapper.xml 中定义的每个 SQL 的 resultType 的类型相同
+
+10.3.2 基于 MapperScannerConfigurer的整合
+MyBatis-Spring 团队提供了一种自动扫描来配置 MyBatis 中的映射器，采用 MapperScannerConfigurer类
+常用配置属性：
+basePackage：指定映射接口文件所在的包路径，当需要扫描多个包时，使用分号或逗号分隔
+annotationClass：指定要扫描的注解名称，只有被注解标示的类才会被配置为映射器
+sqlSessionFactoryBeanName：指定在 Spring中定义的 SqlSessionFactory的 Bean名称
+sqlSessionTemplateBeanName：指定在 Spring中定义的 SqlSessionTemplate的Bean名称
+markerInterface：指定创建映射器的接口
+通常情况下，只指定 basePackage属性即可。
+
+10.4 测试事务
+MyBatis+Spring 项目中，事务时由 Spring 来管理的，业务层Service 即是处理业务的地方，又是管理数据库事务的地方。
