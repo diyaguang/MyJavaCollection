@@ -61,3 +61,91 @@ markerInterface：指定创建映射器的接口
 
 10.4 测试事务
 MyBatis+Spring 项目中，事务时由 Spring 来管理的，业务层Service 即是处理业务的地方，又是管理数据库事务的地方。
+
+第十一章 Spring MVC 入门
+
+11.1 Spring MVC 概述
+与 Struts2框架一样，都属于 MVC框架，提供了一个前端控制器 DispatcherServlet，使开发人员无需额外开发控制器对象。
+使用基于 XML的配置文件
+
+11.2 一个普通的 Spring MVC应用
+1.创建项目，引入 JAR包。添加 Spring4个核心 JAR包，commons-logging 的 JAR，以及两个 Web相关的 JAR
+2.在 web.xml 中，配置 Spring MVC的前端控制器 DispatcherServlet，配置 servlet-mapping 元素
+3.创建 Controller类
+4.创建 SpringMVC的配置文件，配置控制器映射信息
+5.创建视图 View页面
+
+11.3 SpringMVC的工作流程
+1.请求会被 SpringMVC 的 前端控制器 DispatcherServlet所拦截
+2.DispatcherServlet拦截请求后，会调用 HandlerMapping处理器映射器
+3.处理器映射器根据请求 URL找到具体的处理器，生成处理器对象以及处理器拦截器，一并返回给 DispatcherSAervlet
+4.DispatcherServlet 会通过返回信息选择合适的 HandlerAdapter
+5.HandlerAdapter 会调用并执行 Handler，这里的处理器就是 Controller类，也被称为 后端控制器
+6.Controller执行完毕后，返回一个 ModelAndView对象，对象中包含视图名或包含模型和视图名
+7.HandlerAdapter 将 ModelAndView对象返回给 DispatcherServlet
+8.DispatcherServlet 会根据 ModelAndView 对象选择一个合适的 ViewReslover（视图解析器）
+9.ViewReslover解析，会向 DispatcherServlet中返回具体的 View
+10.DispatcherServlet 对 View进行渲染
+11.视图渲染结果会返回给客户端浏览器显示
+
+
+
+第十二章 Spring MVC的核心类和注解
+
+12.1 DispatcherServlet
+是前端控制器的角色，只需将其配置在项目的web.xml文件中，配置 servlet 元素，将 DispatcherServlet配置进去，并且配置 servlet-mapping 设置映射目录
+默认会到 WEB-INF目录下寻找配置文件，使用 servletName-servlet.xml 的格式寻找配置文件。
+
+12.2 Controller 注解类型
+在 Spring中，保证找到控制器类，需要在 Spring MVC 的配置文件中，添加相应的扫面配置信息。
+1.在配置文件的声明中，引入 spring-context
+2.使用 <context:component-scan> 元素，指定需要扫描的类包
+例如：<context:component-scan base-package="com.itheima.controller" />
+在使用注解的方式时，需要依赖 Spring 的 AOP包，需要添加相应的jar包
+
+12.3 RequestMapping 注解类型
+
+12.3.1 @RequestMapping 注解的使用
+该注解用于映射一个请求或一个方法，可以标注在一个方法或一个类上。
+
+12.3.2 @RequestMapping注解的属性
+name：为映射地址指定别名
+value：默认属性，用于映射一个请求和一种方法
+method：指定该方法用于处理那种类型的请求，包括 GET，POST，HEAD，OPTIONS，PUT，PATCH，DELETE，TRACE
+params：指定 Request中必须包含某些参数的值，才可以通过其标注的方法处理
+headers：指定 Request中必须包含某些指定的  header的值，才可以通过其标注的方法处理
+consumes：指定处理请求的提交内容类型 content-type ，例如：application/json，text/html 等
+produces：指定返回的内容类型，必须是 request请求头 Accept中所包含的类型
+
+12.3.3 组合注解
+在 spring 框架的 4.3 版本后，增加了组合注解，简化常用的 HTTP方法的映射
+@GetMapping：匹配 GET方式的请求
+@PostMapping：匹配 POST方式的请求
+@PutMapping：匹配 PUT方式的请求
+@DeleteMapping：匹配 DELETE方式的请求
+@PatchMapping：匹配 PATCH方式的请求
+
+12.3.4 请求处理方法的参数类型和返回类型
+方法参数可以出现的类型：
+HttpServletRequest，HttpServletResponse，HttpSession，WebRequest，NativeWebRequest，Locale，TimeZone，ZoneId，InputStream，Reader，OutputStream，Writer，HttpMethod，Principal，@PathVariable，@MatrixVariable，@RequestParam，@RequestHeader，@RequestBody，@RequestPart，@SessionAttribute，@RequestAttribute，HttpEntity<?>，Map，ModelMap，RedirectAttributes，BindingResult，SessionStatus，UriComponentsBuilder
+其中：Model类型 不是一个 ServletAPI类型，而是一个包含了 Map对象的 SpringMVC类型
+
+请求方法可返回的类型：
+ModelAndView，Model，Map，View，String，void，HttpEntity<?>，ResponseEntity<?>，Callable<?>，DeferredResult<?>
+其中 ModelAndView 可以添加 model数据并指定视图
+
+特殊的处理：
+1.redirect 重定向
+Url地址栏会发生变化，独立的 Request请求。使用时  return "redirect:queryUser"
+2.forward 请求转发
+Url地址栏不会发生变化，共享 Request，Response对象。使用时： return "forward:editUser"
+
+12.4 ViewResolver （视图解析器）
+负责解析视图，通过在 配置文件xml 中定义一个 ViewResolver来配置视图解析器
+<bean id="viewResolver" class="xxx.xxx.xxx.view.InternalResourceViewResolver">
+	<property name="prefix" value="/WEB-INF/jsp/"/>
+	<property name="suffix" value=".jsp"/>
+</bean>
+
+
+第十三章 数据绑定

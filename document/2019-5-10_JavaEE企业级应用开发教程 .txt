@@ -232,7 +232,7 @@ connectionProperties="druid.stat.mergeSql=true;druid.stat.slowSqlMinllis=500;"
 <filter>
 	<filter-name>DruidWebStateFilter</filter-name>
 	<filter-class>com.alibaba.druid.support.http.webStatFilter</filter-class>
-	<init-param>
+	<init-param>m'l
 		<param-name>exclusions</param-name>
 		<param-value>*.js,*.css,*.jpg,*.ico,/druid/*</param-value>
 	</init-param>
