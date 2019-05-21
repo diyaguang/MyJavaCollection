@@ -62,6 +62,79 @@ markerInterface：指定创建映射器的接口
 10.4 测试事务
 MyBatis+Spring 项目中，事务时由 Spring 来管理的，业务层Service 即是处理业务的地方，又是管理数据库事务的地方。
 
+10.5 MyBatis-plus 使用
+
+10.5.1 MyBatis-Plus 使用入门
+
+特点：
+1.无入侵
+2.损耗小
+3.强大的 CRUD
+4.多种数据库
+5.内置分页
+6.内置主键生成策略
+
+MyBatis Plus 的使用
+1.Maven 依赖 mybatis-plus (v3.1.0 去掉 mybatis 与 mybatis-spring)
+2.SessionFactory 设置为 MybatisSqlSessionFactoryBean
+3.实体类增加注解描述映射关系
+4. Mapper接口继承 BaseMapper
+
+实践：
+1.引入 maven依赖
+com.baomidou           mybatis-plus            3.1.0
+在 引入 MyBatis-Plus 之后，请不要再次引入 MyBatis 以及 MyBatis-Spring，以避免因版本差异导致的问题。
+
+2. 在 applicationContext.xml 文件中，在 sqlSessionFactory bena的配置上，修改为 com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean
+其中 MyBatisSessionFactoryBean 对 Mybatis-Spring 整合插件进行了重写与扩展，提供自动生成SQL功能
+
+3.映射实体的注解
+@TableName 设置实体与表的对应关系，例：@TableName("t_goods_detail")
+@TableId 用于设置主键属性，注解中的 type属性，用来设置不同数据库对应的主键生成类型。 @TbleId(type=IdType.AUTO) ,AUTO自动根据类型产生
+@TableField 如果属性名与字断对应不上，需要使用这个注解进行说明
+
+4.创建 Mapper接口，继承 BaseMapper
+public interface GoodsDatailMapper extends BaseMapper<GoodsDetail> 
+其中，BaseMapper定义了 CRUD的方法声明，在运行时会自动根据实体的注解生成对应的 SQL语句
+
+5.创建 Mapper的 xml 映射文件
+namespace 指向接口即可。mybatis-plus 会自动提供很多的处理方法。
+在对应的 查询方法中，使用 selectXXXX 等方法来进行查询，查询条件使用 QueryWrapper 类来构造条件执行操作。
+例：List<xxx> list = goodsDetailMapper.selectList(new QueryWrapper<xxxx>()); 来查询
+注，切记属性名与数据库关键字不要冲突
+
+10.5.2 QueryWrapper查询构造器
+QueryWrapper<xxxx> queryWrapper = new QueryWrapper<xxxx>();
+queryWrapper.eq(columnName,value);
+在使用时，传入 queryWrapper对象
+queryWrapper.between(columnName,startValue,endValue);
+queryWrapper.like(columnName,value)
+                      .likeLift 只保留左侧的 % 符号
+                      .likeRight 只保留右侧的 % 符号
+                      .netLike
+多个 queryWrapper组合使用，条件间采用 “and” 方式组合
+
+10.5.3 MyBatis-Plus 分页查询
+需要配置分页插件，开启分页功能，在 mybatis-config.xml 文件中
+<plugins>
+	<plugin interceptor="com.baomidou.mybatisplus.txtensim.plugins.PagimationInterceptor"/>
+在使用查询中：
+IPage page = new Page(pageNum,pageSize);
+xxxMapper.selectPage(page,queryWrapper) 方法来进行查询
+返回 IPage pageResult = xxxxmapper.selectPage(xxxx) 。其中 IPage 是可作为 @ResponseBody返回的。
+对于复杂的多表关联查询，无法使用分页查询框架，需要使用“自定义查询分页”
+在 xxxMapper.xml 文件中，若复杂的多表关联查询中，若使用 mybatis-plus 分页插件后，必须在引用参数时，增加 #{前缀，xxxx} 的格式。
+<select id="selectMap" parameterType="java.utilMap" resultType="java.util.HashlinkedMap">
+	select xxxx from xxxx where xxxxx
+		and d.xxx = #{p.xxxx}
+		and d.xxx = #{p.xxxx}
+</select>
+在 对应的 xxxMapper 接口中，设置对应的分页方法
+public IPage<Map> selectMap(IPage page,@Param("p") MapParam)....
+第一个参数是 固定分页对象
+第二个参数 Map向SQL传递参数，但要使用 @Param定义前缀
+
+
 第十一章 Spring MVC 入门
 
 11.1 Spring MVC 概述
@@ -148,4 +221,4 @@ Url地址栏不会发生变化，共享 Request，Response对象。使用时： 
 </bean>
 
 
-第十三章 数据绑定
+

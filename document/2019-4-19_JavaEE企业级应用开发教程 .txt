@@ -46,7 +46,7 @@ invoke方法中，目标方法执行的前后，分别执行切面类中的 xxx 
         userDao1.deleteUser();
 实现了接口的代理方法，就是 Spring中的 JDK动态代理
 
-3.2.2 CGLIB dialing
+3.2.2 CGLIB 代理
 JDK代理要求必须实现一个或多个接口，如果要对没有实现接口的类进行代理，需要使用 CGLIB代理。
 是一个高性能开源的代码生成包，采用非常底层的字节码技术，对指定的目标类生成一个子类，并对子类进行增强。Spring核心包中已经继承了 CGLIB所需的包。
 创建 代理类，实现 MethodInterceptor接口，并实现其中的 intercept 方法

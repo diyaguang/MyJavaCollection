@@ -1,0 +1,270 @@
+第十三章 数据绑定
+
+13.1 数据绑定介绍
+不同请求类型的参数的绑定，以一定的方式转换并绑定到控制器类的方法参数中。将请求消息数据与后台方法参数建立连接的过程就是 SpringMVC 中的数据绑定。
+SpringMVC会通过数据绑定组件(DataBinder)将请求参数串的内容进行类型转化，转换后赋值给控制器类中方法的形参。
+过程：
+1.SpringMVC 将 ServletRequest对象传递给 DataBinder
+2.将处理方法的入参对象传递给 DataBinder
+3.DataBinder 调用 ConversionService 组件进行数据类型转换，数据格式化，并将 ServletRequest对象中的消息填充到 参数对象中
+4.调用 Validator组件 对已经绑定了请求消息数据的参数进行数据合法性校验
+5.校验完成后，会生成数据绑定结果 BindingRequest对象，MVC会将 BindingRequest对象中的内容赋给处理方法的相应参数
+
+13.2 简单数据绑定
+
+13.2.1  绑定默认数据类型
+后台方法的形参中，可以直接使用 SpringMVC提供的默认参数类型进行数据绑定
+HttpServletRequest：通过 request对象获取请求信息
+HttpServletResponse：通过 response对象处理响应信息
+HttpSession：通过 session对象得到其中存储的信息
+Model/ModelMap：Model是一个接口，ModelMap是一个接口实现，将model数据填充到 request域
+例如：
+@Requestmapping("/selectUser")
+public String selectUser(HttpServletRequest request){
+	String id = request.getParameter("id");
+}
+捕获参数 xxxxx/chapter13/selectUser?id=1
+
+13.2.2 绑定简单数据类型
+就是在 URL后xxxx.jsp?xxx=xxx&xxx=xxx 这种格式的参数
+@Requestmapping("/selectUser")
+public String selectUser(Integer id){
+	println("id"+id);
+}
+如果前端请求中参数名和后台控制器类方法中的名字不一样，这就导致后台无法正确绑定并接收前端的参数，MVC提供了 @RequestParam 注解来进行数据绑定。
+@RequestParam 注解主要参数：
+value：属性别名，参数的名字，入参的请求参数名字
+name：指定请求头绑定的名称
+required：指定参数是否必须
+defaultValue：如果请求中没有同名参数时的默认值
+@RequestMapping("/selectUser")
+public String selectUser(@RequestParam(value="user_id") Integer id){
+	println("id"+id);
+}
+
+13.2.3 绑定 POJO 类型
+传递 POJO类型作为参数，进行传递。
+@RequestMapping("/registerUser")
+public String registerUser(User user){
+	...
+}
+在提交页面传入：
+<from action="${pageContext.request.contextPath}/registerUser" method="post">
+	表单中，元素的name属性值必须要与绑定的 POJO类中的属性名一样，这样会自动绑定。
+要注意解决请求参数中文乱码问题：
+需要在 web.xml 中，配置编码过滤器来统一编码，通过<filter-mapping> 元素的配置会拦截前端页面中的所有请求，并交给 CharcterEncodingFilter 的编码过滤器进行处理。
+
+13.2.4 绑定包装POJO
+包装POJO就是在一个 POJO中包含另一个简单的 POJO，在POST数据时，表单元素名称可以使用嵌套名称的方式设定。
+注意事项：
+1.如果查询条件参数是包装类的直接基本属性，则参数名直接用对应的属性名
+2.如果查询条件参数是包装类中POJO的子属性，则参数名必须为【对象.属性】的方式使用
+
+13.2.5 自定义数据绑定
+更特殊的数据绑定，一般用在日企传递的格式方式上。
+1.Converter
+将一种类型对象转换为另一种类型的对象，需要实现 Converter接口，并实现其中的 convert 方法
+public interface Converter<S,T>{
+	T convert(S source);
+}
+使用时：
+1.定义自定义的转换类，继承 Converter接口，实现 convert 方法
+2.在 springmvc-config.xml 文件中，配置 conversionService 的 Bean
+使用时，直接使用方法传递参数的方式使用即可
+
+2.Formatter
+与 Converter类似，但是源类型必须是 String类型，Converter可以是任意类型。需要继承 Formatter接口，这个接口又继承 Printer 接口。从而要 分别覆盖 print 和 parse 方法。
+使用时：
+1.创建自定义的 Formatter自定义类，继承 Formatter 接口，并实现 print，parse 接口方法
+2.在 SpringMVC配置文件中进行注册
+
+13.3 复杂数据绑定
+比如绑定数组或集合的绑定
+
+13.3.1 绑定数组
+前端需要传递到后台一个或多个相同名称参数的情况，使用绑定数组的方式，完成实际需求。
+就是在表单中，输入字段的名称相同，值不同，在Controller 接收方法中：
+public String deleteUsers(Integer[] ids) 
+这样就能接收数组对象来进行操作。
+
+13.3.2 绑定集合
+批量包含各种类型的数据，使用集合数据绑定，在包装类中定义一个数据类型的集合，然后在接收方法中将参数类型定义为该包装类的集合。
+即：public String editUser(UserVO userlist) 这样的方式，在 UserVO包装类中，是包含一个 List对象集合的。
+说明：泗洪集合数据绑定时，后台方法不支持直接使用集合行参进行数据绑定，所以需要使用包装POJO作为行参，然后在包装POJO中包含一个集合属性。
+即在 POST 的表单中，字段的绑定名称为 users[0].id，users[1].id  这样的方式进行绑定，这样，会传递给处理方法使用
+<input name="users[0].id" value="xxx" type="checkbox"/>
+
+
+第十四章 JSON数据交互和 RESTful 支持
+
+14.1 JSON数据交互
+
+14.1.1 JSON概述
+是一种轻量级的数据交换格式，JSON也是基于纯文本的数据格式，也可以传输一个数组或一个复杂的Object对象
+JSON有两种数据结构
+1.对象结构：以 "{" 开始，以 "}" 结束。中间多个组成部分用 "," 分隔，的 name/value 对象构成，name和value中间以 ":" 分隔
+其中，关键字 Key 必须为 Spring类型，值Value可以时 Spring，Number，Object，Array等数据类型
+2.数组结构
+以 "[" 开始，以 "]" 结束，中间部分由 "," 分隔元素，元素可以是 Spring，Number，Boolean，null等数据类型。
+在数组形式的结构中，可以放入不同的多种类型的值
+
+14.1.2 JSON数据转换
+Spring使用 HttpMessageConverter<T>接口来完成浏览器与控制器之间的数据交互，将请求中的数据转化为一个类型为T的对象，并将T的对象绑定到请求方法的参数中，获奖对象转化为响应信息传递给浏览器显示。
+Spring 为 HttpMessageConverter提供了很多的实现类，其中使用 MappingJackson2HttpMessageConverter 是SpringMVC默认处理JSON格式请求响应的实现类，利用Jackson开源包读写JSON数据。
+jackson-annoations-2.8.8.jar
+jackson-core-2.8.8.jar
+jackson-databind-2.8.8.jar
+使用注解开发时，需要用到两个重要的JSON格式转化注解，@RequestBody，@ResponseBody
+使用时：
+1.引入相关的依赖包
+2.在 Web.xml 文件中，对 MVC控制器进行配置
+3.创建 springmvc-config.xml 文件，配置 SpringMVC，在其中配置 开启注解驱动，配置静态资源部进行拦截等内容。
+说明：
+<mvc:annotation-drivern>：会自动注册 RequestMappingHandlerMapping 和 RequestMappingHandlerAdapter两个 Bean，并提供对读写 XML和读写JSON功能的支持。
+<mvc:resources>：用于配置静态资源的访问路径，如果在 web.xml 中配置 "/" 会将页面中引入的静态资源文件也进行拦截，而拦截后页面中找不到这些静态资源文件会引起报错。
+这个元素有两个属性：
+location：用于定位需要访问的本地静态资源文件路径，具体到某个文件夹
+mapping：匹配静态资源全路径，其中"/**" 表示文件夹及其子文件夹下的某个具体文件
+4.在控制器方法上，使用 @ResponseBody 和 @RequestBody（用在方法参数上） 注解
+
+14.1.3 使用<bean> 标签的方式的 JSON转换器配置
+使用自定义的 JSON转换器，使用 <bean>标签方式进行显示的配置
+<bean class="org.springgramework.web.servlet.vc.method.annotation.RequestMappingHandlerMapping"/>
+<bean class="org.spring.framework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+	<property name="messageConverters">
+		<list>
+			<bean class="org.springframework.http.converter.json.MappingJsckson2HttpMessageConverter"/>
+		</list>
+	</property>
+</bean>
+使用 Bean方式配置 JSON转换器时，需要同时配置 处理器映射器和处理器适配器，并且JSON转换器时配置在适配器中。
+
+14.1.4 配置静态资源访问方式
+除了使用 <mvc:resources> 元素可以实现对静态资源的访问外，还有另外两种静态资源访问配置方式
+1.使用 <mvc:default-servlet-handler> 标签
+在 springmvc-config.xml 文件中，使用 <mvc:default-servlet-handler> 标签，使用后，会在MVC上下文中定义一个 org.springframework.web.servlet.resource.DefaultServletHpptRequestHandler 处理器（即默认的Servlet请求处理器），在过滤URL中，如果发现是静态资源，则转由 Web服务器默认的 Servlet处理，默认的会对静态资源放行，如果不是，则有 DispatcherServlet继续处理。
+2. 激活 Tomcat默认的Servlet 来处理静态文件访问。使用 Tomcat默认的Servlet来处理
+需要在 web.xml 文件中添加如下内容
+<servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.js</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.css</url-pattern>
+</servlet-mapping>
+
+14.2 RESTful 支持
+14.2.1 什么事 RESTful 
+也称为 REST（Representational State Transfer），就是把请求参数变成请求路径的一种风格。
+RESTful 风格中，URL不存在动词形式的路径，put，delete，post，get 对应不同的操作。
+
+14.2.2 使用范例
+1.在控制器方法中，使用 @PathVariable 来获取路径参数
+@RequestMapping(value="/usr/{id}",method=RequestMethod.GET)
+@ResponseBody
+public User selectUsr(@PathVariable("id") String id)
+这样的方式来使用，如果参数名称和方法参数名称相同，则可以省略 @PathVariable关键字
+
+
+第十五章 拦截器
+在 Struts2 框架中，拦截器是其重要的组成部分，SpringMVC中，也提供了拦截器中能，通过配置即可对请求进行拦截
+
+15.1 拦截器概述
+拦截器（Interceptor）类似于Servlet 中的过滤器（Filter），主要用于来接用户请求并做相应的处理。
+使用时，需要 1.定义，2.配置
+
+15.1.1 拦截器定义
+有两种方式进行定义：
+1.通过实现 HandlerInterceptor 接口，或继承这个接口的实现类（如：HandlerInterceptorAdapter）来定义
+2.通过实现 WebRequestInterceptor接口，或继承WebRequestInterceptor 接口的实现类来定义。
+例如：
+public calss CustomInterceptor implements HandlerInterceptor{
+	@Override
+	public boolean preHandle(HttpServletRequest request,HttpServletResponse response,Object handler) throws Exception
+	@Override
+	public boolean postHandle(ttpServletRequest request,HttpServletResponse response,Object handler,ModelAndView modelAndView) throws Exception
+	@Override
+	public void afterCompletion(ttpServletRequest request,HttpServletResponse response,Object handler,Exception ex) throws Exception
+}
+说明：实现了 HandlerInterceptor接口，需要实现接口的中这三个对应的方法。
+preHandle：在控制器方法前执行，返回值表示是否中断后续操作
+postHandle：控制器方法后执行，且在解析视图之前执行
+afterCompletion：在整个请求完成，视图渲染结束后执行
+
+15.1.2 拦截器的配置
+在 SpringMVC-config.xml 中进行配置，拦截器。
+<mvc:interceptors>
+	<bean class="com.xxx.xxx.interceptor.CustomInterceptor"/>
+	<mvc:interceptor>
+		<mvc:mapping path="/**"/>
+		<mvc:exclude-mapping path=""/>
+		<bean class="com.xxxx.xxxx.interceptor.Interceptor1"/>
+	</mvc:interceptor>
+	<mvc:interceptor>
+		<mvc:mapping path="/hello"/>
+		<mvc:exclude-mapping path=""/>
+		<bean class="com.xxxx.xxxx.interceptor.Interceptor2"/>
+	</mvc:interceptor>
+</mvc:interceptors>
+说明：<interceptors> 用于配置一组拦截器，其中的 bean子元素定义的是全局拦截器，会拦截所有请求。<interceptor>定义的是指定路径的拦截器，会指定路径下的请求生效。<mapping>用于配置拦截器作用的路径，该路径在其属性 path中定义。<exclude-mapping>表示不需要拦截的内容，通过这个元素放行。
+
+15.2 拦截器的执行流程
+15.2.1 单个拦截器的执行流程
+拦截器执行是有一定顺序的，与配置文件中所定义的拦截器的顺序相关。
+流程：preHandle -> Handle -> postHandle -> render -> afterCompletion
+说明：在 Controller请求处理完后，才会执行 PostHandle 方法，然后通过 DispatcherServlet 向客户端返回响应；DispatcherServlet处理完请求后，才会执行 afterCompletion 方法。
+
+15.2.2 多个拦截器的执行顺序
+分成不同的处理层级，拦截器的嵌套使用的。则执行顺序也是“后进先出”的，但是总体是按照 preHandle，Handle，postHandle，reader，afterCompletion 的顺序执行的。
+类似于嵌套的方式去执行，从 Handle为界，前/中/后  ，其中后按顺序的反序执行（应该懂得哈）
+
+15.3 应用案例-实现用户登录权限验证（范例，略）
+
+
+第十六章 文件上传和下载
+
+第十七章 SSM框架整合
+
+第十八章 BOOT客户管理系统
+
+18.1 系统概述
+18.2 数据库设计
+18.3 系统环境搭建
+18.4 系统开发记录使用技巧
+1. 在 Mapper接口方法中，参数使用 @Param("xxxx") 即可后续在映射的 SQL中，使用 #{xxxx} 来获取 指定的参数值。
+public User findUser(@Param("usercode") String usercode,@Param("password") String password)
+在映射SQL语句中，可以直接使用 
+<select id="findUser" parameterType="String" resultType="user">
+	select * from xxx where user_code=#{usercode} and user_password=#{password} and .....
+</select>
+
+2.在控制器方法中可以直接使用传入参数
+public String login(String usercode,String password,Model model,HpptSession session)
+这样直接使用
+
+3.在 控制器中 Session操作
+在控制器方法中，在方法参数中使用 HttpSession 传入的话，可以在方法中对 Session对象进行操作
+session.setAttribute("USER_SESSION",user) 这样来设置Session 中的值
+还可以在控制其方法中，使用 HttpRequest 参数对象的 getSession方法来获取
+HttpSession session = request.getSession(); 方法来发挥Session对象使用
+
+4.前端表单使用方式
+<from action="${pageContext.request.contextPath}/login.action" method="post" onsumbit="return check()">
+
+5.控制器中页面跳转
+使用 HttpRequest对象的 getRequestDispatcher() 方法来转发到指定的其他地址
+request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request,response);
+
+6.在 Spring中使用拦截器
+在 springmvc-config.xml 文件中，配置
+<mvc:interceptors>
+	<mvc:interceptor>
+		<mvc:mapping path="/**"/>
+		<bean class="com.xxx.xxx.interceptor.LoginInterceptor"/>
+	</mvc:interceptor>
+</mvc:interceptors>
+这样来使用
+
+7.在前端页面中使用 HttpSession 或其他 相关的对象
+使用 ${USER_SESSION.user_name} 这样的方式

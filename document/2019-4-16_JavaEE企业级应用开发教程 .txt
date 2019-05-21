@@ -2,7 +2,7 @@
 
 1.1 Spring 概述
 
-1.1.1 什么是 Spring
+1.1.1 什么是Spring 
 轻量级的开源框架，以 IoC，AOP为内核，使用基本的 JavaBean来完成，取代了EJB的臃肿，低效的开发模式。
 表现层使用 SpringMVC，Struts框架整合功能，业务逻辑层可以管理事务，记录日志。持久层可以整合 MyBatis，Hibernate，JdbcTemplate技术。
 
